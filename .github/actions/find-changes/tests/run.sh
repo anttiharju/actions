@@ -55,16 +55,38 @@ act() {
 	(cd "$BASE_DIR/tmp/$TARGET" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
 }
 
+test_passes() {
+    EXPECTED="$1"
+    ACTUAL="$2"
+
+	SUCCESS=0
+	FAILURE=1
+
+	SHOULD_FAIL="$(dirname "$EXPECTED")/failure"
+    if [ -f "$SHOULD_FAIL" ]; then
+		SUCCESS=1
+		FAILURE=0
+	fi
+
+	if diff "$EXPECTED" "$ACTUAL" > /dev/null; then
+		return "$SUCCESS"
+	else
+		return "$FAILURE"
+	fi
+}
+
 assert() {
 	TEST="$1"
 	TEST_FILE=$(basename "$TEST")
+    TEST_DIR=$(basename "$(dirname "$TEST")")
 
 	EXPECTED="$(dirname "$TEST")/expects/$(basename "$TEST" .sh).output"
 	ACTUAL="$BASE_DIR/tmp/$TARGET/output"
-	if diff "$EXPECTED" "$ACTUAL" > /dev/null; then
-		echo "ok   $TEST_FILE"
+
+	if test_passes "$EXPECTED" "$ACTUAL"; then
+		echo "ok   $TEST_DIR/$TEST_FILE"
 	else
-		echo "FAIL $TEST_FILE"
+		echo "FAIL $TEST_DIR/$TEST_FILE"
 		echo
         diff --color "$EXPECTED" "$ACTUAL"
     fi
