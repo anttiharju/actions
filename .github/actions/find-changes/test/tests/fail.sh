@@ -1,1 +1,3 @@
-# My contents don't matter
+#!/bin/sh
+
+# Nothing needs to be done here.

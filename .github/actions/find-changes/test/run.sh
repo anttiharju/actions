@@ -113,10 +113,7 @@ all() {
 }
 
 test() {
-	trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Ensure cleanup
-
-	input="${1:-}"
-
+	input="$1"
 	if [ -z "$input" ]; then
 		all
 	else
@@ -124,4 +121,5 @@ test() {
 	fi
 }
 
-test
+trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Ensure cleanup
+test "${1:-}"
