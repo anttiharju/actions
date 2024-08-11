@@ -13,7 +13,7 @@ runs:
         echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
     - name: Find changes
       id: find_changes
-      run: find-changes.sh $DEFAULT_BRANCH
+      run: script.sh $DEFAULT_BRANCH
 
 outputs:
   directories:
