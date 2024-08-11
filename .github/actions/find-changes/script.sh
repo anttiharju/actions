@@ -44,3 +44,4 @@ directories=$(echo "$directories" | jq -R -s -c 'split("\n") | map(select(length
 
 # Set the output
 echo "directories=${directories}" >> "$GITHUB_ENV"
+echo "$directories"
