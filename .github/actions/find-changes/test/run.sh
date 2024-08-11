@@ -1,4 +1,5 @@
 #!/bin/sh
+set -eu
 
 BASE_DIR=$(cd "$(dirname "$0")" && pwd)
 TARGET=""
@@ -36,7 +37,7 @@ arrange() {
 		(
 			cd "$BASE_DIR/tmp/clone"
 			"$TEST"
-		)
+		) > /dev/null 2>&1
 		TARGET=$(cat "$BASE_DIR/tmp/clone/target")
 	else
 		echo "Error: $TEST is not executable."
@@ -49,7 +50,18 @@ act() {
 }
 
 assert() {
-	echo "$TARGET"
+	TEST="$1"
+	TEST_FILE=$(basename "$TEST")
+
+	EXPECTED="$(dirname "$TEST")/expects/$(basename "$TEST" .sh).output"
+	ACTUAL="$BASE_DIR/tmp/$TARGET/output"
+	if diff "$EXPECTED" "$ACTUAL" > /dev/null; then
+		echo "ok   $TEST_FILE"
+	else
+		echo "FAIL $TEST_FILE"
+		echo
+        diff --color "$EXPECTED" "$ACTUAL"
+    fi
 }
 
 # Run all tests
@@ -57,5 +69,5 @@ trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Final cleanup
 find "$BASE_DIR" -name "*.sh" ! -name "run.sh" | while IFS= read -r TEST; do
 	arrange "$TEST"
 	act
-	assert
+	assert "$TEST"
 done
