@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
 
 BASE_DIR=$(cd "$(dirname "$0")" && pwd)
 TARGET=""
@@ -92,10 +92,36 @@ assert() {
     fi
 }
 
-# Run all tests
-trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Final cleanup
-find "$BASE_DIR" -name "*.sh" ! -name "run.sh" | while IFS= read -r TEST; do
-	arrange "$TEST"
-	act
-	assert "$TEST"
-done
+single() {
+    TEST="$BASE_DIR/$1.sh"
+    if [ -f "$TEST" ]; then
+        arrange "$TEST"
+        act
+        assert "$TEST"
+    else
+        echo "Test file $TEST does not exist."
+        exit 1
+    fi
+}
+
+all() {
+	find "$BASE_DIR" -name "*.sh" ! -name "run.sh" | while IFS= read -r TEST; do
+		arrange "$TEST"
+		act
+		assert "$TEST"
+	done
+}
+
+test() {
+	trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Ensure cleanup
+
+	input="${1:-}"
+
+	if [ -z "$input" ]; then
+		all
+	else
+		single "$1"
+	fi
+}
+
+test
