@@ -57,18 +57,18 @@ arrange() {
 }
 
 act() {
-	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME")
+	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
 }
 
 test_passes() {
-    EXPECTED="$1"
-    ACTUAL="$2"
+	EXPECTED="$1"
+	ACTUAL="$2"
 
 	SUCCESS=0
 	FAILURE=1
 
 	SHOULD_FAIL="$(dirname "$EXPECTED")/with diff success reverted"
-    if [ -f "$SHOULD_FAIL" ]; then
+	if [ -f "$SHOULD_FAIL" ]; then
 		SUCCESS=1
 		FAILURE=0
 	fi
@@ -83,7 +83,7 @@ test_passes() {
 assert() {
 	TEST="$1"
 	TEST_NAME=$(basename "$TEST" .sh)
-    TEST_CATEGORY=$(basename "$(dirname "$TEST")")
+	TEST_CATEGORY=$(basename "$(dirname "$TEST")")
 
 	EXPECTED="$(dirname "$TEST")/being able to/$(basename "$TEST" .sh)"
 	ACTUAL="$BASE_DIR/tmp/clone/output"
@@ -93,20 +93,20 @@ assert() {
 	else
 		echo "FAIL $TEST_CATEGORY can $TEST_NAME"
 		echo
-        diff --color "$EXPECTED" "$ACTUAL"
-    fi
+		diff --color "$EXPECTED" "$ACTUAL"
+	fi
 }
 
 single() {
-    TEST="$BASE_DIR/$1.sh"
-    if [ -f "$TEST" ]; then
-        arrange "$TEST"
-        act
-        assert "$TEST"
-    else
-        echo "Test file $TEST does not exist."
-        exit 1
-    fi
+	TEST="$BASE_DIR/$1.sh"
+	if [ -f "$TEST" ]; then
+		arrange "$TEST"
+		act
+		assert "$TEST"
+	else
+		echo "Test file $TEST does not exist."
+		exit 1
+	fi
 }
 
 all() {
