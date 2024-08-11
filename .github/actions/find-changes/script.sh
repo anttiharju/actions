@@ -28,7 +28,7 @@ else
 	# Fetch latest state of default branch branch
 	git fetch --depth=1 origin "$default_branch:$default_branch"
 
-	# Get the list of changed first-level directories compared to the base ref
+	# Get the list of changed first-level directories compared to the default branch
 	changes=$(git diff --name-only "$default_branch" "$current_branch" -- | awk -F/ '{print $1}' | sort --unique)
 fi
 
