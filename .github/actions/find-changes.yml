@@ -1,0 +1,32 @@
+name: Find Changes
+
+description: Find changes within the first-level directories of the repo and output them for matrix strategy.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Find changes in first-level directories
+      id: find_changes
+      run: |
+        # Fetch the main branch
+        git fetch origin main:main
+        
+        # Get the list of changed first-level directories compared to main
+        changes=$(git diff --name-only main...HEAD | awk -F/ '{print $1}' | sort | uniq)
+        
+        # Filter out files and directories that start with a dot, only include directories
+        directories=$(echo "$changes" | xargs -I {} sh -c '[ -d "{}" ] && echo "{}"' | grep -v '^\.')
+
+        # Format the output for matrix strategy
+        matrix=$(echo "$directories" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+        
+        # Set the output
+        echo "matrix=${matrix}" >> $GITHUB_ENV
+
+outputs:
+  matrix:
+    description: 'JSON array of changed first-level directories'
+    value: ${{ steps.find_changes.outputs.matrix }}
