@@ -9,7 +9,7 @@ if [ "$current_branch" = "$default_branch" ]; then
 	git fetch origin "$default_branch:$default_branch"
 else
 	# Fetch latest state of default branch branch
-	git fetch --depth=1 origin "$default_branch"
+	git fetch --depth=1 origin "$default_branch:$default_branch"
 fi
 
 # Determine the base ref
