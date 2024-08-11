@@ -1,7 +1,7 @@
 #!/bin/sh
 
-git switch -c "add-potato"
-mkdir potato
-touch potato/.gitkeep
-git add potato/.gitkeep
-git commit -m "Add potato"
+git switch -c A
+mkdir A
+touch A/a
+git add A/a
+git commit -m "Add a"
