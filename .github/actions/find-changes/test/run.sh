@@ -2,7 +2,6 @@
 set -euo pipefail
 
 BASE_DIR=$(cd "$(dirname "$0")" && pwd)
-TARGET=""
 
 gitcredentials() {
 	git config user.name "github-actions[bot]"
@@ -43,9 +42,6 @@ arrange() {
 			cd "$BASE_DIR/tmp/clone"
 			"$TEST"
 		) > /dev/null 2>&1
-
-		# Determine target for act and assert (origin or clone)
-		TARGET=$(cat "$(dirname "$TEST")/with target")
 	else
 		echo "Error: $TEST is not executable."
 		exit 1
@@ -53,7 +49,7 @@ arrange() {
 }
 
 act() {
-	(cd "$BASE_DIR/tmp/$TARGET" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
+	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
 }
 
 test_passes() {
@@ -82,7 +78,7 @@ assert() {
     TEST_CATEGORY=$(basename "$(dirname "$TEST")")
 
 	EXPECTED="$(dirname "$TEST")/being able to/$(basename "$TEST" .sh)"
-	ACTUAL="$BASE_DIR/tmp/$TARGET/output"
+	ACTUAL="$BASE_DIR/tmp/clone/output"
 
 	if test_passes "$EXPECTED" "$ACTUAL"; then
 		echo "ok   $TEST_CATEGORY can $TEST_NAME"
