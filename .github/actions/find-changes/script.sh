@@ -32,7 +32,7 @@ else
 	git fetch --depth=1 origin "$default_branch:$default_branch"
 
 	# Get the list of changed first-level directories compared to the default branch
-	changes=$(git diff --name-only "$default_branch" "$current_branch" -- | awk -F/ '{print $1}' | sort --unique)
+	changes=$(git diff --name-only --diff-filter=ACDMRT "$default_branch" "$current_branch" -- | awk -F/ '{print $1}' | sort --unique)
 	echo "branch"
 fi
 
