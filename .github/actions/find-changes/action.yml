@@ -6,9 +6,14 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
+    - name: Get default branch name
+      run: |
+        DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }} | jq -r .default_branch)
+        echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
     - name: Find changes
       id: find_changes
-      run: find-changes.sh
+      run: find-changes.sh $DEFAULT_BRANCH
 
 outputs:
   directories:

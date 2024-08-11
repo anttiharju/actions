@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eu
 
 BASE_DIR=$(cd "$(dirname "$0")" && pwd)
@@ -12,6 +12,9 @@ gitcredentials() {
 arrange() {
 	TEST="$1"
 	if [ -x "$TEST" ]; then
+		# No logic should depend on hardcoded default branch name
+		DEFAULT_BRANCH_NAME="d$RANDOM"
+
 		# Ensure clean state
 		rm -rf "$BASE_DIR/tmp"
 
@@ -20,6 +23,7 @@ arrange() {
 			mkdir -p "$BASE_DIR/tmp/origin"
 			cd "$BASE_DIR/tmp/origin"
 			git init
+			git branch -M "$DEFAULT_BRANCH_NAME"
 			gitcredentials
 			touch README.md
 			git add README.md
@@ -46,7 +50,7 @@ arrange() {
 }
 
 act() {
-	(cd "$BASE_DIR/tmp/$TARGET" && GITHUB_ENV=output ../../../script.sh) > /dev/null 2>&1
+	(cd "$BASE_DIR/tmp/$TARGET" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
 }
 
 assert() {
