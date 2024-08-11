@@ -1,16 +1,18 @@
 #!/bin/sh
 
-git switch -c A
+git switch -c ABC
+
 mkdir A
+touch A/a
+git add A/a
+git commit -m "Add a"
 
-touch A/a1
-git add A/a1
-git commit -m "Add a1"
+mkdir B
+touch B/b
+git add B/b
+git commit -m "Add b"
 
-touch A/a2
-git add A/a2
-git commit -m "Add a2"
-
-touch A/a3
-git add A/a3
-git commit -m "Add a3"
+mkdir C
+touch C/c
+git add C/c
+git commit -m "Add c"
