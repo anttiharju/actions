@@ -24,9 +24,12 @@ arrange() {
 			git init
 			git branch -M "$DEFAULT_BRANCH_NAME"
 			gitcredentials
-			touch README.md
-			git add README.md
-			git commit -m "Initial commit"
+			touch 1
+			git add 1
+			git commit -m "first commit"
+			touch 2
+			git add 2
+			git commit -m "second commit"
 			git config receive.denyCurrentBranch ignore
 		) > /dev/null 2>&1
 		(
@@ -54,7 +57,7 @@ arrange() {
 }
 
 act() {
-	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
+	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME")
 }
 
 test_passes() {
