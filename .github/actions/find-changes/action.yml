@@ -12,12 +12,14 @@ runs:
   steps:
     - uses: actions/checkout@v4
     - name: Get default branch name
+      shell: bash
       run: |
         DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${{ inputs.github_token }}" \
           https://api.github.com/repos/${{ github.repository }} | jq -r .default_branch)
         echo "DEFAULT_BRANCH=$DEFAULT_BRANCH" >> $GITHUB_ENV
     - name: Find changes
       id: find_changes
+      shell: bash
       run: script.sh $DEFAULT_BRANCH
 
 outputs:
