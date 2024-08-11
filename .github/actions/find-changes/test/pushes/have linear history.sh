@@ -1,10 +1,10 @@
 #!/bin/sh
 
-git switch -c B
-mkdir B
-touch B/b
-git add B/b
-git commit -m "Add b"
+git switch -c A
+mkdir A
+touch A/a
+git add A/a
+git commit -m "Add a"
 
 git switch -
-git merge --ff-only B
+git merge --ff-only A
