@@ -11,14 +11,17 @@ if [ "$current_branch" = "$default_branch" ]; then
 		merge_ref=$(git log --merges -n 1 --pretty=format:"%H")
 		git fetch --depth=2 origin "$default_branch:$default_branch" --update-head-ok
 		base_ref=$(git rev-parse HEAD^) # merge commit
+		echo "merge"
 	else
 		latest_commit=$(git rev-parse HEAD)
 		base_ref=$(git merge-base HEAD "$default_branch")
 		if [ "$latest_commit" = "$base_ref" ]; then
 			git fetch --depth=2 origin "$default_branch:$default_branch" --update-head-ok
 			base_ref=$(git rev-parse HEAD^) # squash
+			echo "squash"
 		else
 			base_ref=$(git merge-base HEAD "$default_branch") # rebase
+			echo "rebase"
 		fi
 	fi
 
@@ -30,6 +33,7 @@ else
 
 	# Get the list of changed first-level directories compared to the default branch
 	changes=$(git diff --name-only "$default_branch" "$current_branch" -- | awk -F/ '{print $1}' | sort --unique)
+	echo "branch"
 fi
 
 # Filter out files and directories that start with a dot, only include directories
