@@ -44,7 +44,7 @@ arrange() {
 		) > /dev/null 2>&1
 
 		# Determine target for act and assert (origin or clone)
-		TARGET=$(cat "$(dirname "$TEST")/target")
+		TARGET=$(cat "$(dirname "$TEST")/with target")
 	else
 		echo "Error: $TEST is not executable."
 		exit 1
@@ -62,7 +62,7 @@ test_passes() {
 	SUCCESS=0
 	FAILURE=1
 
-	SHOULD_FAIL="$(dirname "$EXPECTED")/failure"
+	SHOULD_FAIL="$(dirname "$EXPECTED")/with diff success reverted"
     if [ -f "$SHOULD_FAIL" ]; then
 		SUCCESS=1
 		FAILURE=0
@@ -77,16 +77,16 @@ test_passes() {
 
 assert() {
 	TEST="$1"
-	TEST_FILE=$(basename "$TEST")
-    TEST_DIR=$(basename "$(dirname "$TEST")")
+	TEST_NAME=$(basename "$TEST" .sh)
+    TEST_CATEGORY=$(basename "$(dirname "$TEST")")
 
-	EXPECTED="$(dirname "$TEST")/expects/$(basename "$TEST" .sh).output"
+	EXPECTED="$(dirname "$TEST")/being able to/$(basename "$TEST" .sh)"
 	ACTUAL="$BASE_DIR/tmp/$TARGET/output"
 
 	if test_passes "$EXPECTED" "$ACTUAL"; then
-		echo "ok   $TEST_DIR/$TEST_FILE"
+		echo "ok   $TEST_CATEGORY can $TEST_NAME"
 	else
-		echo "FAIL $TEST_DIR/$TEST_FILE"
+		echo "FAIL $TEST_CATEGORY can $TEST_NAME"
 		echo
         diff --color "$EXPECTED" "$ACTUAL"
     fi
