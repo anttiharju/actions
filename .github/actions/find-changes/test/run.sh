@@ -17,7 +17,7 @@ arrange() {
 		# Ensure clean state
 		rm -rf "$BASE_DIR/tmp"
 
-		# Setup origin
+		# Setup GitHub (source-of-truth)
 		(
 			mkdir -p "$BASE_DIR/tmp/origin"
 			cd "$BASE_DIR/tmp/origin"
@@ -29,19 +29,24 @@ arrange() {
 			git commit -m "Initial commit"
 			git config receive.denyCurrentBranch ignore
 		) > /dev/null 2>&1
-
-		# Setup clone
 		(
-			git clone "$BASE_DIR/tmp/origin" "$BASE_DIR/tmp/clone"
+			cd "$BASE_DIR/tmp/origin"
+			"$TEST"
+		) > /dev/null 2>&1
+
+		# Mock the checkout on a GitHub Actions Runner
+		(
+			BRANCH_FILE="$(dirname "$TEST")/on branch"
+			if [ -f "$BRANCH_FILE" ]; then
+				BRANCH=$(cat "$BRANCH_FILE")
+				git clone --depth 1 --branch "$BRANCH" "file://$BASE_DIR/tmp/origin" "$BASE_DIR/tmp/clone"
+			else
+				git clone --depth 1 "file://$BASE_DIR/tmp/origin" "$BASE_DIR/tmp/clone"
+			fi
 			cd "$BASE_DIR/tmp/clone"
 			gitcredentials
 		) > /dev/null 2>&1
 
-		# Execute test setup
-		(
-			cd "$BASE_DIR/tmp/clone"
-			"$TEST"
-		) > /dev/null 2>&1
 	else
 		echo "Error: $TEST is not executable."
 		exit 1
