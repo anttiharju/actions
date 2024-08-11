@@ -28,6 +28,7 @@ arrange() {
 			touch README.md
 			git add README.md
 			git commit -m "Initial commit"
+			git config receive.denyCurrentBranch ignore
 		) > /dev/null 2>&1
 
 		# Setup clone
