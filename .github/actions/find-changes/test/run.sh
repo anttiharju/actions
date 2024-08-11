@@ -42,7 +42,9 @@ arrange() {
 			cd "$BASE_DIR/tmp/clone"
 			"$TEST"
 		) > /dev/null 2>&1
-		TARGET=$(cat "$BASE_DIR/tmp/clone/target")
+
+		# Determine target for act and assert (origin or clone)
+		TARGET=$(cat "$(dirname "$TEST")/target")
 	else
 		echo "Error: $TEST is not executable."
 		exit 1
