@@ -1,0 +1,16 @@
+name: Find Changes
+
+description: Find changes within the first-level directories of the repo and output them for matrix strategy.
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - name: Find changes
+      id: find_changes
+      run: find-changes.sh
+
+outputs:
+  directories:
+    description: 'JSON array of changed first-level directories'
+    value: ${{ steps.find_changes.outputs.directories }}
