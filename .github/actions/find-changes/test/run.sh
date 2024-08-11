@@ -105,6 +105,7 @@ single() {
 }
 
 all() {
+	trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Ensure cleanup
 	find "$BASE_DIR" -name "*.sh" ! -name "run.sh" | while IFS= read -r TEST; do
 		arrange "$TEST"
 		act
@@ -121,5 +122,4 @@ test() {
 	fi
 }
 
-trap 'rm -rf "$BASE_DIR/tmp"' EXIT # Ensure cleanup
 test "${1:-}"
