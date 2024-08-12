@@ -7,16 +7,16 @@ current_branch=$(git rev-parse --abbrev-ref HEAD)
 base_ref=""
 changes=""
 if [ "$current_branch" = "$default_branch" ]; then
-	if git log -1 --pretty=%P | grep -q ' '; then
+	if [ $(git rev-list --count --parents -n 1 HEAD | wc -w) -gt 2 ]; then
 		merge_ref=$(git log --merges -n 1 --pretty=format:"%H")
-		git fetch --depth=2 origin "$default_branch:$default_branch" --update-head-ok
+		git fetch --depth=10 origin "$default_branch:$default_branch" --update-head-ok
 		base_ref=$(git rev-parse HEAD^) # merge commit
 		echo "merge"
 	else
 		latest_commit=$(git rev-parse HEAD)
 		base_ref=$(git merge-base HEAD "$default_branch")
 		if [ "$latest_commit" = "$base_ref" ]; then
-			git fetch --depth=2 origin "$default_branch:$default_branch" --update-head-ok
+			git fetch --depth=10 origin "$default_branch:$default_branch" --update-head-ok
 			base_ref=$(git rev-parse HEAD^) # squash
 			echo "squash"
 		else
@@ -26,7 +26,7 @@ if [ "$current_branch" = "$default_branch" ]; then
 	fi
 
 	# Get the list of changed first-level directories compared to the base ref
-	changes=$(git diff --name-only "$base_ref...HEAD" | awk -F/ '{print $1}' | sort --unique)
+	changes=$(git diff --name-only --diff-filter=ACDMRT "$base_ref...HEAD" | awk -F/ '{print $1}' | sort --unique)
 else
 	# Fetch latest state of default branch branch
 	git fetch --depth=1 origin "$default_branch:$default_branch"
