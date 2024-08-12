@@ -7,11 +7,23 @@ inputs:
     description: 'GitHub token'
     required: true
 
+# DO THIS:
+#
+# checkout
+#     default branch
+#     pull request branch
+#
+# on pull_request easy to diff, requires only 2 checkout with depth 1
+# on push find the associated PR, and do the diff the same way as on pull_request -- no surprises on push!
+# 
+# on any API call do graceful backoff (3 times, 1. immediately, 2. after 1s, 3. after 5s)
+#         github actions telemetry (baked into a monorepo to be used within an org) and visualised on grafana etc would be really cool + use case for playing with dedicated servers.
+
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
-    - name: Get default branch name
+    - name: Get default branch name # extract this into a separate action
       shell: bash
       run: |
         DEFAULT_BRANCH=$(curl -s -H "Authorization: token ${{ inputs.github-token }}" \
