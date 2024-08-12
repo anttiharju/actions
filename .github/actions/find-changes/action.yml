@@ -18,7 +18,10 @@ inputs:
 # 
 # on any API call do graceful backoff (3 times, 1. immediately, 2. after 1s, 3. after 5s)
 #         github actions telemetry (baked into a monorepo to be used within an org) and visualised on grafana etc would be really cool + use case for playing with dedicated servers.
-
+#
+# also start syncing your zsh functions reimplementing them on every computer is a pain and they are handy
+# do separately from .zsh so on updates no need to resource the shell and can sync it without fearing I'd leak secrets or anything else
+#
 runs:
   using: "composite"
   steps:
