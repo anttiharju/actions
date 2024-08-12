@@ -57,7 +57,7 @@ arrange() {
 }
 
 act() {
-	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME") > /dev/null 2>&1
+	(cd "$BASE_DIR/tmp/clone" && GITHUB_ENV=output ../../../script.sh "$DEFAULT_BRANCH_NAME")
 }
 
 test_passes() {
