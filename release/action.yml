@@ -9,6 +9,8 @@ runs:
     - name: Calculate title (build number)
       id: titler
       shell: sh
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         latest_release_title=$(gh release view --json name -q '.name' || echo 'Build 0')
         latest_release_number=${latest_release_title#"Build "}
