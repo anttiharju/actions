@@ -8,8 +8,9 @@ runs:
       id: titler
       shell: sh
       run: |
-        latest_release_title=$(gh release view --json name -q '.name' || echo '0')
-        this_release_title=$((latest_release_title + 1))
+        latest_release_title=$(gh release view --json name -q '.name' || echo 'Build 0')
+        latest_release_number=${latest_release_title#"Build "}
+        this_release_title="Build $((latest_release_number + 1))"
         echo "title=$this_release_title" >> "$GITHUB_OUTPUT"
     - name: Tag current commit
       id: tagger
