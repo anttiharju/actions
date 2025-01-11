@@ -12,13 +12,14 @@ runs:
         latest_release_number=${latest_release_title#"Build "}
         this_release_title="Build $((latest_release_number + 1))"
         echo "title=$this_release_title" >> "$GITHUB_OUTPUT"
+        echo "number=$this_release_number" >> "$GITHUB_OUTPUT"
     - name: Tag current commit
       id: tagger
       shell: sh
       env:
-        TITLE: ${{ steps.titler.outputs.title }}
+        NUMBER: ${{ steps.titler.outputs.number }}
       run: |
-        TAG="releases/$TITLE"
+        TAG="b$NUMBER"
         git tag "$TAG"
         git push origin "$TAG"
         echo "tag=$TAG" >> "$GITHUB_OUTPUT"
