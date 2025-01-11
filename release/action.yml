@@ -10,7 +10,8 @@ runs:
       run: |
         latest_release_title=$(gh release view --json name -q '.name' || echo 'Build 0')
         latest_release_number=${latest_release_title#"Build "}
-        this_release_title="Build $((latest_release_number + 1))"
+        this_release_number=$((latest_release_number + 1))
+        this_release_title="Build $this_release_number"
         echo "title=$this_release_title" >> "$GITHUB_OUTPUT"
         echo "number=$this_release_number" >> "$GITHUB_OUTPUT"
     - name: Tag current commit
@@ -19,7 +20,7 @@ runs:
       env:
         NUMBER: ${{ steps.titler.outputs.number }}
       run: |
-        TAG="b$NUMBER"
+        TAG="build$NUMBER"
         git tag "$TAG"
         git push origin "$TAG"
         echo "tag=$TAG" >> "$GITHUB_OUTPUT"
