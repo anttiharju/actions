@@ -1,5 +1,5 @@
 name: Release
-description: "Create a release"
+description: "Creates a release"
 
 runs:
   using: "composite"

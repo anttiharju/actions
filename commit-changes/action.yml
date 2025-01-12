@@ -1,0 +1,26 @@
+name: Commit changes
+description: "Commits all changes"
+inputs:
+  message:
+    description: "Commit message"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Commit changes
+      run: |
+        git config user.name "$actor"
+        git config user.email "$actor@users.noreply.github.com"
+        # github-actions[bot]@users.noreply.github.com
+
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "No changes to commit"
+        else
+          git add --all
+          GIT_COMMITTER_NAME="github-actions[bot]" GIT_COMMITTER_EMAIL="github-actions[bot]@users.noreply.github.com" git commit -m "$message"
+          git push
+        fi
+      env:
+        actor: ${{ github.actor }}
+        message: ${{ inputs.message }}
