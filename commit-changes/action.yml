@@ -9,6 +9,7 @@ runs:
   using: "composite"
   steps:
     - name: Commit changes
+      shell: sh
       run: |
         git config user.name "$actor"
         git config user.email "$actor@users.noreply.github.com"
