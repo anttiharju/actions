@@ -10,6 +10,9 @@ runs:
   steps:
     - name: Commit changes
       shell: sh
+      env:
+        actor: ${{ github.actor }}
+        message: ${{ inputs.message }}
       run: |
         git config user.name "$actor"
         git config user.email "$actor@users.noreply.github.com"
@@ -22,6 +25,3 @@ runs:
           GIT_COMMITTER_NAME="github-actions[bot]" GIT_COMMITTER_EMAIL="github-actions[bot]@users.noreply.github.com" git commit -m "$message"
           git push
         fi
-      env:
-        actor: ${{ github.actor }}
-        message: ${{ inputs.message }}
