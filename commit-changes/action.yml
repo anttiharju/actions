@@ -16,7 +16,6 @@ runs:
       run: |
         git config user.name "$actor"
         git config user.email "$actor@users.noreply.github.com"
-        # github-actions[bot]@users.noreply.github.com
 
         if [ -z "$(git status --porcelain)" ]; then
           echo "No changes to commit"
