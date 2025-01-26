@@ -24,6 +24,7 @@ runs:
   using: "composite"
   steps:
     - name: Render formula
+      shell: sh
       env:
         TEMPLATE: ${{ inputs.template }}
         APP_NAME: ${{ inputs.app-name }}
