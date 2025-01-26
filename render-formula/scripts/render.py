@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 from helpers import FormulaConfig, render_formula
 
-config = FormulaConfig(
+workspace = sys.argv[1]
+
+config = FormulaConfig( 
     template=os.environ["TEMPLATE"],
     app_name=os.environ["APP_NAME"],
     description=os.environ["DESCRIPTION"],
@@ -12,4 +15,4 @@ config = FormulaConfig(
     go_version=os.environ["GO_VERSION"],
 )
 
-render_formula(config)
+render_formula(config, workspace)
