@@ -81,15 +81,16 @@ def generate_replacements(config: FormulaConfig) -> Dict[str, str]:
     }
 
 
-def render_formula(config: FormulaConfig) -> None:
+def render_formula(config: FormulaConfig, workspace: str) -> None:
     """Render a Homebrew formula from a template.
 
     Args:
         config: Formula configuration
+        workspace: Path to the GitHub workspace
     """
     scripts_dir = Path(__file__).parent
     template_path = scripts_dir / f"templates/{config.template}.rb"
-    formula_dir = scripts_dir.parent / "Formula"
+    formula_dir = Path(workspace) / "Formula"
     formula_dir.mkdir(exist_ok=True)
 
     replacements = generate_replacements(config)
