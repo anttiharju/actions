@@ -33,3 +33,6 @@ runs:
         URL: ${{ inputs.url }}
         GO_VERSION: ${{ inputs.go-version }}
       run: "$GITHUB_ACTION_PATH/scripts/render.py"
+    - name: debug
+      shell: sh
+      run: tree "$GITHUB_ACTION_PATH"
