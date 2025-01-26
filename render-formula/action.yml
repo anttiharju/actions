@@ -1,0 +1,35 @@
+name: Render formula
+description: "Renders a Homebrew formula"
+inputs:
+  template:
+    description: "Template to use"
+    required: true
+  app-name:
+    description: "Application name"
+    required: true
+  description:
+    description: "Application description"
+    required: true
+  homepage:
+    description: "Application homepage"
+    required: true
+  url:
+    description: "URL to source code archive"
+    required: true
+  go-version:
+    description: "Go version to use"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Render formula
+      env:
+        TEMPLATE: ${{ inputs.template }}
+        APP_NAME: ${{ inputs.app-name }}
+        DESCRIPTION: ${{ inputs.description }}
+        HOMEPAGE: ${{ inputs.homepage }}
+        URL: ${{ inputs.url }}
+        GO_VERSION: ${{ inputs.go-version }}
+        PATH: ${{ github.action_path }}
+      run: "$PATH"/scripts/render.py
