@@ -31,5 +31,4 @@ runs:
         HOMEPAGE: ${{ inputs.homepage }}
         URL: ${{ inputs.url }}
         GO_VERSION: ${{ inputs.go-version }}
-        PATH: ${{ github.action_path }}
-      run: "$PATH"/scripts/render.py
+      run: "$GITHUB_ACTION_PATH"/scripts/render.py
