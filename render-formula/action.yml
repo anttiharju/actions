@@ -35,4 +35,4 @@ runs:
       run: "$GITHUB_ACTION_PATH/scripts/render.py"
     - name: debug
       shell: sh
-      run: tree "$GITHUB_ACTION_PATH"
+      run: echo "${{ github.workspace }}"
