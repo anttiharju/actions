@@ -1,0 +1,14 @@
+name: action-validator
+description: Discover files for action-validator and execute it on them
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download action-validator
+      uses: asdf-vm/actions/install@1bf052e01b498bba4f98e1bbb5c609bc212cf463
+      with:
+        tool_versions: action-validator 0.6.0
+    - name: Run action-validator
+      shell: sh
+      run: |
+        find ./.github -mindepth 2 -type f -name "*.yml" -exec action-validator --verbose {} +
