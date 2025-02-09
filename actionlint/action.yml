@@ -1,0 +1,15 @@
+name: actionlint
+description: Run actionlint
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download actionlint
+      id: get_actionlint
+      shell: bash
+      run: |
+        bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/2ab3a12c7848f6c15faca9a92612ef4261d0e370/scripts/download-actionlint.bash) 1.7.7 "${{ runner.temp }}"
+    - name: Run actionlint
+      shell: sh
+      run: |
+        ${{ steps.get_actionlint.outputs.executable }} -color
