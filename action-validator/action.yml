@@ -5,7 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Download action-validator
-      uses: asdf-vm/actions/install@1bf052e01b498bba4f98e1bbb5c609bc212cf463
+      uses: asdf-vm/actions/install@05e0d2ed97b598bfce82fd30daf324ae0c4570e6
       with:
         tool_versions: action-validator 0.6.0
     - name: Run action-validator
