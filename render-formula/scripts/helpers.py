@@ -89,7 +89,7 @@ def render_formula(config: FormulaConfig, workspace: str) -> None:
         workspace: Path to the GitHub workspace
     """
     scripts_dir = Path(__file__).parent
-    template_path = scripts_dir / f"templates/{config.template}.rb"
+    template_path = scripts_dir / f"templates/{config.template}"
     formula_dir = Path(workspace) / "Formula"
     formula_dir.mkdir(exist_ok=True)
 
