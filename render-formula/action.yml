@@ -19,6 +19,9 @@ inputs:
   go-version:
     description: "Go version to use"
     required: true
+  version:
+    description: "Application version"
+    required: true
 
 runs:
   using: "composite"
@@ -32,5 +35,6 @@ runs:
         HOMEPAGE: ${{ inputs.homepage }}
         URL: ${{ inputs.url }}
         GO_VERSION: ${{ inputs.go-version }}
+        VERSION: ${{ inputs.version }}
       run: |
         "$GITHUB_ACTION_PATH/render.py" "$GITHUB_WORKSPACE"

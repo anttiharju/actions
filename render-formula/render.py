@@ -20,6 +20,7 @@ class FormulaConfig:
     homepage: str
     url: str
     go_version: str
+    version: str
 
     def __post_init__(self):
         """Validate and normalize Go version after initialization."""
@@ -63,11 +64,6 @@ def extract_repo(url: str) -> str:
     raise ValueError("Could not extract repository from GitHub API URL")
 
 
-def extract_version(url: str) -> str:
-    """Extract version from GitHub API URL."""
-    return url.split("/")[-1]
-
-
 def generate_replacements(config: FormulaConfig) -> Dict[str, str]:
     """Generate replacement dictionary for template variables."""
     return {
@@ -79,7 +75,7 @@ def generate_replacements(config: FormulaConfig) -> Dict[str, str]:
         "REPOSITORY": extract_repo(config.url),
         "GO_VERSION": config.go_version,
         "APP_NAME": config.app_name,
-        "VERSION": extract_version(config.url),
+        "VERSION": config.version,
     }
 
 
@@ -113,6 +109,7 @@ config = FormulaConfig(
     homepage=os.environ["HOMEPAGE"],
     url=os.environ["URL"],
     go_version=os.environ["GO_VERSION"],
+    version=os.environ["VERSION"],
 )
 
 render_formula(config, workspace)
