@@ -1,0 +1,10 @@
+name: Check Prettier
+description: Runs Prettier in check mode.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check Prettier
+      shell: sh
+      run: |
+        npx prettier --check .
