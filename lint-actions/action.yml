@@ -13,4 +13,4 @@ runs:
     - name: prettier
       shell: sh
       run: |
-        npx prettier --write ".github/**/*.{yml,yaml}"
+        npx prettier --check ".github/**/*.{yml,yaml}"
