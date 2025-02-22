@@ -7,5 +7,6 @@ runs:
     - name: action-validator
       uses: anttiharju/actions/lint-actions/action-validator@v0
 
-    - name: actionlint
+    - if: always()
+      name: actionlint
       uses: anttiharju/actions/lint-actions/actionlint@v0
