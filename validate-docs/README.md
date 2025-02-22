@@ -11,5 +11,5 @@ This action setups mkdocs via pip and builds documentation in strict mode. Stric
       - name: Checkout
         uses: actions/checkout@v4
       - name: Docs
-	  	uses: anttiharju/actions/validate-docs@v0
+        uses: anttiharju/actions/validate-docs@v0
 ```
