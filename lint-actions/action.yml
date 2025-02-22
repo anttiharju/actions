@@ -5,7 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: action-validator
-      uses: anttiharju/actions/action-validator@v0
+      uses: anttiharju/actions/lint-actions/action-validator@v0
 
     - name: actionlint
-      uses: anttiharju/actions/actionlint@v0
+      uses: anttiharju/actions/lint-actions/actionlint@v0
