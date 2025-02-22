@@ -1,5 +1,5 @@
-name: Release docs
-description: Releases project documentation to GitHub Pages.
+name: Update docs
+description: Updates docs/ directory to gh-pages branch.
 inputs:
   committer:
     description: 'Committer username'

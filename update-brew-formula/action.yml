@@ -1,4 +1,4 @@
-name: Render formula
+name: Update Brew formula
 description: "Renders a Homebrew formula"
 inputs:
   template:
@@ -26,7 +26,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Render formula
+    - name: Update formula
       shell: sh
       env:
         TEMPLATE: ${{ inputs.template }}
