@@ -11,11 +11,10 @@ runs:
   steps:
     - shell: sh
       env:
-        actor: ${{ github.actor }}
+        GIT_AUTHOR_NAME: ${{ github.actor }}
+        GIT_AUTHOR_EMAIL: "${{ github.actor }}@users.noreply.github.com"
         GIT_COMMITTER_NAME: "${{ inputs.committer }}"
         GIT_COMMITTER_EMAIL: "${{ inputs.committer }}@users.noreply.github.com" 
       run: |
-        git config user.name "$actor"
-        git config user.email "$actor@users.noreply.github.com"
         pip install mkdocs
         mkdocs gh-deploy --force --no-history
