@@ -1,5 +1,5 @@
-name: Publish docs
-description: Publishes the documentation to GitHub Pages with mkdocs gh-deploy.
+name: Release docs
+description: Releases project documentation to GitHub Pages.
 inputs:
   committer:
     description: 'Committer username'
