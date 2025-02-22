@@ -4,6 +4,8 @@ This actions setups mkdocs via pip and runs `mkdocs gh-deploy --force --no-histo
 
 The action can optionally be provided a committer. By default it uses `github-actions[bot]` but you may desire to use the name of your GitHub App to match what GitHub UI shows in the branches view.
 
+Recommended trigger event is push to the default branch. In that case, you may wish to run [validate-docs](../validate-docs/) on pull request events to catch mistakes early.
+
 ## Usage example
 
 ```yml
