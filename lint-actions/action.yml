@@ -9,8 +9,3 @@ runs:
 
     - name: actionlint
       uses: anttiharju/actions/lint-actions/actionlint@v0
-
-    - name: prettier
-      shell: sh
-      run: |
-        npx prettier --check ".github/**/*.{yml,yaml}"
