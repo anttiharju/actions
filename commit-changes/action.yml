@@ -1,13 +1,13 @@
 name: Commit changes
 description: "Commits all changes"
 inputs:
-  message:
-    description: "Commit message"
-    required: true
   committer:
     description: 'Committer username'
     required: false
     default: "github-actions[bot]"
+  message:
+    description: "Commit message"
+    required: true
 
 runs:
   using: "composite"
