@@ -8,3 +8,4 @@ runs:
       run: |
         pip install mkdocs
         mkdocs build --strict
+        npx prettier --check "**/*.md"
