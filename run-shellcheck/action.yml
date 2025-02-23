@@ -8,4 +8,4 @@ runs:
       shell: sh
       run: |
         shellcheck --version
-        git ls-files -z | xargs -0 file | grep "script text executable" | cut -d: -f1 | xargs shellcheck -x
+        git ls-files -z | xargs -0 file | ./filter.py | cut -d: -f1 | xargs shellcheck -x
