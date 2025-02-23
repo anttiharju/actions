@@ -12,7 +12,9 @@ If you encounter cases where some files are incorrectly detected as ShellCheckab
 
 ## macOS and Ubuntu 24.04 compatibility
 
-Some macOS-Ubuntu incompatibilities were faced due to differing `xargs -0 file` output. It was possible to craft [`filter.py`](./filter.py) in a way that both operating systems are supported. The need to support both arose from:
+This action supports both macOS and Ubuntu 24.04.
+
+Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
 
 1. @anttiharju develops on a Macbook
 2. @anttiharju uses ubuntu-24.04 as the preferred GitHub Actions runner
