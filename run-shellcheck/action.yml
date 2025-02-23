@@ -10,7 +10,7 @@ runs:
         git ls-files -z | xargs -0 file |
         ${GITHUB_ACTION_PATH}/filter.py |
         cut -d: -f1 | xargs
-        shellcheck -x
+        shellcheck --color=always -x
     - if: always()
       name: Print ShellCheck version
       shell: sh
