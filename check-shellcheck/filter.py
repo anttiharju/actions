@@ -7,10 +7,10 @@ def is_shell_script(file_info):
     return any(
         shell_indicator.lower() in file_info.lower()
         for shell_indicator in [
-            "Bourne-Again shell script",
             "POSIX shell script",
             "sh script text executable",
             "sh script, ASCII text executable",
+            "Bourne-Again shell script",
         ]
     )
 
