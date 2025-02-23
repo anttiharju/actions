@@ -1,36 +1,57 @@
 #!/usr/bin/env python3
 
-import sys
-import re
+import os
+import subprocess
+from typing import List
 
-def read_file(filename):
-    """Read file contents and return as list of lines."""
-    with open(filename, 'r') as f:
-        return [line.strip() for line in f if line.strip()]
-
-def filter_shell_scripts(lines):
-    """Filter lines to only include shell scripts."""
-    shell_pattern = re.compile(r'.*?(shell script|sh script).*?executable')
-    return [line for line in lines if shell_pattern.match(line)]
+def filter() -> List[str]:
+    """Execute the shell command and return output as list of lines."""
+    os.chdir('testdata')
+    try:
+        find_process = subprocess.Popen(
+            ['find', '.', '-type', 'f', '-print0'],
+            stdout=subprocess.PIPE
+        )
+        
+        xargs_process = subprocess.Popen(
+            ['xargs', '-0', 'file'],
+            stdin=find_process.stdout,
+            stdout=subprocess.PIPE
+        )
+        
+        filter_process = subprocess.Popen(
+            ['../filter.py'],
+            stdin=xargs_process.stdout,
+            stdout=subprocess.PIPE,
+            text=True
+        )
+        
+        output = filter_process.communicate()[0]
+    finally:
+        os.chdir('..')
+    
+    return [line.strip() for line in output.splitlines() if line.strip()]
 
 def run_test():
-    """Run the test and compare results."""
-    all = read_file('testdata/all.txt')
-    want = read_file('testdata/expect.txt')
-    got = filter_shell_scripts(all)
+    """Test if the output matches expected results."""
+    want = {
+        './binsh',
+        './usrbinenvbash',
+        './usrbinenvsh',
+        './binbash'
+    }
     
-    if got == want:
-        print("Test passed! ✅")
-        return 0
-    else:
+    got = set(filter())
+    
+    if not got == want:
         print("Test failed! ❌")
-        print("\nGot:")
-        for line in got:
-            print(f"  {line}")
-        print("\nWant:")
-        for line in want:
-            print(f"  {line}")
-        return 1
+        print("Got:    ", sorted(list(got)))
+        print("Want:   ", sorted(list(want)))
+        print("Missing:", sorted(list(got - want)))
+        exit(1)
+    else:
+        print("Test passed! ✅")
+        exit(0)
 
-if __name__ == '__main__':
-    sys.exit(run_test())
+if __name__ == "__main__":
+    run_test()
