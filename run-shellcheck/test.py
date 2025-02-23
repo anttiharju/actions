@@ -2,12 +2,15 @@
 
 import os
 import subprocess
+import pathlib
 from typing import Set
+
+SCRIPT_DIR = pathlib.Path(__file__).parent.resolve()
 
 
 def filter() -> Set[str]:
     """Execute the shell command and return output as set of lines."""
-    os.chdir("testdata")
+    os.chdir(SCRIPT_DIR / "testdata")
     try:
         find_process = subprocess.Popen(
             ["find", ".", "-type", "f", "-print0"], stdout=subprocess.PIPE
@@ -18,7 +21,7 @@ def filter() -> Set[str]:
         )
 
         filter_process = subprocess.Popen(
-            ["../filter.py"],
+            [str(SCRIPT_DIR / "filter.py")],
             stdin=xargs_process.stdout,
             stdout=subprocess.PIPE,
             text=True,
@@ -26,7 +29,7 @@ def filter() -> Set[str]:
 
         output = filter_process.communicate()[0]
     finally:
-        os.chdir("..")
+        os.chdir(SCRIPT_DIR)
 
     return {line.strip() for line in output.splitlines() if line.strip()}
 
@@ -62,13 +65,13 @@ def integration_test() -> bool:
             print("Integration test failed! ❌ No files found to check")
             return False
 
-        os.chdir("testdata")
+        os.chdir(SCRIPT_DIR / "testdata")
         try:
             shellcheck_process = subprocess.run(
                 ["shellcheck", "-x"] + list(files), capture_output=True, text=True
             )
         finally:
-            os.chdir("..")
+            os.chdir(SCRIPT_DIR)
 
         if shellcheck_process.returncode == 0:
             print("Integration test passed! ✅")
