@@ -32,13 +32,8 @@ def filter() -> Set[str]:
     
     return {line.strip() for line in output.splitlines() if line.strip()}
 
-def run_test():
-    """Test if the output matches expected results."""
-    # Integration test
-    #find testdata -type f -print0 | xargs -0 file | ./filter.py | cut -d: -f1 | xargs shellcheck -x
-
-
-    # Unit test
+def unit_test() -> bool:
+    """Run unit test and return True if test passes."""
     want = {
         './binsh',
         './usrbinenvsh',
@@ -53,10 +48,19 @@ def run_test():
         print("Got:    ", sorted(list(got)))
         print("Want:   ", sorted(list(want)))
         print("Missing:", sorted(list(got - want)))
-        exit(1)
+        return False
     else:
         print("Unit test passed! ✅")
-        exit(0)
+        return True
+
+def run_tests():
+    """Run all tests and exit with appropriate status code."""
+    # Integration test (will always match testdata)
+    #find testdata -type f -print0 | xargs -0 file | ./filter.py | cut -d: -f1 | xargs shellcheck -x
+
+    if not unit_test():
+        exit(1)
+    exit(0)
 
 if __name__ == "__main__":
-    run_test()
+    run_tests()
