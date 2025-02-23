@@ -10,6 +10,24 @@ The action tries to remain as generic as possible. As an example, it can be used
 
 If you encounter cases where some files are incorrectly detected as ShellCheckable scripts, please open a PR with an example incorrectly detected file under [`testdata/`](./testdata/)
 
+## Usage example
+
+```yml
+on:
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: ShellCheck
+        uses: anttiharju/actions/run-shellcheck@5b9cfcdf43249fa3dbb0d6e8d1b1da32ed38fd18
+```
+
 ## macOS and Ubuntu 24.04 compatibility
 
 [`filter.py`](./filter.py) supports both macOS and Ubuntu 24.04. Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
