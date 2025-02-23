@@ -12,6 +12,5 @@ runs:
         cut -d: -f1 | xargs
         shellcheck --color=always -x
     - if: always()
-      name: Print ShellCheck version
       shell: sh
       run: shellcheck --version
