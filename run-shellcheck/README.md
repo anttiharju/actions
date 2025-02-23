@@ -64,9 +64,11 @@ The differences are easier to see when the highlighted portions are cuddled
 +run-shellcheck/testdata/usrbinenvbash:    Bourne-Again shell script, ASCII text executable
 ```
 
-Based on the above, [`filter.py`](./filter.py) decides that a file is to be ShellChecked, if an output line matches any of the following:
+Based on the above [`filter.py`](./filter.py) detects a file as ShellCheckable if an `xargs -0 file` output line has any of the following lines as a substring
 
-- `Bourne-Again shell script`
-- `POSIX shell script`
-- `sh script text executable`
-- `sh script, ASCII text executable`
+```
+Bourne-Again shell script
+POSIX shell script
+sh script text executable
+sh script, ASCII text executable
+```
