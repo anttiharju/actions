@@ -47,6 +47,7 @@ def unit_test() -> bool:
         print("Got:    ", sorted(list(got)))
         print("Want:   ", sorted(list(want)))
         print("Missing:", sorted(list(got - want)))
+        print("Extra:  ", sorted(list(want - got)))
         return False
     else:
         print("Unit test passed! ✅")
