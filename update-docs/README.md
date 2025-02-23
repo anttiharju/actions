@@ -1,4 +1,4 @@
-# Update documentation
+# Update docs
 
 This actions setups mkdocs via pip and runs `mkdocs gh-deploy --force --no-history` which deploys pushes built documentation site to branch `gh-pages`. The actions needs to run in a checked out git repository that has a token with enough permissions, read more [here](https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens).
 
