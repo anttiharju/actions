@@ -23,9 +23,9 @@ Incompatibilities can be debugged with the following command
 find run-shellcheck/testdata -type f -print0 | xargs -0 file
 ```
 
-> Highlighting has been used below to emphasise the files that should be ShellChecked.
+> Highlighting has been used below to emphasise the files that should be ShellChecked
 
-Command output on ubuntu-24.04 has been highlighted with green:
+Command output on ubuntu-24.04 has been highlighted with green
 
 ```diff
  run-shellcheck/testdata/usrbinenvpython:  Python script, ASCII text executable
@@ -38,7 +38,7 @@ Command output on ubuntu-24.04 has been highlighted with green:
  run-shellcheck/testdata/usrbinenvpython3: Python script, ASCII text executable
 ```
 
-and macOS 15.3.1 output with red:
+and macOS 15.3.1 output with red
 
 ```diff
  run-shellcheck/testdata/binpython:        a /bin/python script text executable, ASCII text
@@ -51,7 +51,7 @@ and macOS 15.3.1 output with red:
  run-shellcheck/testdata/binpython3:       a /bin/python3 script text executable, ASCII text
 ```
 
-The differences are bit easier to see when the highlighted bits are put together:
+The differences are bit easier to see when the highlighted bits are put together
 
 ```diff
 -run-shellcheck/testdata/binsh:            POSIX shell script text executable, ASCII text
