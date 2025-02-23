@@ -5,4 +5,5 @@ runs:
   using: "composite"
   steps:
     - name: Run editorconfig-checker
+      shell: sh
       run: git ls-files -z | npx editorconfig-checker
