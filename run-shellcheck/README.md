@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: ShellCheck
-        uses: anttiharju/actions/run-shellcheck@5b9cfcdf43249fa3dbb0d6e8d1b1da32ed38fd18
+        uses: anttiharju/actions/run-shellcheck@9e42dc22a4d9352ed4452b3a1c259bc4bdc17778
 ```
 
 ## macOS and Ubuntu 24.04 compatibility
