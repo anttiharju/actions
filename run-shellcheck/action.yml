@@ -12,4 +12,5 @@ runs:
         cut -d: -f1 | xargs
         shellcheck -x
     - name: Print version
+      shell: sh
       run: shellcheck --version
