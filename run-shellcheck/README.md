@@ -51,7 +51,7 @@ and macOS 15.3.1 output with red
  run-shellcheck/testdata/binpython3:       a /bin/python3 script text executable, ASCII text
 ```
 
-The differences are bit easier to see when the highlighted bits are put together
+The differences are easier to see when the highlighted portions are cuddled
 
 ```diff
 -run-shellcheck/testdata/binsh:            POSIX shell script text executable, ASCII text
