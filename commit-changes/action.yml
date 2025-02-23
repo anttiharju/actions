@@ -2,7 +2,7 @@ name: Commit changes
 description: "Commits all changes"
 inputs:
   committer:
-    description: 'Committer username'
+    description: "Committer username"
     required: false
     default: "github-actions[bot]"
   message:

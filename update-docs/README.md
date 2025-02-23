@@ -9,19 +9,19 @@ Recommended trigger event is push to the default branch. In that case, you may w
 ## Usage example
 
 ```yml
-  publish:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Generate docs token
-        uses: actions/create-github-app-token@v1
-        id: generate-token
-        with:
-          app-id: ${{ secrets.YOUR_GITHUB_APP_ID }}
-          private-key: ${{ secrets.YOUR_GITHUB_APP_PRIVATE_KEY }}
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-      - name: Publish docs
-        uses: ./.github/actions/publish-docs
+publish:
+  runs-on: ubuntu-24.04
+  steps:
+    - name: Generate docs token
+      uses: actions/create-github-app-token@v1
+      id: generate-token
+      with:
+        app-id: ${{ secrets.YOUR_GITHUB_APP_ID }}
+        private-key: ${{ secrets.YOUR_GITHUB_APP_PRIVATE_KEY }}
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        token: ${{ steps.generate-token.outputs.token }}
+    - name: Publish docs
+      uses: ./.github/actions/publish-docs
 ```

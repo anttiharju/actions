@@ -8,3 +8,8 @@ pre-commit:
     - name: Test run-shellcheck
       run: ./run-shellcheck/test.py
       glob: "run-shellcheck/*"
+
+    - name: Prettier
+      run: npx prettier --write .
+      glob: "*{.md,.yml}"
+      stage_fixed: true
