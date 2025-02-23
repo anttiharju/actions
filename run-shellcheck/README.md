@@ -25,7 +25,7 @@ find run-shellcheck/testdata -type f -print0 | xargs -0 file
 
 > Highlighting has been used below to emphasise the files that should be ShellChecked
 
-Command output on ubuntu-24.04 has been highlighted with green
+Command output from ubuntu-24.04 has been highlighted with green
 
 ```diff
  run-shellcheck/testdata/usrbinenvpython:  Python script, ASCII text executable
@@ -38,7 +38,7 @@ Command output on ubuntu-24.04 has been highlighted with green
  run-shellcheck/testdata/usrbinenvpython3: Python script, ASCII text executable
 ```
 
-and macOS 15.3.1 output with red
+and from macOS 15.3.1 with red
 
 ```diff
  run-shellcheck/testdata/binpython:        a /bin/python script text executable, ASCII text
