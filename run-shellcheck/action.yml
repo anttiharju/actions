@@ -7,28 +7,5 @@ runs:
     - name: Run ShellCheck
       shell: sh
       run: |
+        shellcheck --version
         git ls-files -z | xargs -0 file | grep "script text executable" | cut -d: -f1 | xargs shellcheck -x
-    - if: always()
-      name: Debug L1
-      shell: sh
-      run: |
-        git ls-files -z | xargs -0 file | grep "script text executable" | cut -d: -f1
-    - if: always()
-      name: Debug L2
-      shell: sh
-      run: |
-        git ls-files -z | xargs -0 file | grep "script text executable"
-    - if: always()
-      name: Debug L3
-      shell: sh
-      run: |
-        git ls-files -z | xargs -0 file
-    - if: always()
-      name: Debug L4
-      shell: sh
-      run: |
-        git ls-files -z
-    - if: always()
-      name: Print version
-      shell: sh
-      run: shellcheck --version
