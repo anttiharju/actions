@@ -1,8 +1,0 @@
-name: Run editorconfig-checker
-description: Check that all files are formatted according to the EditorConfig
-
-runs:
-  using: "composite"
-  steps:
-    - name: Run editorconfig-checker
-      uses: docker://mstruebing/editorconfig-checker
