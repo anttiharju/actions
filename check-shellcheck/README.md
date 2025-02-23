@@ -87,8 +87,8 @@ The differences are easier to see when the highlighted portions are cuddled
 Based on the above [`filter.py`](./filter.py) detects a file as ShellCheckable if `xargs -0 file` output matches any of the following lines
 
 ```
-Bourne-Again shell script
 POSIX shell script
 sh script text executable
 sh script, ASCII text executable
+Bourne-Again shell script
 ```
