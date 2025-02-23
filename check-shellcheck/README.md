@@ -1,5 +1,7 @@
 # Check ShellCheck
 
+[![check-shellcheck](https://github.com/anttiharju/actions/actions/workflows/check-shellcheck.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-shellcheck.yml)
+
 Finds POSIX/sh and Bash scripts tracked by Git and runs `shellcheck --color=always --external-sources` on them. Also prints out shellcheck version so upon discrepancies people can check whether their local version matches CI, although this latter point is not expected to be an issue.
 
 The action tries to remain as generic as possible. As an example, it can be used in repositories with Python scripts to ShellCheck just the shell scripts. This goal is supported by an integration test and an unit test. The tests can be ran with
