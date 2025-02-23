@@ -1,0 +1,4 @@
+scripts/binbash:                  Bourne-Again shell script, ASCII text executable
+scripts/binsh.sh:                 POSIX shell script, ASCII text executable
+scripts/usrbinenvbash.sh:         Bourne-Again shell script, ASCII text executable
+scripts/usrbinenvsh:              a sh script, ASCII text executable
