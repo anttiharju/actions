@@ -84,9 +84,10 @@ def integration_test() -> bool:
 
 def run_tests():
     """Run all tests and exit with appropriate status code."""
-    if not unit_test():
-        exit(1)
-    if not integration_test():
+    integration_result = integration_test()
+    unit_result = unit_test()
+    
+    if not integration_result or not unit_result:
         exit(1)
     exit(0)
 
