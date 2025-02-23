@@ -8,7 +8,8 @@ runs:
       shell: sh
       run: >
         git ls-files -z | xargs -0 file |
-        ./filter.py | cut -d: -f1 | xargs
+        ${GITHUB_ACTION_PATH}/filter.py |
+        cut -d: -f1 | xargs
         shellcheck -x
     - if: always()
       name: Print ShellCheck version
