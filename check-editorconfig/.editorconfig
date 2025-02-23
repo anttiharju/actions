@@ -1,5 +1,5 @@
 # EditorConfig is awesome: https://editorconfig.org
-# Managed by https://github.com/anttiharju/actions/tree/HEAD/run-editorconfig
+# Managed by https://github.com/anttiharju/actions/tree/HEAD/check-editorconfig
 
 [*]
 end_of_line = lf

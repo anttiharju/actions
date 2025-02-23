@@ -20,7 +20,4 @@ jobs:
         uses: ./lint-actions
 
       - name: Prettier
-        uses: ./run-prettier
-
-      - name: Debug
-        run: find run-shellcheck/testdata -type f -print0 | xargs -0 file
+        uses: ./check-prettier

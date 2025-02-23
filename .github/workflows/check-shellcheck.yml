@@ -1,15 +1,15 @@
-name: run-shellcheck
+name: check-shellcheck
 on:
   pull_request:
     paths:
-      - ".github/workflows/run-shellcheck.yml"
-      - "run-shellcheck/**/*"
+      - ".github/workflows/check-shellcheck.yml"
+      - "check-shellcheck/**/*"
   push:
     branches:
       - v0
     paths:
-      - ".github/workflows/run-shellcheck.yml"
-      - "run-shellcheck/**/*"
+      - ".github/workflows/check-shellcheck.yml"
+      - "check-shellcheck/**/*"
 
 jobs:
   test:
@@ -20,6 +20,6 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Test
-        working-directory: ./run-shellcheck
+        working-directory: ./check-shellcheck
         shell: sh
         run: ./test.py
