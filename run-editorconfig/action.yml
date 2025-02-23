@@ -1,0 +1,28 @@
+name: Run EditorConfig
+description: Check that all files are formatted according to the EditorConfig
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check if .editorconfig is up-to-date
+      id: check
+      sh: sh
+      env:
+        source: ${{ env.GITHUB_ACTION_PATH }}/.editorconfig
+        target: ${{ github.workspace }}/.editorconfig
+      run: |
+        if cmp -s "$source" "$target"; then
+          echo "continue=true" >> "$GITHUB_OUTPUT"
+        else
+          cp "$source" "$target"
+          echo "commit=true" >> "$GITHUB_OUTPUT"
+        fi
+    - if: ${{ steps.check.outputs.commit }}
+      name: Commit changes
+      uses: anttiharju/actions/commit-changes@v0
+      with:
+        committer: "anttiharju[bot]"
+        message: Update .editorconfig
+    - if: ${{ steps.check.outputs.continue }}
+      name: editorconfig-checker
+      uses: anttiharju/actions/run-editorconfig/editorconfig-checker@v0
