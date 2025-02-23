@@ -5,11 +5,11 @@ This action setups mkdocs via pip and builds documentation in strict mode. Stric
 ## Usage example
 
 ```yml
-  validate:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Docs
-        uses: anttiharju/actions/validate-docs@v0
+validate:
+  runs-on: ubuntu-24.04
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Docs
+      uses: anttiharju/actions/validate-docs@v0
 ```
