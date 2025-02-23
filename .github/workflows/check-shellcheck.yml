@@ -4,12 +4,14 @@ on:
     paths:
       - ".github/workflows/check-shellcheck.yml"
       - "check-shellcheck/**/*"
+      - "!check-shellcheck/README.md"
   push:
     branches:
       - v0
     paths:
       - ".github/workflows/check-shellcheck.yml"
       - "check-shellcheck/**/*"
+      - "!check-shellcheck/README.md"
 
 jobs:
   test:
