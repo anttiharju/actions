@@ -53,12 +53,40 @@ def unit_test() -> bool:
         print("Unit test passed! ✅")
         return True
 
+def integration_test() -> bool:
+    """Run integration test and return True if shellcheck passes."""
+    try:
+        files = filter()
+        if not files:
+            print("Integration test failed! ❌ No files found to check")
+            return False
+        
+        os.chdir('testdata')
+        shellcheck_process = subprocess.run(
+            ['shellcheck', '-x'] + list(files),
+            capture_output=True,
+            text=True
+        )
+        
+        if shellcheck_process.returncode == 0:
+            print("Integration test passed! ✅")
+            return True
+
+        print("Integration test failed! ❌")
+        print("shellcheck output:")
+        print(shellcheck_process.stderr)
+        return False
+            
+    except subprocess.CalledProcessError as e:
+        print(f"Integration test failed! ❌ Error running shellcheck: {e}")
+        print(e.stderr)
+        return False
+
 def run_tests():
     """Run all tests and exit with appropriate status code."""
-    # Integration test (will always match testdata)
-    #find testdata -type f -print0 | xargs -0 file | ./filter.py | cut -d: -f1 | xargs shellcheck -x
-
     if not unit_test():
+        exit(1)
+    if not integration_test():
         exit(1)
     exit(0)
 
