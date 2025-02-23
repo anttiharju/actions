@@ -6,11 +6,24 @@ runs:
   steps:
     - name: Run ShellCheck
       shell: sh
-      run: >
-        git ls-files -z | xargs -0 file |
-        grep "script text executable" |
-        cut -d: -f1 | xargs
-        shellcheck -x
+      run: |
+        git ls-files -z | xargs -0 file | grep "script text executable" | cut -d: -f1 | xargs shellcheck -x
+    - name: Debug L1
+      shell: sh
+      run: |
+        git ls-files -z | xargs -0 file | grep "script text executable" | cut -d: -f1
+    - name: Debug L2
+      shell: sh
+      run: |
+        git ls-files -z | xargs -0 file | grep "script text executable"
+    - name: Debug L3
+      shell: sh
+      run: |
+        git ls-files -z | xargs -0 file
+    - name: Debug L4
+      shell: sh
+      run: |
+        git ls-files -z
     - name: Print version
       shell: sh
       run: shellcheck --version
