@@ -1,11 +1,14 @@
+name: run-shellcheck
 on:
   pull_request:
     paths:
+      - ".github/workflows/run-shellcheck.yml"
       - "run-shellcheck/**/*"
   push:
     branches:
       - v0
     paths:
+      - ".github/workflows/run-shellcheck.yml"
       - "run-shellcheck/**/*"
 
 jobs:
