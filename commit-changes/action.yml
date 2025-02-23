@@ -24,6 +24,7 @@ runs:
         if [ -z "$(git status --porcelain)" ]; then
           echo "No changes to commit"
         else
+          git config push.autoSetupRemote true
           git add --all
           git commit -m "$message"
           git push
