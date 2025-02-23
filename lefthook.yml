@@ -5,9 +5,9 @@ output:
 pre-commit:
   parallel: true
   jobs:
-    - name: Test run-shellcheck
-      run: ./run-shellcheck/test.py
-      glob: "run-shellcheck/*"
+    - name: Test check-shellcheck
+      run: ./check-shellcheck/test.py
+      glob: "check-shellcheck/*"
 
     # note: only lints under .github/
     # I don't think these tools are capable
