@@ -5,10 +5,12 @@ runs:
   using: "composite"
   steps:
     - name: Run ShellCheck
+      shell: sh
       run: >
         git ls-files -z | xargs -0 file |
         ./filter.py | cut -d: -f1 | xargs
         shellcheck -x
     - if: always()
       name: Print ShellCheck version
+      shell: sh
       run: shellcheck --version
