@@ -15,7 +15,7 @@ If you encounter cases where some files are incorrectly detected as ShellCheckab
 [`filter.py`](./filter.py) supports both macOS and Ubuntu 24.04. Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
 
 1. Author develops on a Macbook
-2. ubuntu-24.04 is author's preferred CI runner
+2. ubuntu-24.04 is author's preferred GitHub Actions runner
 
 Incompatibilities can be debugged with the following command
 
