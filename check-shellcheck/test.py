@@ -46,14 +46,14 @@ def unit_test() -> bool:
     got = set(filter())
 
     if not got == want:
-        print("Unit test failed! ❌")
+        print("❌ Unit test failed!")
         print("Got:    ", sorted(got))
         print("Want:   ", sorted(want))
         print("Missing:", sorted(got - want))
         print("Extra:  ", sorted(want - got))
         return False
     else:
-        print("Unit test passed! ✅")
+        print("✅ Unit test passed!")
         return True
 
 
@@ -62,7 +62,7 @@ def integration_test() -> bool:
     try:
         files = filter()
         if not files:
-            print("Integration test failed! ❌ No files found to check")
+            print("❌ Integration test failed! No files found to check")
             return False
 
         os.chdir(SCRIPT_DIR / "testdata")
@@ -74,15 +74,15 @@ def integration_test() -> bool:
             os.chdir(SCRIPT_DIR)
 
         if shellcheck_process.returncode == 0:
-            print("Integration test passed! ✅")
+            print("✅ Integration test passed!")
             return True
 
-        print("Integration test failed! ❌ ShellCheck output:")
+        print("❌ Integration test failed! ShellCheck output:")
         print(shellcheck_process.stderr)
         return False
 
     except subprocess.CalledProcessError as e:
-        print(f"Integration test failed! ❌ Error running ShellCheck: {e}")
+        print(f"❌ Integration test failed! Error running ShellCheck: {e}")
         print(e.stderr)
         return False
 
