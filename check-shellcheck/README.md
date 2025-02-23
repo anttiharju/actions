@@ -1,4 +1,4 @@
-# Run ShellCheck
+# Check ShellCheck
 
 Finds POSIX/sh and Bash scripts tracked by Git and runs `shellcheck --color=always --external-sources` on them. Also prints out shellcheck version so upon discrepancies people can check whether their local version matches CI, although this latter point is not expected to be an issue.
 

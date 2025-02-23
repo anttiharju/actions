@@ -1,0 +1,8 @@
+name: Check EditorConfig
+description: Feeds files tracked by Git to editorconfig-checker
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run editorconfig-checker
+      run: git ls-files -z | npx editorconfig-checker
