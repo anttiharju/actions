@@ -8,7 +8,7 @@ The action tries to remain as generic as possible. As an example, it can be used
 ./run-shellcheck/test.py # from Git repository root
 ```
 
-If you encounter cases where some files are incorrectly detected as ShellCheckable scripts, please open a PR with an example incorrectly detected file under [testdata](./testdata/).
+If you encounter cases where some files are incorrectly detected as ShellCheckable scripts, please open a PR with an example incorrectly detected file under [`/testdata`](./testdata/)
 
 ## macOS and Ubuntu 24.04 compatibility
 
