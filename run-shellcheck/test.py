@@ -2,10 +2,10 @@
 
 import os
 import subprocess
-from typing import List
+from typing import Set
 
-def filter() -> List[str]:
-    """Execute the shell command and return output as list of lines."""
+def filter() -> Set[str]:
+    """Execute the shell command and return output as set of lines."""
     os.chdir('testdata')
     try:
         find_process = subprocess.Popen(
@@ -30,15 +30,15 @@ def filter() -> List[str]:
     finally:
         os.chdir('..')
     
-    return [line.strip() for line in output.splitlines() if line.strip()]
+    return {line.strip() for line in output.splitlines() if line.strip()}
 
 def run_test():
     """Test if the output matches expected results."""
     want = {
         './binsh',
-        './usrbinenvbash',
         './usrbinenvsh',
-        './binbash'
+        './binbash',
+        './usrbinenvbash',
     }
     
     got = set(filter())
