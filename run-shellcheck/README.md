@@ -12,7 +12,7 @@ If you encounter cases where some files are incorrectly detected as ShellCheckab
 
 ## macOS and Ubuntu 24.04 compatibility
 
-This action supports both macOS and Ubuntu 24.04.
+[`filter.py`](./filter.py) supports both macOS and Ubuntu 24.04.
 
 Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
 
