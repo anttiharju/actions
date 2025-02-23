@@ -6,7 +6,7 @@ This action tries to be as generic as possible. To support that goal, tests were
 
 ## macOS and Ubuntu 24.04 compatibility
 
-The filter.py detection mechanism has been carefully crafted to support both operating systems for two reasons:
+The [`filter.py`](./filter.py) detection mechanism has been carefully crafted to support both operating systems for two reasons:
 
 1. Antti uses a Macbook to develop
 2. Antti assumes this action will be ran on the ubuntu-24.04 runner
@@ -30,7 +30,7 @@ On ubuntu-24.04 GitHub Actions runner it produces the following output.
  run-shellcheck/testdata/usrbinenvpython3: Python script, ASCII text executable
 ```
 
-Diff syntax is used to highlight what filter.py should pick out.
+Diff syntax is used to highlight what [`filter.py`](./filter.py) should pick out.
 
 On macOS 15.3.1 it produces
 
