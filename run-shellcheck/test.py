@@ -54,7 +54,7 @@ def unit_test() -> bool:
 
 
 def integration_test() -> bool:
-    """Run integration test and return True if shellcheck passes."""
+    """Run integration test and return True if ShellCheck passes."""
     try:
         files = filter()
         if not files:
@@ -73,13 +73,12 @@ def integration_test() -> bool:
             print("Integration test passed! ✅")
             return True
 
-        print("Integration test failed! ❌")
-        print("shellcheck output:")
+        print("Integration test failed! ❌ ShellCheck output:")
         print(shellcheck_process.stderr)
         return False
 
     except subprocess.CalledProcessError as e:
-        print(f"Integration test failed! ❌ Error running shellcheck: {e}")
+        print(f"Integration test failed! ❌ Error running ShellCheck: {e}")
         print(e.stderr)
         return False
 
