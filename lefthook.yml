@@ -1,0 +1,10 @@
+output:
+  - success
+  - failure
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: Test run-shellcheck
+      run: ./run-shellcheck/test.py
+      glob: "run-shellcheck/*"
