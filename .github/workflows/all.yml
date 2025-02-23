@@ -15,9 +15,13 @@ jobs:
       # note: only lints under .github/
       # I don't think these tools are capable
       # of linting composite actions well
-      - if: always()
-        name: Actions
+      - name: Actions
         uses: ./lint-actions
 
-      - name: Prettier
+      - if: always()
+        name: Prettier
         uses: ./check-prettier
+
+      - if: always()
+        name: EditorConfig
+        uses: anttiharju/actions/check-editorconfig@v0
