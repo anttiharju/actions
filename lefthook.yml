@@ -9,6 +9,20 @@ pre-commit:
       run: ./run-shellcheck/test.py
       glob: "run-shellcheck/*"
 
+    # note: only lints under .github/
+    # I don't think these tools are capable
+    # of linting composite actions well
+    - name: Actions
+      group:
+        parallel: true
+        jobs:
+          - name: action-validator
+            run: >
+              find ./.github -type f -mindepth 2 -name "*.yml" -exec
+              action-validator --verbose {} +
+          - run: actionlint
+      glob: ".github/*"
+
     - name: Prettier
       run: npx prettier --write .
       glob: "*{.md,.yml}"

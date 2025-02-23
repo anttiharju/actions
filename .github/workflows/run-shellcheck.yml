@@ -1,0 +1,21 @@
+on:
+  pull_request:
+    paths:
+      - "run-shellcheck/**/*"
+  push:
+    branches:
+      - v0
+    paths:
+      - "run-shellcheck/**/*"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        run: ./test.py
+        working-directory: ./run-shellcheck
