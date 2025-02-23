@@ -1,0 +1,15 @@
+name: Run ShellCheck
+description: Runs ShellCheck with external sources
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run ShellCheck
+      shell: sh
+      run: >
+        git ls-files -z | xargs -0 file |
+        grep "script text executable" |
+        cut -d: -f1 | xargs
+        shellcheck -x
+    - name: Print version
+      run: shellcheck --version
