@@ -29,8 +29,8 @@ runs:
       working-directory: ${{ inputs.repository }}
       shell: sh
       run: |
-        git fetch origin update-editorconfig --no-tags || true
-        git switch update-editorconfig || git switch -c update-editorconfig
+        git push -d origin update-editorconfig || true
+        git switch -c update-editorconfig
         curl -o .editorconfig https://raw.githubusercontent.com/anttiharju/.editorconfig/${{ github.sha }}/.editorconfig
     - name: Commit changes
       id: commit-changes
