@@ -7,6 +7,9 @@ inputs:
   token:
     description: "Checkout token"
     required: true
+  pr-token:
+    description: "Pull request token"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -45,7 +48,7 @@ runs:
       working-directory: ${{ inputs.repository }}
       shell: sh
       env:
-        GH_TOKEN: ${{ secrets.PULL_REQUEST_TOKEN }}
+        GH_TOKEN: ${{ inputs.pr-token }}
         default_branch: ${{ steps.branch.outputs.default }}
       run: |
         pr_open=$(gh pr list --head update-editorconfig --json state --jq '.[0].state')
