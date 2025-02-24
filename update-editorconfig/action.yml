@@ -45,11 +45,10 @@ runs:
           https://github.com/anttiharju/.editorconfig/blob/${{ github.sha }}/.editorconfig
     - if: steps.commit-changes.outputs.changed == 'true'
       name: Create Pull Request
-      id: pr
       working-directory: ${{ inputs.repository }}
       shell: sh
       env:
-        GH_TOKEN: ${{ inputs.token }}
+        GH_TOKEN: ${{ inputs.pr-token }}
         default_branch: ${{ steps.branch.outputs.default }}
       run: |
         pr_open=$(gh pr list --head update-editorconfig --json state --jq '.[0].state')
@@ -62,15 +61,5 @@ runs:
             --base "$default_branch" \
             --head update-editorconfig)
 
-          echo "url=$pr_url" >> "$GITHUB_OUTPUT"
-          echo "created=true" >> "$GITHUB_OUTPUT"
+          gh pr merge "$pr_url" --squash --auto
         fi
-    - if: steps.pr.outputs.created == 'true'
-      name: Enable auto-merge
-      working-directory: ${{ inputs.repository }}
-      shell: sh
-      env:
-        GH_TOKEN: ${{ inputs.pr-token }}
-        pr_url: ${{ steps.pr.outputs.url }}
-      run: |
-        gh pr merge "$pr_url" --squash --auto
