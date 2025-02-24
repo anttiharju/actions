@@ -1,6 +1,10 @@
 name: Update EditorConfig
 description: "Checks out and updates .editorconfig in the given repository"
 inputs:
+  owner:
+    description: "Repository owner"
+    required: false
+    default: ${{ github.actor }}
   repository:
     description: "Repository name"
     required: true
@@ -20,7 +24,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: ${{ inputs.repository }}
+        repository: ${{ inputs.owner }}/${{ inputs.repository }}
         token: ${{ inputs.token }}
         path: ${{ inputs.repository }}
     - name: Get default branch name
@@ -37,7 +41,7 @@ runs:
           sleep 5 # Wait for PR to be deleted / API to catch up
         fi
         git switch -c update-editorconfig
-        cp ../../central/.editorconfig .
+        cp ../central/.editorconfig .
     - name: Commit changes
       id: commit-changes
       uses: anttiharju/actions/commit-changes@v0
