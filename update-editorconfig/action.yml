@@ -31,7 +31,7 @@ runs:
       run: |
         git push -d origin update-editorconfig || true
         git switch -c update-editorconfig
-        cp ../.editorconfig .
+        cp ../central/.editorconfig .
     - name: Commit changes
       id: commit-changes
       uses: anttiharju/actions/commit-changes@v0
