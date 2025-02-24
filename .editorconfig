@@ -1,5 +1,5 @@
 # EditorConfig is awesome: https://editorconfig.org
-# Managed by https://github.com/anttiharju/actions/tree/HEAD/check-editorconfig
+# Maintained from https://github.com/anttiharju/.editorconfig
 
 [*]
 end_of_line = lf
@@ -24,3 +24,7 @@ indent_size = unset
 [*.sh]
 indent_style = space
 indent_size = 4
+
+[*.json]
+indent_style = space
+indent_size = 2
