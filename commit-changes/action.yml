@@ -8,11 +8,16 @@ inputs:
   message:
     description: "Commit message"
     required: true
+  working-directory:
+    description: "Working directory"
+    required: false
+    default: "${{ github.workspace }}"
 runs:
   using: "composite"
   steps:
     - name: Commit changes
       id: commit
+      working-directory: ${{ inputs.working-directory }}
       shell: sh
       env:
         message: ${{ inputs.message }}
