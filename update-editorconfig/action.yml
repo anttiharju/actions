@@ -8,16 +8,16 @@ inputs:
   repository:
     description: "Repository name"
     required: true
-  token:
-    description: "Checkout token"
-    required: true
-  pr-token:
-    description: "Pull request token"
-    required: true
   committer:
     description: "Committer username"
     required: false
     default: "github-actions[bot]"
+  pr-token:
+    description: "Pull request token"
+    required: true
+  token:
+    description: "Checkout token"
+    required: true
 runs:
   using: "composite"
   steps:
