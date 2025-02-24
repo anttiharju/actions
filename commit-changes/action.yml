@@ -8,11 +8,11 @@ inputs:
   message:
     description: "Commit message"
     required: true
-
 runs:
   using: "composite"
   steps:
     - name: Commit changes
+      id: commit
       shell: sh
       env:
         message: ${{ inputs.message }}
@@ -23,9 +23,15 @@ runs:
       run: |
         if [ -z "$(git status --porcelain)" ]; then
           echo "No changes to commit"
+          echo "changes=false" >> "$GITHUB_OUTPUT"
         else
           git config push.autoSetupRemote true
           git add --all
           git commit -m "$message"
           git push
+          echo "changes=true" >> "$GITHUB_OUTPUT"
         fi
+outputs:
+  changes:
+    description: "true/false depending on if a commit was made"
+    value: ${{ steps.commit.outputs.changes }}
