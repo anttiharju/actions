@@ -1,5 +1,5 @@
-name: Update repo
-description: "Checks out and updates .editorconfig in the given anttiharju repository"
+name: Update EditorConfig
+description: "Checks out and updates .editorconfig in the given repository"
 inputs:
   repository:
     description: "Repository name"
@@ -10,13 +10,17 @@ inputs:
   pr-token:
     description: "Pull request token"
     required: true
+  committer:
+    description: "Committer username"
+    required: false
+    default: "github-actions[bot]"
 runs:
   using: "composite"
   steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: anttiharju/${{ inputs.repository }}
+        repository: ${{ inputs.repository }}
         token: ${{ inputs.token }}
         path: ${{ inputs.repository }}
     - name: Get default branch name
@@ -33,18 +37,18 @@ runs:
           sleep 5 # Wait for PR to be deleted / API to catch up
         fi
         git switch -c update-editorconfig
-        cp ../central/.editorconfig .
+        cp ../../central/.editorconfig .
     - name: Commit changes
       id: commit-changes
       uses: anttiharju/actions/commit-changes@v0
       with:
         working-directory: ${{ inputs.repository }}
-        committer: "anttiharju[bot]"
+        committer: ${{ inputs.committer }}
         message: |
           ${{ github.event.head_commit.message }}
 
           This is an automated update of .editorconfig to
-          https://github.com/anttiharju/.editorconfig/blob/${{ github.sha }}/.editorconfig
+          https://github.com/${{ github.repository }}/blob/${{ github.sha }}/.editorconfig
     - if: steps.commit-changes.outputs.changed == 'true'
       name: Create Pull Request
       id: pr
