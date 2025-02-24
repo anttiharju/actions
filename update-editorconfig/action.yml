@@ -1,0 +1,62 @@
+name: Update repo
+description: "Checks out and updates .editorconfig in the given anttiharju repository"
+inputs:
+  repository:
+    description: "Repository name"
+    required: true
+  token:
+    description: "Checkout token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: anttiharju/${{ inputs.repository }}
+        token: ${{ inputs.token }}
+        path: ${{ inputs.repository }}
+    - name: Get default branch name
+      working-directory: ${{ inputs.repository }}
+      id: branch
+      shell: sh
+      run: |
+        echo "default=$(git branch --show-current)" >> "$GITHUB_OUTPUT"
+    - name: Update .editorconfig
+      working-directory: ${{ inputs.repository }}
+      shell: sh
+      run: |
+        git fetch origin update-editorconfig --no-tags || true
+        git switch update-editorconfig || git switch -c update-editorconfig
+        curl -o .editorconfig https://raw.githubusercontent.com/anttiharju/.editorconfig/${{ github.sha }}/.editorconfig
+    - name: Commit changes
+      id: commit-changes
+      uses: anttiharju/actions/commit-changes@v0
+      with:
+        working-directory: ${{ inputs.repository }}
+        committer: "anttiharju[bot]"
+        message: |
+          ${{ github.event.head_commit.message }}
+
+          This is an automated update of .editorconfig to
+          https://github.com/anttiharju/.editorconfig/blob/${{ github.sha }}/.editorconfig
+    - if: steps.commit-changes.outputs.changed == 'true'
+      name: Create Pull Request
+      working-directory: ${{ inputs.repository }}
+      shell: sh
+      env:
+        GH_TOKEN: ${{ secrets.PULL_REQUEST_TOKEN }}
+        default_branch: ${{ steps.branch.outputs.default }}
+      run: |
+        pr_open=$(gh pr list --head update-editorconfig --json state --jq '.[0].state')
+
+        if [ "$pr_open" = "OPEN" ]; then
+          echo "PR already exists"
+        else
+          pr_url=$(gh pr create \
+            --fill \
+            --base "$default_branch" \
+            --head update-editorconfig)
+
+          gh pr merge "$pr_url" --squash --auto
+        fi
