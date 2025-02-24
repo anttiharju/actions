@@ -29,7 +29,9 @@ runs:
       working-directory: ${{ inputs.repository }}
       shell: sh
       run: |
-        git push -d origin update-editorconfig || true
+        if git push -d origin update-editorconfig; then
+          sleep 5 # Wait for PR to be deleted / API to catch up
+        fi
         git switch -c update-editorconfig
         cp ../central/.editorconfig .
     - name: Commit changes
