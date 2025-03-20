@@ -87,7 +87,7 @@ def render_formula(config: FormulaConfig, workspace: str) -> None:
         workspace: Path to the GitHub workspace
     """
     template_path = Path(workspace) / config.template
-    formula_dir = Path(workspace) / "Formula"
+    formula_dir = Path(workspace) / "homebrew-tap/Formula"
     formula_dir.mkdir(exist_ok=True)
 
     replacements = generate_replacements(config)
