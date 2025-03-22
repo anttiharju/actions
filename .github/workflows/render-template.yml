@@ -24,9 +24,9 @@ jobs:
       - name: Checkout
         uses: anttiharju/actions/render-template@v0
         with:
-          template: render-template/testadata/template
-          values: render-template/testadata/values
-          output: render-template/testadata/output
+          template: render-template/testdata/template
+          values: render-template/testdata/values
+          output: render-template/testdata/output
 
       - name: Print output
-        run: cat render-template/testadata/output
+        run: cat render-template/testdata/output
