@@ -16,7 +16,7 @@ runs:
   using: "composite"
   steps:
     - name: Source values and render template
-      shell: sh
+      shell: bash
       env:
         template: ${{ inputs.template }}
         values: ${{ inputs.values }}
