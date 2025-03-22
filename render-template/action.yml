@@ -15,6 +15,10 @@ inputs:
   output:
     description: "Path where rendered template should be saved"
     required: true
+  print-env:
+    description: "Print environment variables"
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -31,3 +35,6 @@ runs:
         source "$values"
         set +a
         envsubst < "$template" > "$output"
+    - name: Print environment variables
+      if: ${{ inputs.print-env == 'true' }}
+      run: env
