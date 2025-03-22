@@ -1,5 +1,7 @@
 # Render template
 
+[![render-template](https://github.com/anttiharju/actions/actions/workflows/render-template.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/render-template.yml)
+
 Templates a file using `envsubst` using three inputs:
 
 1. template
