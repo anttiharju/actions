@@ -37,4 +37,5 @@ runs:
         envsubst < "$template" > "$output"
     - name: Print environment variables
       if: ${{ inputs.print-env == 'true' }}
+      shell: bash
       run: env
