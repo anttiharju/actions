@@ -24,6 +24,6 @@ pre-commit:
       glob: ".github/*"
 
     - name: Prettier
-      run: npx prettier --write .
+      run: npx --yes prettier --write {staged_files}
       glob: "*{.md,.yml}"
       stage_fixed: true
