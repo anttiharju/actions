@@ -28,7 +28,6 @@ jobs:
           template: template
           values: values
           output: got
-          print-env: true
 
       - name: Test
         working-directory: render-template/testdata
