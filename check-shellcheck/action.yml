@@ -7,10 +7,10 @@ runs:
     - name: Run ShellCheck
       shell: sh
       run: >
-        git ls-files -z | xargs -0 file |
-        ${GITHUB_ACTION_PATH}/filter.py |
-        cut -d: -f1 | xargs
-        shellcheck --color=always -x
+        git ls-files --cached --exclude-standard -o -z
+        | xargs -0 file | ${GITHUB_ACTION_PATH}/filter.py
+        | cut -d: -f1 | xargs -I{} sh -c 'cd "$(dirname {})" &&
+        shellcheck --color=always -x "$(basename {})"'
     - if: always()
       shell: sh
       run: shellcheck --version
