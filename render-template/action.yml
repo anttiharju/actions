@@ -30,12 +30,12 @@ runs:
         template: ${{ inputs.template }}
         values: ${{ inputs.values }}
         output: ${{ inputs.output }}
+        print_env: ${{ inputs.print-env }}
       run: |
         set -a
         source "$values"
         set +a
         envsubst < "$template" > "$output"
-    - name: Print environment variables
-      if: ${{ inputs.print-env == 'true' }}
-      shell: bash
-      run: env
+        if [ "$print_env" = "true" ]; then
+          env
+        fi
