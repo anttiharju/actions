@@ -24,9 +24,11 @@ jobs:
       - name: Render template
         uses: anttiharju/actions/render-template@v0
         with:
-          template: render-template/testdata/template
-          values: render-template/testdata/values
-          output: render-template/testdata/output
+          working-directory: render-template/testdata
+          template: template
+          values: values
+          output: got
 
-      - name: Print output
-        run: cat render-template/testdata/output
+      - name: Test
+        working-directory: render-template/testdata
+        run: diff got want
