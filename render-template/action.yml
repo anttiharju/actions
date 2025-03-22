@@ -16,11 +16,13 @@ runs:
   using: "composite"
   steps:
     - name: Source values and render template
-      shell: bash
+      shell: sh
       env:
         template: ${{ inputs.template }}
         values: ${{ inputs.values }}
         output: ${{ inputs.output }}
       run: |
+        set -a
         source "$values"
+        set +a
         envsubst < "$template" > "$output"
