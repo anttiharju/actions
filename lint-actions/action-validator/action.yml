@@ -12,3 +12,4 @@ runs:
       shell: sh
       run: |
         find ./.github -mindepth 2 -type f -name "*.yml" -exec action-validator --verbose {} +
+        git checkout .tool-versions
