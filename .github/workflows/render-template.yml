@@ -1,0 +1,32 @@
+name: render-template
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/render-template.yml"
+      - "render-template/**/*"
+      - "!render-template/README.md"
+  push:
+    branches:
+      - v0
+    paths:
+      - ".github/workflows/render-template.yml"
+      - "render-template/**/*"
+      - "!render-template/README.md"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: anttiharju/actions/render-template@v0
+        with:
+          template: render-template/testadata/template
+          values: render-template/testadata/values
+          output: render-template/testadata/output
+
+      - name: Print output
+        run: cat render-template/testadata/output
