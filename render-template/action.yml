@@ -1,0 +1,26 @@
+name: "Render Template"
+description: "Renders a template file using environment variables"
+
+inputs:
+  template:
+    description: "Path to the template file"
+    required: true
+  values:
+    description: "Path to shell script that exports values to be templated"
+    required: true
+  output:
+    description: "Path where rendered template should be saved"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Source values and render template
+      shell: bash
+      env:
+        template: ${{ inputs.template }}
+        values: ${{ inputs.values }}
+        output: ${{ inputs.output }}
+      run: |
+        source "$values"
+        envsubst < "$template" > "$output"
