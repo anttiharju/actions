@@ -26,7 +26,6 @@ runs:
         template: ${{ inputs.template }}
         values: ${{ inputs.values }}
         output: ${{ inputs.output }}
-        print_env: ${{ inputs.print-env }}
       run: |
         set -a
         source "$values"
