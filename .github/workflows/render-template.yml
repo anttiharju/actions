@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout
+      - name: Render template
         uses: anttiharju/actions/render-template@v0
         with:
           template: render-template/testdata/template
