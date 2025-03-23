@@ -5,4 +5,5 @@ runs:
   using: "composite"
   steps:
     - name: Markdown
+      shell: sh
       run: npx markdown-link-check --quiet {staged_files} | (! grep .)
