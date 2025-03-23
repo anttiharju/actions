@@ -20,8 +20,8 @@ jobs:
 
       - if: always()
         name: Prettier
-        uses: ./check-prettier
+        uses: ./run-prettier
 
       - if: always()
         name: EditorConfig
-        uses: anttiharju/actions/run-editorconfig-checker@v0
+        uses: ./run-editorconfig-checker
