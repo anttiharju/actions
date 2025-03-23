@@ -1,0 +1,27 @@
+name: run-shellcheck
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/run-shellcheck.yml"
+      - "run-shellcheck/**/*"
+      - "!run-shellcheck/README.md"
+  push:
+    branches:
+      - v0
+    paths:
+      - ".github/workflows/run-shellcheck.yml"
+      - "run-shellcheck/**/*"
+      - "!run-shellcheck/README.md"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test
+        working-directory: run-shellcheck
+        shell: sh
+        run: ./test.py
