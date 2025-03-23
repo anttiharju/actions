@@ -24,4 +24,4 @@ jobs:
 
       - if: always()
         name: EditorConfig
-        uses: anttiharju/actions/check-editorconfig@v0
+        uses: anttiharju/actions/run-editorconfig-checker@v0
