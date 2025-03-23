@@ -12,9 +12,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # note: only lints under .github/
-      # I don't think these tools are capable
-      # of linting composite actions well
       - name: Actions
         uses: ./lint-actions
 
