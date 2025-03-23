@@ -21,7 +21,6 @@ pre-commit:
               find ./.github -type f -mindepth 2 -name "*.yml" -exec
               action-validator --verbose {} +
           - run: actionlint
-      glob: ".github/*"
 
     - name: Prettier
       run: npx --yes prettier --write {staged_files}
