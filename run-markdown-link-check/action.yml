@@ -1,0 +1,8 @@
+name: Run markdown-link-check
+description: Runs markdown-link-check in quiet mode and fails if there is any output.
+
+runs:
+  using: "composite"
+  steps:
+    - name: Markdown
+      run: npx markdown-link-check --quiet {staged_files} | (! grep .)
