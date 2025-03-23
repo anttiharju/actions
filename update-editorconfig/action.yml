@@ -18,10 +18,10 @@ inputs:
   token:
     description: "Checkout token"
     required: true
-  private-repo:
-    description: "Private repository"
+  automerge:
+    description: "Required false in private repositories unless you have a GitHub subscription"
     required: false
-    default: "false"
+    default: "true"
 runs:
   using: "composite"
   steps:
@@ -79,7 +79,7 @@ runs:
           echo "url=$pr_url" >> "$GITHUB_OUTPUT"
           echo "created=true" >> "$GITHUB_OUTPUT"
         fi
-    - if: steps.pr.outputs.created == 'true' && inputs.private-repo == 'false'
+    - if: steps.pr.outputs.created == 'true' && inputs.automerge == 'true'
       name: Enable auto-merge
       working-directory: ${{ inputs.repository }}
       shell: sh
@@ -88,7 +88,7 @@ runs:
         pr_url: ${{ steps.pr.outputs.url }}
       run: |
         gh pr merge "$pr_url" --squash --auto
-    - if: steps.pr.outputs.created == 'true' && inputs.private-repo == 'true'
+    - if: steps.pr.outputs.created == 'true' && inputs.automerge == 'false'
       name: Merge
       working-directory: ${{ inputs.repository }}
       shell: sh
