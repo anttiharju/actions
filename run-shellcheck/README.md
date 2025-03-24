@@ -32,7 +32,7 @@ jobs:
 
 ## macOS and Ubuntu 24.04 compatibility
 
-[`filter.py`](./filter.py) supports both macOS and Ubuntu 24.04. Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
+[`filter.sh`](./filter.sh) supports both macOS and Ubuntu 24.04. Some incompatibilities were faced due to differing `xargs -0 file` output. The need to support both arose from:
 
 1. The author develops on a Macbook
 2. ubuntu-24.04 is author's preferred GitHub Actions runner
@@ -84,7 +84,7 @@ The differences are easier to see when the highlighted portions are cuddled
 +run-shellcheck/testdata/usrbinenvbash:    Bourne-Again shell script, ASCII text executable
 ```
 
-Based on the above [`filter.py`](./filter.py) detects a file as ShellCheckable if `xargs -0 file` output matches any of the following lines
+Based on the above [`filter.sh`](./filter.sh) detects a file as ShellCheckable if `xargs -0 file` output matches any of the following lines
 
 ```
 POSIX shell script
