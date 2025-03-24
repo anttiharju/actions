@@ -1,4 +1,4 @@
-name: Check ShellCheck
+name: Run ShellCheck
 description: Runs ShellCheck with forced color and external sources
 
 runs:
