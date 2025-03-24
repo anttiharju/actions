@@ -9,9 +9,6 @@ pre-commit:
       run: ./run-shellcheck/test.py
       glob: "run-shellcheck/*"
 
-    # note: only lints under .github/
-    # I don't think these tools are capable
-    # of linting composite actions well
     - name: Actions
       group:
         parallel: true
@@ -22,7 +19,19 @@ pre-commit:
               action-validator --verbose {} +
           - run: actionlint
 
+    - name: ShellCheck
+      glob: "*.sh"
+      run: >
+        shellcheck --color=always -x $(
+          file {staged_files} |
+          grep -i -E "POSIX shell script|sh script text executable|sh script, ASCII text executable|Bourne-Again shell script" |
+          cut -d: -f1
+        )
+
     - name: Prettier
       run: npx --yes prettier --write {staged_files}
       glob: "*{.md,.yml}"
       stage_fixed: true
+
+    - name: EditorConfig
+      run: git ls-files -z | npx --yes editorconfig-checker

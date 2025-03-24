@@ -16,6 +16,10 @@ jobs:
         uses: ./lint-actions
 
       - if: always()
+        name: ShellCheck
+        uses: ./run-shellcheck
+
+      - if: always()
         name: Prettier
         uses: ./run-prettier
 
