@@ -28,6 +28,10 @@ pre-commit:
           cut -d: -f1
         )
 
+    - name: Markdown
+      glob: "*.md"
+      run: npx --yes markdown-link-check --quiet {staged_files} | (! grep .)
+
     - name: Prettier
       run: npx --yes prettier --write {staged_files}
       glob: "*{.md,.yml}"
