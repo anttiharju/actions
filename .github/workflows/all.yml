@@ -20,6 +20,10 @@ jobs:
         uses: ./run-shellcheck
 
       - if: always()
+        name: Markdown
+        uses: ./run-markdown-link-check
+
+      - if: always()
         name: Prettier
         uses: ./run-prettier
 
