@@ -92,3 +92,13 @@ sh script text executable
 sh script, ASCII text executable
 Bourne-Again shell script
 ```
+
+## Grep alternative
+
+The following grep can be used as a drop-in replacement for filter.py
+
+```sh
+grep -i -E "POSIX shell script|sh script text executable|sh script, ASCII text executable|Bourne-Again shell script"
+```
+
+Not having to import a filter.py is helpful in for example lefthook.yml
