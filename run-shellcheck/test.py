@@ -16,13 +16,9 @@ def filter() -> Set[str]:
             ["find", ".", "-type", "f", "-print0"], stdout=subprocess.PIPE
         )
 
-        xargs_process = subprocess.Popen(
-            ["xargs", "-0", "file"], stdin=find_process.stdout, stdout=subprocess.PIPE
-        )
-
         filter_process = subprocess.Popen(
-            [str(SCRIPT_DIR / "filter.py")],
-            stdin=xargs_process.stdout,
+            [str(SCRIPT_DIR / "filter.sh")],
+            stdin=find_process.stdout,
             stdout=subprocess.PIPE,
             text=True,
         )
