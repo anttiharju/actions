@@ -1,0 +1,9 @@
+name: ShellCheck
+description: Runs ShellCheck with colorful output
+
+runs:
+  using: "composite"
+  steps:
+    - shell: sh
+      run: |
+        shellcheck --color=always $(git ls-files '*.sh' '*.bash')
