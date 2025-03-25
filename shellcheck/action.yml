@@ -6,4 +6,4 @@ runs:
   steps:
     - shell: sh
       run: |
-        shellcheck --color=always $(git ls-files '*.sh' '*.bash')
+        shellcheck --color=always --source-path=SCRIPTDIR $(git ls-files '*.sh' '*.bash')
