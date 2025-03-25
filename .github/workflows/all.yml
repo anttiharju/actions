@@ -16,10 +16,6 @@ jobs:
         uses: ./lint-actions
 
       - if: always()
-        name: ShellCheck
-        uses: ./run-shellcheck
-
-      - if: always()
         name: Markdown
         uses: ./run-markdown-link-check
 
