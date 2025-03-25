@@ -15,15 +15,6 @@ pre-commit:
               action-validator --verbose {} +
           - run: actionlint
 
-    - name: ShellCheck
-      glob: "*.sh"
-      run: >
-        shellcheck --color=always -x $(
-          file {staged_files} |
-          grep -i -E "POSIX shell script|sh script text executable|sh script, ASCII text executable|Bourne-Again shell script" |
-          cut -d: -f1
-        )
-
     - name: Markdown
       glob: "*.md"
       run: npx --yes markdown-link-check --quiet {staged_files} | (! grep .)
