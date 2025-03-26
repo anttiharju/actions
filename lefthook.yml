@@ -15,7 +15,7 @@ pre-commit:
               action-validator --verbose {} +
           - run: actionlint
 
-    - name: Markdown
+    - name: markdown-link-check
       glob: "*.md"
       run: npx --yes markdown-link-check --quiet {staged_files} | (! grep .)
 
