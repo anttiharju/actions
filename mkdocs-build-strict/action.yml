@@ -1,4 +1,4 @@
-name: Validate docs
+name: MkDocs build strict
 description: Runs mkdocs build with strict mode so any mistakes are caught early.
 
 runs:
