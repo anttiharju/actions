@@ -1,9 +1,10 @@
-name: Lint
+name: golangci-lint
 description: Run golangci-lint
 inputs:
   version-file:
     description: Path to version file
     required: false
+    default: ".golangci-version"
 
 runs:
   using: "composite"
