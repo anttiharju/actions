@@ -11,7 +11,7 @@ pre-commit:
 
     - name: actionlint
       glob: ".github/workflows/*.yml"
-      run: actionlint {staged_files}
+      run: actionlint -color {staged_files}
 
     - name: markdown-link-check
       glob: "*.md"

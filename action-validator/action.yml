@@ -11,4 +11,4 @@ runs:
     - name: Run action-validator
       shell: sh
       run: |
-        find ./.github -mindepth 2 -type f -name "*.yml" -exec action-validator --verbose {} +
+        action-validator --verbose $(git ls-files ".github/*/*.yml" "*/action.yml")
