@@ -5,15 +5,13 @@ output:
 pre-commit:
   parallel: true
   jobs:
-    - name: Actions
-      group:
-        parallel: true
-        jobs:
-          - name: action-validator
-            run: >
-              find ./.github -type f -mindepth 2 -name "*.yml" -exec
-              action-validator --verbose {} +
-          - run: actionlint
+    - name: action-validator
+      glob: "{.github/*/*.yml,*/action.yml}"
+      run: action-validator --verbose {staged_files}
+
+    - name: actionlint
+      glob: ".github/workflows/*.yml"
+      run: actionlint {staged_files}
 
     - name: markdown-link-check
       glob: "*.md"
