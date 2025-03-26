@@ -18,8 +18,8 @@ pre-commit:
       run: npx --yes markdown-link-check --quiet {staged_files} | (! grep .)
 
     - name: Prettier
-      run: npx --yes prettier --write {staged_files}
       glob: "*{.md,.yml}"
+      run: npx --yes prettier --write {staged_files}
       stage_fixed: true
 
     - name: EditorConfig-Checker
