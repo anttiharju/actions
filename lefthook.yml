@@ -24,5 +24,5 @@ pre-commit:
       glob: "*{.md,.yml}"
       stage_fixed: true
 
-    - name: EditorConfig
-      run: git ls-files -z | npx --yes editorconfig-checker
+    - name: EditorConfig-Checker
+      run: npx --yes editorconfig-checker {staged_files}
