@@ -1,5 +1,5 @@
-name: Update docs
-description: Updates docs/ directory to gh-pages branch.
+name: MkDocs GitHub Deploy
+description: Updates docs/ directory to gh-pages branch
 inputs:
   committer:
     description: "Committer username"
