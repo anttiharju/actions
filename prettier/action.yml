@@ -1,5 +1,5 @@
-name: Check Prettier
-description: Runs Prettier in check mode.
+name: Prettier
+description: Run Prettier in check mode.
 
 runs:
   using: "composite"
