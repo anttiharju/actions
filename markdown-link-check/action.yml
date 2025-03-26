@@ -1,0 +1,9 @@
+name: markdown-link-check
+description: Runs markdown-link-check in quiet mode on files tracked by Git and fails if there is any output.
+
+runs:
+  using: "composite"
+  steps:
+    - name: markdown-link-check
+      shell: sh
+      run: npx markdown-link-check --quiet $(git ls-files "*.md") | (! grep .)
