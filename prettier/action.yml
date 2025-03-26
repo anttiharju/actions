@@ -1,10 +1,16 @@
 name: Prettier
 description: Run Prettier in check mode.
-
+inputs:
+  patterns:
+    description: "Pattern for git-ls files"
+    required: false
+    default: .
 runs:
   using: "composite"
   steps:
     - name: Check Prettier
       shell: sh
+      env:
+        patterns: ${{ inputs.patterns }}
       run: |
-        npx prettier --check .
+        npx prettier "$patterns" --check
