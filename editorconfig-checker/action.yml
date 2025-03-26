@@ -1,9 +1,9 @@
 name: Editorconfig-Checker
-description: Runs Editorconfig-Checker on all files.
+description: Runs Editorconfig-Checker on files tracked by Git.
 
 runs:
   using: "composite"
   steps:
     - name: Run Editorconfig-Checker
       shell: sh
-      run: npx editorconfig-checker .
+      run: npx editorconfig-checker $(git ls-files)
