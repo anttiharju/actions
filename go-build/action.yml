@@ -1,4 +1,4 @@
-name: Build
+name: go build
 description: Build a binary with go
 inputs:
   cache:
