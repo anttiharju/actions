@@ -12,17 +12,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Actions
-        uses: ./lint-actions
+      - if: always()
+        name: action-validator
+        uses: ./action-validator
 
       - if: always()
-        name: Markdown
-        uses: ./run-markdown-link-check
+        name: actionlint
+        uses: ./actionlint
+
+      - if: always()
+        name: markdown-link-check
+        uses: ./markdown-link-check
 
       - if: always()
         name: Prettier
-        uses: ./run-prettier
+        uses: ./prettier
 
       - if: always()
-        name: EditorConfig
-        uses: ./run-editorconfig-checker
+        name: EditorConfig-Checker
+        uses: ./editorconfig-checker
