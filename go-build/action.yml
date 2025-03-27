@@ -6,12 +6,11 @@ runs:
   steps:
     - name: Setup cache
       id: cache
-      shell: bash
+      shell: sh
       run: |
         if [ -f /etc/os-release ]; then
           source /etc/os-release
-          name=$(echo "$NAME" | tr '[:upper:]' '[:lower:]')
-          echo "key=${name}-${VERSION_ID}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
+          echo "key=${NAME}-${VERSION_ID}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
         else
           echo "key=${{ runner.os }}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
         fi
@@ -24,13 +23,11 @@ runs:
           echo "enabled=false" >> "$GITHUB_OUTPUT"
         fi
     - name: Cache Go
-      id: cache-go
       uses: actions/cache@v4
       with:
         path: /opt/hostedtoolcache/go
         key: ${{ steps.cache.outputs.key }}-go-${{ hashFiles('go.mod') }}
     - name: Setup Go
-      if: steps.cache-go.outputs.cache-hit == 'false'
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
