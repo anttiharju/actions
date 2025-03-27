@@ -13,6 +13,6 @@ runs:
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
-        cache: ${{ steps.cache.outputs.enabled }}
+        cache: false
     - shell: sh
       run: go build
