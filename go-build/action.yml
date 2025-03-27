@@ -30,7 +30,7 @@ runs:
         path: /opt/hostedtoolcache/go
         key: ${{ steps.cache.outputs.key }}-go-${{ hashFiles('go.mod') }}
     - name: Setup Go
-      if: steps.cache-go.outputs.cache-hit == 'true'
+      if: steps.cache-go.outputs.cache-hit == 'false'
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
