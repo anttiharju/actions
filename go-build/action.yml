@@ -4,38 +4,15 @@ description: Build a binary with go
 runs:
   using: "composite"
   steps:
-    - name: Setup cache
-      id: cache
-      shell: sh
-      run: |
-        if [ -f /etc/os-release ]; then
-          . /etc/os-release
-          echo "key=${NAME}-${VERSION_ID}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
-        else
-          echo "key=${{ runner.os }}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
-        fi
-
-        echo "path=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
-
-        if [ -f "go.sum" ]; then
-          echo "enabled=true" >> "$GITHUB_OUTPUT"
-        else
-          echo "enabled=false" >> "$GITHUB_OUTPUT"
-        fi
     - name: Cache Go
       uses: actions/cache@v4
       with:
         path: /opt/hostedtoolcache/go
-        key: ${{ steps.cache.outputs.key }}-go-${{ hashFiles('go.mod') }}
+        key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('go.mod') }}
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
         cache: ${{ steps.cache.outputs.enabled }}
-    - name: Cache build
-      uses: actions/cache@v4
-      with:
-        path: ${{ steps.cache.outputs.path }}
-        key: ${{ steps.cache.outputs.key }}-build-${{ hashFiles('go.mod') }}
     - shell: sh
       run: go build
