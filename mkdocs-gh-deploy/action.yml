@@ -16,5 +16,5 @@ runs:
         GIT_COMMITTER_NAME: "${{ inputs.committer }}"
         GIT_COMMITTER_EMAIL: "${{ inputs.committer }}@users.noreply.github.com"
       run: |
-        pip install mkdocs
+        pip install mkdocs-material
         mkdocs gh-deploy --force --no-history
