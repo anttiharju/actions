@@ -9,7 +9,7 @@ runs:
       shell: sh
       run: |
         if [ -f /etc/os-release ]; then
-          source /etc/os-release
+          . /etc/os-release
           echo "key=${NAME}-${VERSION_ID}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
         else
           echo "key=${{ runner.os }}-${{ runner.arch }}" >> "$GITHUB_OUTPUT"
