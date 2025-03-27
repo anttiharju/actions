@@ -24,11 +24,13 @@ runs:
           echo "enabled=false" >> "$GITHUB_OUTPUT"
         fi
     - name: Cache Go
+      id: cache-go
       uses: actions/cache@v4
       with:
         path: /opt/hostedtoolcache/go
         key: ${{ steps.cache.outputs.key }}-go-${{ hashFiles('go.mod') }}
     - name: Setup Go
+      if: steps.cache-go.outputs.cache-hit == 'true'
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
