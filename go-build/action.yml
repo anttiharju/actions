@@ -4,15 +4,19 @@ description: Build a binary with go
 runs:
   using: "composite"
   steps:
-    - name: Cache Go
-      uses: actions/cache@v4
-      with:
-        path: /opt/hostedtoolcache/go
-        key: ${{ runner.os }}-${{ runner.arch }}-go-${{ hashFiles('go.mod') }}
+    - name: Setup cache
+      id: cache
+      shell: sh
+      run: |
+        if [ -f "go.sum" ]; then
+          echo "enabled=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "enabled=false" >> "$GITHUB_OUTPUT"
+        fi
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
-        cache: false
+        cache: ${{ steps.cache.outputs.enabled }}
     - shell: sh
       run: go build
