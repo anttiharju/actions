@@ -10,7 +10,7 @@ runs:
       run: |
         echo "build=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
         if [ -f "go.sum" ]; then
-          echo "sum=${{ inputs.cache }}" >> "$GITHUB_OUTPUT"
+          echo "sum=true" >> "$GITHUB_OUTPUT"
         else
           echo "sum=false" >> "$GITHUB_OUTPUT"
         fi
