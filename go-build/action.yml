@@ -5,18 +5,25 @@ runs:
   using: "composite"
   steps:
     - name: Check for go.sum
-      id: cache
+      id: go
       shell: sh
       run: |
+        echo "build=$(go env GOCACHE)" >> "$GITHUB_OUTPUT"
         if [ -f "go.sum" ]; then
-          echo "enabled=${{ inputs.cache }}" >> "$GITHUB_OUTPUT"
+          echo "sum=${{ inputs.cache }}" >> "$GITHUB_OUTPUT"
         else
-          echo "enabled=false" >> "$GITHUB_OUTPUT"
+          echo "sum=false" >> "$GITHUB_OUTPUT"
         fi
     - name: Setup Go
       uses: actions/setup-go@v5
       with:
         go-version-file: "go.mod"
-        cache: ${{ steps.cache.outputs.enabled }}
+        cache: ${{ steps.go.outputs.sum }}
+    - name: Cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.go.outputs.build }}
+        key: ${{ runner.os }}-${{ hashFiles('go.mod') }}
     - shell: sh
       run: go build
