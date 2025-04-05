@@ -29,7 +29,6 @@ runs:
         curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/${sha}/check-relative-markdown-links.bash" -o "/usr/local/bin/check-relative-markdown-links"
         chmod +x /usr/local/bin/check-relative-markdown-links
     - name: Check relative markdown links
-      working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
         /usr/local/bin/check-relative-markdown-links run
