@@ -31,5 +31,4 @@ runs:
     - name: Check relative markdown links
       shell: sh
       run: |
-        cat /usr/local/bin/check-relative-markdown-links
-        /usr/local/bin/check-relative-markdown-links $(git ls-files '*.md')
+        which check-relative-markdown-links
