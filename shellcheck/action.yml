@@ -22,7 +22,9 @@ runs:
         URL: https://github.com/koalaman/shellcheck/releases/download/${{ inputs.version }}/shellcheck-${{ inputs.version }}.linux.x86_64.tar.xz
         TMP: ${{ runner.temp }}
       run: |
-        "$GITHUB_ACTION_PATH/install.sh"
+        curl -sSL "$URL" | tar -xJ -C "$TMP" --strip-components=1
+        cp "$TMP/shellcheck" /usr/local/bin/
     - shell: sh
       run: |
-        "$GITHUB_ACTION_PATH/run.sh"
+        shellcheck --version
+        git ls-files -z '*.sh' '*.bash' '*.dash' '*.ksh' | xargs -0 shellcheck --color=always --source-path=SCRIPTDIR
