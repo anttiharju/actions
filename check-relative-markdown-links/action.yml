@@ -25,7 +25,6 @@ runs:
         sha: ${{ inputs.sha }}
       run: |
         curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/install.sh" | sh
-        sudo ln -sf ~/.anttiharju/check-relative-markdown-links.bash /usr/local/bin/check-relative-markdown-links
     - name: Check relative markdown links
       working-directory: ${{ inputs.working-directory }}
       shell: sh
