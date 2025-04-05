@@ -32,4 +32,4 @@ runs:
       shell: sh
       run: |
         cat /usr/local/bin/check-relative-markdown-links
-        /usr/local/bin/check-relative-markdown-links run
+        /usr/local/bin/check-relative-markdown-links $(git ls-files '*.md')
