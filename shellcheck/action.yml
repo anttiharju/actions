@@ -14,7 +14,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: /usr/local/bin/shellcheck
-        key: shellcheck-${{ inputs.url }}
+        key: shellcheck-${{ inputs.version }}
     - if: steps.cache.outputs.cache-hit == 'false'
       name: Install
       shell: sh
