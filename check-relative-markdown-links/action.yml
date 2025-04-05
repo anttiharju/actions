@@ -4,7 +4,7 @@ inputs:
   sha:
     required: false
     description: "SHA of the commit from which to install the tool"
-    default: 6e0ca61a9e52799d4ee2e92b07e84074729d808d
+    default: 69db8432c9e6a240bdd0dfa287528191f8a806d1
   working-directory:
     required: false
     description: "Directory where the template and values files are located"
