@@ -30,4 +30,4 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: sh
       run: |
-        /opt/hostedtoolcache/check-relative-markdown-links run
+        /opt/hostedtoolcache/check-relative-markdown-links/check-relative-markdown-links run
