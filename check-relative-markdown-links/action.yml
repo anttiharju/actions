@@ -31,4 +31,4 @@ runs:
     - name: Check relative markdown links
       shell: sh
       run: |
-        check-relative-markdown-links run
+        check-relative-markdown-links run --verbose
