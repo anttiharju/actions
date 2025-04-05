@@ -12,13 +12,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - if: always()
-        name: action-validator
+      - name: action-validator
         uses: ./action-validator
 
       - if: always()
         name: actionlint
         uses: ./actionlint
+
+      - if: always()
+        name: ShellCheck
+        uses: ./shellcheck
 
       - if: always()
         name: check-relative-markdown-links
