@@ -18,7 +18,7 @@ runs:
       with:
         path: /opt/hostedtoolcache/check-relative-markdown-links
         key: check-relative-markdown-links-${{ inputs.sha }}
-    - if: steps.cache.outputs.cache-hit = 'false'
+    - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
       working-directory: ${{ inputs.working-directory }}
       shell: sh
