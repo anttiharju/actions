@@ -21,8 +21,8 @@ jobs:
         uses: ./actionlint
 
       - if: always()
-        name: markdown-link-check
-        uses: ./markdown-link-check
+        name: check-relative-markdown-links
+        uses: ./check-relative-markdown-links
 
       - if: always()
         name: Prettier
