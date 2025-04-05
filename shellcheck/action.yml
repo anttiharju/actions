@@ -23,6 +23,7 @@ runs:
         TMP: ${{ runner.temp }}
       run: |
         "$GITHUB_ACTION_PATH/install.sh"
+        (cd /usr/local/bin && ls)
     - shell: sh
       run: |
         "$GITHUB_ACTION_PATH/run.sh"
