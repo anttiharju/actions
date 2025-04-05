@@ -18,7 +18,8 @@ runs:
       with:
         path: /usr/local/bin/check-relative-markdown-links
         key: check-relative-markdown-links-${{ inputs.sha }}
-    - name: Install
+    - if: steps.cache.outputs.cache-hit == 'false'
+      name: Install
       working-directory: ${{ inputs.working-directory }}
       shell: sh
       env:
