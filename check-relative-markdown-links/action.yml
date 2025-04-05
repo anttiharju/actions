@@ -4,7 +4,7 @@ inputs:
   sha:
     required: false
     description: "SHA of the commit from which to install the tool"
-    default: 69db8432c9e6a240bdd0dfa287528191f8a806d1
+    default: 39c555b49ccec7fef55047d216d6b7064c301a68
   working-directory:
     required: false
     description: "Directory where the template and values files are located"
@@ -16,7 +16,7 @@ runs:
     - name: Cache
       uses: actions/cache@v4
       with:
-        path: /usr/local/bin/check-relative-markdown-links
+        path: /opt/hostedtoolcache/check-relative-markdown-links
         key: check-relative-markdown-links-${{ inputs.sha }}
     - if: steps.cache.outputs.cache-hit == 'false'
       name: Install
@@ -25,8 +25,9 @@ runs:
       env:
         sha: ${{ inputs.sha }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/install.sh" | sh
+        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/install.sh" | sh -- /opt/hostedtoolcache/check-relative-markdown-links
     - name: Check relative markdown links
       working-directory: ${{ inputs.working-directory }}
       shell: sh
-      run: check-relative-markdown-links run
+      run: |
+        /opt/hostedtoolcache/check-relative-markdown-links run
