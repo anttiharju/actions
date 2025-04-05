@@ -1,34 +1,17 @@
 name: check-relative-markdown-links
-description: Installs and runs check-relative-markdown-links on default settings.
+description: Runs check-relative-markdown-links on default settings
 inputs:
   sha:
     required: false
     description: "SHA of the commit from which to install the tool"
     default: ba703ebf4c426efc70d13391a843772a2dc020d6
-  working-directory:
-    required: false
-    description: "Directory where the template and values files are located"
-    default: ${{ github.workspace }}
 
 runs:
   using: "composite"
   steps:
-    - name: Cache
-      id: cache
-      uses: actions/cache@v4
-      with:
-        path: /usr/local/bin/check-relative-markdown-links
-        key: check-relative-markdown-links-${{ inputs.sha }}
-    - if: steps.cache.outputs.cache-hit != 'true'
-      name: Install
-      working-directory: ${{ inputs.working-directory }}
+    - name: Check relative markdown links
       shell: sh
       env:
         sha: ${{ inputs.sha }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/check-relative-markdown-links.bash" -o /usr/local/bin/check-relative-markdown-links
-        chmod +x /usr/local/bin/check-relative-markdown-links
-    - name: Check relative markdown links
-      shell: sh
-      run: |
-        check-relative-markdown-links run --verbose
+        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/check-relative-markdown-links.bash" | bash -s -- run --verbose
