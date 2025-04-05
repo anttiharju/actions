@@ -14,20 +14,22 @@ runs:
   using: "composite"
   steps:
     - name: Cache
+      id: cache
       uses: actions/cache@v4
       with:
-        path: /opt/hostedtoolcache/check-relative-markdown-links
+        path: /usr/local/bin/check-relative-markdown-links
         key: check-relative-markdown-links-${{ inputs.sha }}
-    - if: steps.cache.outputs.cache-hit != 'true'
+    - if: steps.cache.outputs.cache-hit == 'false'
       name: Install
       working-directory: ${{ inputs.working-directory }}
-      shell: sh
+      shell: bash
       env:
         sha: ${{ inputs.sha }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/install.sh" | sh -- /opt/hostedtoolcache/check-relative-markdown-links
+        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/${sha}/check-relative-markdown-links.bash" -o "/usr/local/bin/check-relative-markdown-links"
+        chmod +x /usr/local/bin/check-relative-markdown-links
     - name: Check relative markdown links
       working-directory: ${{ inputs.working-directory }}
-      shell: sh
+      shell: bash
       run: |
-        /opt/hostedtoolcache/check-relative-markdown-links/check-relative-markdown-links run
+        check-relative-markdown-links run
