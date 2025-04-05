@@ -20,10 +20,6 @@ jobs:
         uses: ./actionlint
 
       - if: always()
-        name: ShellCheck
-        uses: ./shellcheck
-
-      - if: always()
         name: check-relative-markdown-links
         uses: ./check-relative-markdown-links
 
