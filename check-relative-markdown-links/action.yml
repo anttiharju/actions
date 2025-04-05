@@ -26,8 +26,8 @@ runs:
       env:
         sha: ${{ inputs.sha }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/${sha}/check-relative-markdown-links.bash" -o "/usr/local/bin/check-relative-markdown-links"
-        chmod +x /usr/local/bin/check-relative-markdown-links
+        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/check-relative-markdown-links.bash" -o /usr/local/bin/check-relative-markdown-links
+        chmod +x /usr/local/bin/check-relative-markdown-links"
     - name: Check relative markdown links
       shell: sh
       run: |
