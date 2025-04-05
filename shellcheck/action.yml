@@ -15,7 +15,7 @@ runs:
       with:
         path: /usr/local/bin/shellcheck
         key: shellcheck-${{ inputs.version }}
-    - if: steps.cache.outputs.cache-hit == 'false'
+    - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
       shell: sh
       env:
