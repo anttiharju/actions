@@ -31,4 +31,5 @@ runs:
     - name: Check relative markdown links
       shell: sh
       run: |
-        which check-relative-markdown-links
+        git rev-parse --is-inside-work-tree
+        check-relative-markdown-links
