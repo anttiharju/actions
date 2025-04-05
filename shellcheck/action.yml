@@ -25,5 +25,4 @@ runs:
         "$GITHUB_ACTION_PATH/install.sh"
     - shell: sh
       run: |
-        shellcheck --version
         "$GITHUB_ACTION_PATH/run.sh"
