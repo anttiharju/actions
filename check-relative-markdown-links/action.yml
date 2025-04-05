@@ -22,13 +22,14 @@ runs:
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
       working-directory: ${{ inputs.working-directory }}
-      shell: bash
+      shell: sh
       env:
         sha: ${{ inputs.sha }}
       run: |
         curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/${sha}/check-relative-markdown-links.bash" -o "/usr/local/bin/check-relative-markdown-links"
         chmod +x /usr/local/bin/check-relative-markdown-links
     - name: Check relative markdown links
-      shell: bash
+      shell: sh
       run: |
+        cat /usr/local/bin/check-relative-markdown-links
         /usr/local/bin/check-relative-markdown-links run
