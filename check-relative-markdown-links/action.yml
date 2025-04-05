@@ -32,5 +32,4 @@ runs:
       working-directory: ${{ inputs.working-directory }}
       shell: bash
       run: |
-        cat /usr/local/bin/check-relative-markdown-links
         check-relative-markdown-links run
