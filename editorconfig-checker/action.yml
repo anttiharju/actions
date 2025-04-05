@@ -5,5 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: Run Editorconfig-Checker
-      shell: sh
-      run: npx editorconfig-checker $(git ls-files)
+      shell: bash
+      run: |
+        mapfile -t FILES < <(git ls-files)
+        npx editorconfig-checker "${FILES[@]}"
