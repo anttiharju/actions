@@ -1,4 +1,4 @@
-name: "Find Changes"
+name: "Find changes"
 description: "Find changes in files to enable conditional runs of CI jobs based on what files have changed within a PR or merge"
 author: "anttiharju"
 
@@ -45,14 +45,15 @@ runs:
     - name: Process changed files
       id: find-changes
       shell: bash
+      env:
+        REGEX: ${{ inputs.regex }}
+        MATCH_ALL_REGEX: ${{ inputs.match_all_regex }}
+        EXCLUDE_REGEX: ${{ inputs.exclude-regex }}
+        EXISTING_MATRIX: ${{ inputs.matrix }}
+        CHANGED_FILES_PATH: ${{ github.action_path }}/changed_files.txt
+        GITHUB_OUTPUT: ${{ github.output }}
       run: |
-        python3 ${{ github.action_path }}/action.py \
-          --regex "${{ inputs.regex }}" \
-          --match-all-regex "${{ inputs.match_all_regex }}" \
-          --exclude-regex "${{ inputs.exclude-regex }}" \
-          --matrix "${{ inputs.matrix }}" \
-          --changed-files "${{ github.action_path }}/changed_files.txt" \
-          --output-file "$GITHUB_OUTPUT"
+        python3 ${{ github.action_path }}/action.py
 
 branding:
   icon: "git-pull-request"
