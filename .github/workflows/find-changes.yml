@@ -1,4 +1,4 @@
-name: render-template
+name: find-changes
 on:
   pull_request:
     paths:
