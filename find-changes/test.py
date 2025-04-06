@@ -3,24 +3,21 @@
 Test framework for the find-changes action.
 
 This script discovers test cases from the testdata directory and runs them against action.py.
-Each test case is defined as a JSON file with the following structure:
-{
-    "name": "Test case name",
-    "description": "Description of what the test is verifying",
-    "env": {
-        "GITHUB_EVENT_NAME": "pull_request",
-        "REGEX": ".*\\.py$",
-        ...
-    },
-    "input_files": [
-        {"path": "src/file1.py", "content": "..."}
-    ],
-    "expected_output": {
-        "matrix": [
-            {"name": "src", "path": "src", "file": "src/file1.py"}
-        ]
-    }
-}
+Each test case is defined as a YAML file with the following structure:
+name: Test case name
+description: Description of what the test is verifying
+env:
+  GITHUB_EVENT_NAME: pull_request
+  REGEX: ".*\\.py$"
+  # ...
+input_files:
+  - path: src/file1.py
+    content: "..."
+expected_output:
+  matrix:
+    - name: src
+      path: src
+      file: src/file1.py
 """
 
 import json
@@ -29,6 +26,7 @@ import sys
 import tempfile
 import unittest
 import subprocess
+import yaml
 
 
 class FindChangesTestCase(unittest.TestCase):
@@ -39,7 +37,7 @@ class FindChangesTestCase(unittest.TestCase):
         self.test_file = test_file
         self.action_path = action_path
         with open(test_file, "r") as f:
-            self.test_data = json.load(f)
+            self.test_data = yaml.safe_load(f)
         self.test_name = self.test_data.get("name", os.path.basename(test_file))
         self._testMethodDoc = self.test_data.get("description", "")
 
@@ -80,7 +78,7 @@ class FindChangesTestCase(unittest.TestCase):
                 self.assertEqual(
                     actual_output.get("matrix", []),
                     expected_output["matrix"],
-                    "Unexpected matrix output",
+                    f"Unexpected matrix output.\nExpected: {expected_output['matrix']}\nActual: {actual_output.get('matrix', [])}",
                 )
 
     def _setup_git_repo(self, temp_dir):
@@ -172,7 +170,7 @@ def discover_tests(testdata_dir, action_path):
     """Discover test cases in the testdata directory."""
     test_cases = []
     for file in os.listdir(testdata_dir):
-        if file.endswith(".json"):
+        if file.endswith((".yml", ".yaml")):
             test_file = os.path.join(testdata_dir, file)
             test_case = FindChangesTestCase(test_file, action_path)
             test_cases.append(test_case)
@@ -194,7 +192,7 @@ def main():
     test_cases = discover_tests(testdata_dir, action_path)
     if not test_cases:
         print("No test cases found in the testdata directory.")
-        print("Create JSON test files in the testdata directory to run tests.")
+        print("Create YAML test files in the testdata directory to run tests.")
         return
 
     # Create a test suite
