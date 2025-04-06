@@ -11,18 +11,67 @@ import subprocess
 from typing import List, Dict, Any, Set, Tuple
 
 
+def get_github_env_variables() -> Dict[str, str]:
+    """Get required GitHub environment variables."""
+    # Common GitHub env variables
+    github_event_name = os.environ.get("GITHUB_EVENT_NAME")
+    github_event_path = os.environ.get("GITHUB_EVENT_PATH")
+    github_sha = os.environ.get("GITHUB_SHA")
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    github_action_path = os.environ.get("GITHUB_ACTION_PATH")
+
+    # Read event data if available
+    pr_base_sha = None
+    pr_head_sha = None
+
+    if github_event_path and os.path.exists(github_event_path):
+        try:
+            with open(github_event_path, 'r') as f:
+                event_data = json.load(f)
+                if github_event_name == 'pull_request':
+                    # Extract PR-specific information
+                    pr_base_sha = event_data.get('pull_request', {}).get('base', {}).get('sha')
+                    pr_head_sha = event_data.get('pull_request', {}).get('head', {}).get('sha')
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"Warning: Could not read event data: {e}")
+
+    return {
+        "GITHUB_EVENT_NAME": github_event_name,
+        "GITHUB_SHA": github_sha,
+        "GITHUB_OUTPUT": github_output,
+        "GITHUB_ACTION_PATH": github_action_path,
+        "PR_BASE_SHA": pr_base_sha,
+        "PR_HEAD_SHA": pr_head_sha
+    }
+
+
 def get_changed_files() -> List[str]:
     """Get list of changed files using git diff."""
-    # Determine the base and head commits for comparison
-    github_event_name = os.environ.get("GITHUB_EVENT_NAME")
+    # Get GitHub environment variables
+    github_vars = get_github_env_variables()
+    github_event_name = github_vars["GITHUB_EVENT_NAME"]
 
-    if github_event_name == "pull_request":
-        base_sha = os.environ.get("PR_BASE_SHA")
-        head_sha = os.environ.get("PR_HEAD_SHA")
+    if github_event_name == "pull_request" and github_vars["PR_BASE_SHA"] and github_vars["PR_HEAD_SHA"]:
+        base_sha = github_vars["PR_BASE_SHA"]
+        head_sha = github_vars["PR_HEAD_SHA"]
     else:
         # For pushes, compare with previous commit
-        base_sha = subprocess.check_output(["git", "rev-parse", "HEAD~1"]).decode("utf-8").strip()
-        head_sha = os.environ.get("GITHUB_SHA")
+        try:
+            base_sha = subprocess.check_output(["git", "rev-parse", "HEAD~1"]).decode("utf-8").strip()
+        except subprocess.CalledProcessError:
+            # If the above fails (e.g., shallow clone with only one commit),
+            # try getting the first parent commit
+            try:
+                merge_base = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD^1"]
+                ).decode("utf-8").strip()
+                base_sha = merge_base
+            except subprocess.CalledProcessError as e:
+                print(f"Error getting base commit: {e}")
+                # Fallback to empty tree object if we can't get a parent
+                base_sha = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"  # git empty tree hash
+
+        head_sha = github_vars["GITHUB_SHA"]
 
     # Get list of changed files
     try:
@@ -109,12 +158,15 @@ def write_output(output_file: str, result_matrix: List[Dict[str, Any]]) -> None:
 
 def main():
     """Main function."""
-    # Get environment variables
+    # Get GitHub environment variables
+    github_vars = get_github_env_variables()
+
+    # Get input variables - updated to match the action.yml input names
     regex = os.environ.get("REGEX")
-    match_all_regex = os.environ.get("MATCH_ALL_REGEX")
+    all_regex = os.environ.get("ALL_REGEX")  # Changed to ALL_REGEX to match input name all-regex
     exclude_regex = os.environ.get("EXCLUDE_REGEX")
     existing_matrix = os.environ.get("EXISTING_MATRIX", "[]")
-    output_file = os.environ.get("GITHUB_OUTPUT")
+    output_file = github_vars["GITHUB_OUTPUT"]
 
     # Validate required inputs
     if not regex:
@@ -133,7 +185,7 @@ def main():
 
     # Compile regex patterns
     regex_pattern = re.compile(regex)
-    match_all_pattern = re.compile(match_all_regex) if match_all_regex else None
+    match_all_pattern = re.compile(all_regex) if all_regex else None  # Variable name updated
     exclude_pattern = re.compile(exclude_regex) if exclude_regex else None
 
     # Process changed files

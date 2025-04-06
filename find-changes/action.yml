@@ -6,10 +6,10 @@ inputs:
   regex:
     description: "Regex pattern to match files that have changed"
     required: true
-  match_all_regex:
+  all-regex:
     description: "If files matching this regex have changed, include all files matching the main regex in the output"
     required: false
-  exclude-regex:
+  exclude_regex:
     description: "Regex pattern to exclude matched files, useful for excluding sample apps or test files"
     required: false
   matrix:
@@ -27,20 +27,14 @@ runs:
   steps:
     - name: Find and process changed files
       id: find-changes
-      shell: bash
+      shell: sh
       env:
         REGEX: ${{ inputs.regex }}
-        MATCH_ALL_REGEX: ${{ inputs.match_all_regex }}
+        ALL_REGEX: ${{ inputs.all_regex }}
         EXCLUDE_REGEX: ${{ inputs.exclude-regex }}
         EXISTING_MATRIX: ${{ inputs.matrix }}
-        GITHUB_EVENT_NAME: ${{ github.event_name }}
-        PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        GITHUB_SHA: ${{ github.sha }}
-        ACTION_PATH: ${{ github.action_path }}
-        GITHUB_OUTPUT: ${{ github.output }}
       run: |
-        python3 ${{ github.action_path }}/action.py
+        "$GITHUB_ACTION_PATH/action.py"
 
 branding:
   icon: "git-pull-request"
