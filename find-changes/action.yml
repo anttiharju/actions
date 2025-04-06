@@ -9,8 +9,11 @@ inputs:
   match_all_regex:
     description: "If files matching this regex have changed, include all files matching the main regex in the output"
     required: false
+  exclude-regex:
+    description: "Regex pattern to exclude matched files, useful for excluding sample apps or test files"
+    required: false
   matrix:
-    description: "Existing JSON matrix to append results to - enables chaining multiple calls to this action to build one matrix"
+    description: "Existing JSON matrix to append results to"
     required: false
     default: "[]"
 
@@ -48,6 +51,7 @@ runs:
       run: |
         REGEX="${{ inputs.regex }}"
         MATCH_ALL_REGEX="${{ inputs.match_all_regex }}"
+        EXCLUDE_REGEX="${{ inputs.exclude-regex }}"
         EXISTING_MATRIX='${{ inputs.matrix }}'
 
         # Initialize the result matrix
@@ -72,8 +76,12 @@ runs:
         MATCHES=()
         while IFS= read -r file; do
           if [[ -n "$file" ]] && ([[ "$file" =~ $REGEX ]] || [[ "$INCLUDE_ALL" == "true" && "$file" =~ $REGEX ]]); then
-            # Extract project name from path (example implementation)
-            # This can be customized based on your project structure
+            # Skip if file matches the exclude pattern
+            if [[ -n "$EXCLUDE_REGEX" ]] && [[ "$file" =~ $EXCLUDE_REGEX ]]; then
+              continue
+            fi
+
+            # Extract project name from path
             PROJECT_NAME=$(echo "$file" | cut -d'/' -f1)
             PROJECT_PATH=$(dirname "$file")
 
