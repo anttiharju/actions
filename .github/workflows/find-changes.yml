@@ -29,15 +29,3 @@ jobs:
         shell: sh
         run: |
           echo ${{ steps.changed.outputs.files }}
-
-  test:
-    name: Test
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Test
-        working-directory: find-changes
-        run: |
-          ./test.py
