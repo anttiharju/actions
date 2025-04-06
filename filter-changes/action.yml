@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - name: Filter changes
-      id: changed
+      id: filter
       shell: sh
       env:
         changes: ${{ inputs.changes }}
