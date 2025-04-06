@@ -3,6 +3,7 @@
 A simple Hello World program to test the Python environment.
 """
 
+
 def main():
     """Print a greeting message to the console."""
     print("Hello, World!")
