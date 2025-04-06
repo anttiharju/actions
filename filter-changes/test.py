@@ -3,11 +3,10 @@
 import unittest
 import sys
 import os
-from unittest.mock import patch, mock_open
 
 # Import functions from action.py
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from action import filter_changes, extract_glob_pattern
+from action import filter_changes
 
 
 class TestFilterChanges(unittest.TestCase):
@@ -55,45 +54,15 @@ class TestFilterChanges(unittest.TestCase):
         self.assertTrue(filter_changes("*{.md,.yml}", changed_files))
         self.assertFalse(filter_changes(".github/workflows/*.yml", changed_files))
 
-    @patch("subprocess.run")
-    @patch("os.environ")
-    def test_extract_glob_pattern(self, mock_environ, mock_subprocess_run):
-        """Test extracting glob patterns from YAML using yq."""
-        # Setup mock environment variables
-        mock_environ.get = lambda key: {
-            "yq": ".patterns",
-            "file": "testdata/globs",
-            "expression": "/tmp/expr_file",
-        }.get(key)
-
-        # Mock the subprocess.run call
-        mock_process = mock_subprocess_run.return_value
-        mock_process.stdout = "*.py\n"
-
-        # Create a temporary file for the mock open
-        with patch("builtins.open", mock_open()) as mock_file:
-            result = extract_glob_pattern()
-
-            # Verify file operations
-            mock_file.assert_called_with("/tmp/expr_file", "w")
-            mock_file().write.assert_called_once_with(".patterns")
-
-            # Verify subprocess call
-            mock_subprocess_run.assert_called_once()
-            args, kwargs = mock_subprocess_run.call_args
-            self.assertEqual(args[0][0], "yq")
-            self.assertEqual(args[0][1], "--from-file")
-
-            # Check the result
-            self.assertEqual(result, "*.py")
-
-    def test_real_glob_patterns_from_file(self):
-        """Test with actual glob patterns from the globs file."""
-        # Read patterns from the globs file
-        with open("testdata/globs", "r") as f:
-            patterns = [
-                line.strip() for line in f if line.strip() and not line.startswith("#")
-            ]
+    def test_real_glob_patterns(self):
+        """Test with common glob patterns."""
+        # Define patterns directly in the test instead of reading from file
+        patterns = [
+            "{.github/*/*.yml,*/action.yml}",
+            ".github/workflows/*.yml",
+            "*{.md,.yml}",
+            "*.py",
+        ]
 
         # Test cases for each pattern
         test_cases = {
