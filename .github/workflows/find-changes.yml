@@ -21,6 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run tests
-        working-directory: find-changes
-        run: ./test.py
+      - uses: ./find-changes
+        with:
+          glob-from: "find-changes/testdata/lefthook.yml:pre-commit.jobs.go-build.glob"

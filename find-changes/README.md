@@ -9,6 +9,16 @@ if: ${{ steps.go-build.outputs.has_changes }} # step output for job output
 if: ${{ needs.planner.outputs.release }} # job output used in depending job
 ```
 
+## Implementation details
+
+### Push
+
+Depends on full checkout(?) on push and diff is based on `${{ github.event.before }}`
+
+### Pull Request
+
+Gets pull request target branch with `${{ github.event.pull_request.base.ref }}` then diffs to origin/$branch_name
+
 **DISREGARD ALL BELOW**
 
 [![find-changes](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml)
