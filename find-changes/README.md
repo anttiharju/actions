@@ -19,6 +19,10 @@ Depends on full checkout(?) on push and diff is based on `${{ github.event.befor
 
 Gets pull request target branch with `${{ github.event.pull_request.base.ref }}` then diffs to origin/$branch_name
 
+### Git diff
+
+In both cases git diff is done via `git diff --name-only ($before or origin/$base.ref`)
+
 **DISREGARD ALL BELOW**
 
 [![find-changes](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml)
