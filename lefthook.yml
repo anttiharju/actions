@@ -13,14 +13,14 @@ pre-commit:
       glob: ".github/workflows/*.yml"
       run: actionlint -color {staged_files}
 
-    - name: markdown-link-check
-      glob: "*.md"
-      run: npx --yes markdown-link-check --quiet {staged_files} | (! grep .)
+    # https://github.com/anttiharju/check-relative-markdown-links
+    - name: check-relative-markdown-links
+      run: check-relative-markdown-links run
 
     - name: Prettier
       glob: "*{.md,.yml}"
-      run: npx --yes prettier --write {staged_files}
+      run: prettier --write {staged_files}
       stage_fixed: true
 
     - name: EditorConfig-Checker
-      run: npx --yes editorconfig-checker {staged_files}
+      run: editorconfig-checker {staged_files}
