@@ -21,6 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: ./find-changes
+      - name: Find changes
+        uses: ./find-changes
         with:
           glob-from: "find-changes/testdata/lefthook.yml:pre-commit.jobs.go-build.glob"
