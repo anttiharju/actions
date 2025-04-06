@@ -1,6 +1,6 @@
 # Filter changes
 
-This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs can run conditionally based on changes.
+This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
 
 ## Usage example
 
@@ -25,7 +25,8 @@ jobs:
           file: lefthook.yml
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
-      - name: Echo boolean
+      - if: steps.workflows.outputs.have_changed
+        name: Echo true
         shell: sh
         run: |
           echo ${{ steps.workflows.outputs.have_changed }}
