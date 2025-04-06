@@ -121,8 +121,8 @@ def main():
         if github_output:
             with open(github_output, "a") as f:
                 f.write(f"has_changed={str(has_changed).lower()}\n")
-        else:
-            print(f"has_changed={str(has_changed).lower()}")
+        # Log the result
+        print(f"has_changed={str(has_changed).lower()}")
 
     except Exception as e:
         print(f"Error: Unexpected error occurred: {str(e)}")
