@@ -1,0 +1,42 @@
+name: check-changes
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/check-changes.yml"
+      - "check-changes/**/*"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+  push:
+    branches:
+      - v0
+    paths:
+      - ".github/workflows/check-changes.yml"
+      - "check-changes/**/*"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+
+jobs:
+  example:
+    name: Example
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find changes
+        id: changed
+        uses: ./find-changes
+
+      - name: Check changes
+        id: workflows
+        uses: ./check-changes
+        with:
+          changes: ${{ steps.changed.outputs.files }}
+          file: lefthook.yml
+          yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
+
+      - if: steps.workflows.outputs.has_changed == 'true'
+        name: Echo true
+        shell: sh
+        run: |
+          echo ${{ steps.workflows.outputs.has_changed }}

@@ -1,5 +1,5 @@
-name: "Filter Changes"
-description: "Filter changed files based on glob patterns extracted from a YAML file"
+name: "Check Changes"
+description: "Check changed files based on glob patterns extracted from a YAML file"
 inputs:
   changes:
     description: "JSON array of changed files"
@@ -13,8 +13,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Filter changes
-      id: filter
+    - name: Check changes
+      id: state
       shell: sh
       env:
         changes: ${{ inputs.changes }}
@@ -26,4 +26,4 @@ runs:
 outputs:
   has_changed:
     description: "Boolean indicating whether any of the changed files match the glob pattern"
-    value: ${{ steps.filter.outputs.has_changed }}
+    value: ${{ steps.state.outputs.has_changed }}

@@ -51,7 +51,7 @@ def expand_braces(pattern):
     return results
 
 
-def filter_changes(glob_pattern, changed_files):
+def check_changes(glob_pattern, changed_files):
     """Filter changed files based on glob patterns"""
     has_changed = False
 
@@ -96,8 +96,8 @@ def main():
         print("Error: Failed to parse changes JSON")
         sys.exit(1)
 
-    # Filter changes
-    has_changed = filter_changes(glob_pattern, changed_files)
+    # Check changes
+    has_changed = check_changes(glob_pattern, changed_files)
 
     # Output the result
     github_output = os.environ.get("GITHUB_OUTPUT")

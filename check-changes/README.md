@@ -1,20 +1,12 @@
-name: filter-changes
-on:
-  pull_request:
-    paths:
-      - ".github/workflows/filter-changes.yml"
-      - "filter-changes/**/*"
-      - "find-changes/**/*"
-      - "!find-changes/README.md"
-  push:
-    branches:
-      - v0
-    paths:
-      - ".github/workflows/filter-changes.yml"
-      - "filter-changes/**/*"
-      - "find-changes/**/*"
-      - "!find-changes/README.md"
+# Filter changes
 
+[![check-changes](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml)
+
+This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
+
+## Usage example
+
+```yml
 jobs:
   example:
     name: Example
@@ -25,11 +17,11 @@ jobs:
 
       - name: Find changes
         id: changed
-        uses: ./find-changes
+        uses: anttiharju/actions/find-changes@23d159effd5d8e7913d4bc8fb7ef704a7dc7dfe2
 
       - name: Filter changes
         id: workflows
-        uses: ./filter-changes
+        uses: anttiharju/actions/check-changes@23d159effd5d8e7913d4bc8fb7ef704a7dc7dfe2
         with:
           changes: ${{ steps.changed.outputs.files }}
           file: lefthook.yml
@@ -40,3 +32,4 @@ jobs:
         shell: sh
         run: |
           echo ${{ steps.workflows.outputs.has_changed }}
+```
