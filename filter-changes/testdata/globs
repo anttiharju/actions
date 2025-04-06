@@ -1,0 +1,4 @@
+{.github/*/*.yml,*/action.yml}
+.github/workflows/*.yml
+*{.md,.yml}
+*.py

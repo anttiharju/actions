@@ -29,18 +29,48 @@ def extract_glob_pattern():
     return result.stdout.strip()
 
 
+def expand_braces(pattern):
+    """Expand brace patterns like {a,b} into separate patterns"""
+    # Find all brace patterns
+    brace_pattern = re.compile(r"{([^{}]*)}")
+    match = brace_pattern.search(pattern)
+    if not match:
+        return [pattern]
+
+    # Get the options inside braces
+    options = match.group(1).split(",")
+    start, end = match.span()
+
+    # Create patterns with each option substituted
+    results = []
+    for option in options:
+        new_pattern = pattern[:start] + option + pattern[end:]
+        # Recursively expand any remaining braces
+        results.extend(expand_braces(new_pattern))
+
+    return results
+
+
 def filter_changes(glob_pattern, changed_files):
     """Filter changed files based on glob patterns"""
     have_changed = False
 
-    # Process glob patterns (multiple patterns may be separated by commas in curly braces)
-    # Remove curly braces and split by commas
-    patterns = re.sub(r"[{}]", "", glob_pattern).split(",")
+    # First, handle comma-separated patterns outside of braces
+    patterns = []
+
+    # Check if the pattern has commas outside of braces
+    if "," in glob_pattern and "{" not in glob_pattern:
+        patterns = [p.strip() for p in glob_pattern.split(",")]
+    else:
+        # Process patterns with braces
+        if "{" in glob_pattern:
+            patterns = expand_braces(glob_pattern)
+        else:
+            patterns = [glob_pattern]
 
     for file_path in changed_files:
         for pattern in patterns:
-            pattern = pattern.strip()
-            # Use fnmatch for more robust glob pattern matching
+            # Use fnmatch for glob pattern matching
             if fnmatch.fnmatch(file_path, pattern):
                 print(f"Match found: {file_path} matches pattern {pattern}")
                 have_changed = True
