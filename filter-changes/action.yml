@@ -13,48 +13,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Extract glob pattern
-      id: extract
+    - name: Filter changes
+      id: changed
       shell: sh
       env:
+        changes: ${{ inputs.changes }}
         yq: ${{ inputs.yq }}
         file: ${{ inputs.file }}
         expression: ${{ runner.temp }}/expression
       run: |
-        # This dance is done for security purposes, injecting
-        # inputs directly into a run section is not safe.
-        echo "$yq" > "$expression"
-        glob=$(yq --from-file "$expression" "$file")
-        echo "glob=$glob" >> "$GITHUB_OUTPUT"
-
-    - name: Filter changes
-      id: filter
-      shell: bash
-      env:
-        glob: ${{ steps.extract.outputs.glob }}
-        changes: ${{ inputs.changes }}
-      run: |
-        HAVE_CHANGED=false
-
-        # Convert JSON array to bash array
-        readarray -t CHANGED_FILES < <(echo "$changes" | jq -r '.[]')
-
-        # Process glob patterns (may be multiple patterns separated by commas)
-        # Remove curly braces and split by commas
-        globs=$(echo "$glob" | sed -E 's/[{}]//g' | tr ',' ' ')
-
-        for file in "${CHANGED_FILES[@]}"; do
-          for pattern in $globs; do
-            # Use bash's extended pattern matching
-            if [[ "$file" == $pattern ]]; then
-              HAVE_CHANGED=true
-              echo "Match found: $file matches pattern $pattern"
-              break 2
-            fi
-          done
-        done
-
-        echo "have_changed=$HAVE_CHANGED" >> $GITHUB_OUTPUT
+        "$GITHUB_ACTION_PATH/action.pyT
 outputs:
   have_changed:
     description: "Boolean indicating whether any of the changed files match the glob pattern"
