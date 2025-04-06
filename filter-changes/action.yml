@@ -1,0 +1,52 @@
+name: "Filter Changes"
+description: "Filter changed files based on glob patterns extracted from a YAML file"
+inputs:
+  changes:
+    description: "JSON array of changed files"
+    required: true
+  file:
+    description: "YAML file to extract glob pattern from"
+    required: true
+  yq:
+    description: "yq expression to extract glob pattern from the YAML file"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Extract glob pattern
+      id: extract
+      shell: sh
+      env:
+        yq: ${{ inputs.yq }}
+        file: ${{ inputs.file }}
+        expression: ${{ runner.temp }}/expression
+      run: |
+        # This dance is done for security purposes, injecting
+        # inputs directly into a run section is not safe.
+        echo "$yq" > "$expression"
+        glob=$(yq --from-file "$expression" "$file")
+        echo "glob=$glob" >> "$GITHUB_OUTPUT"
+
+    # quick draft, not necessarily in any way correct:
+    - name: Filter changes
+      id: filter
+      shell: bash
+      run: |
+        CHANGES='${{ inputs.changes }}'
+        HAVE_CHANGED=false
+
+        # Convert JSON array to bash array
+        readarray -t CHANGED_FILES < <(echo "$CHANGES" | jq -r '.[]')
+
+        for file in "${CHANGED_FILES[@]}"; do
+          if [[ "$file" == $GLOB ]]; then
+            HAVE_CHANGED=true
+            break
+          fi
+        done
+
+        echo "have_changed=$HAVE_CHANGED" >> $GITHUB_OUTPUT
+outputs:
+  have_changed:
+    description: "Boolean indicating whether any of the changed files match the glob pattern"
+    value: ${{ steps.filter.outputs.have_changed }}
