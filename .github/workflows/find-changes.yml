@@ -14,8 +14,8 @@ on:
       - "!find-changes/README.md"
 
 jobs:
-  test:
-    name: Test
+  example:
+    name: Example
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
