@@ -7,16 +7,31 @@ import json
 import os
 import re
 import sys
-from typing import List, Dict, Any, Set
+import subprocess
+from typing import List, Dict, Any, Set, Tuple
 
 
-def read_changed_files(file_path: str) -> List[str]:
-    """Read the list of changed files from a file."""
+def get_changed_files() -> List[str]:
+    """Get list of changed files using git diff."""
+    # Determine the base and head commits for comparison
+    github_event_name = os.environ.get("GITHUB_EVENT_NAME")
+
+    if github_event_name == "pull_request":
+        base_sha = os.environ.get("PR_BASE_SHA")
+        head_sha = os.environ.get("PR_HEAD_SHA")
+    else:
+        # For pushes, compare with previous commit
+        base_sha = subprocess.check_output(["git", "rev-parse", "HEAD~1"]).decode("utf-8").strip()
+        head_sha = os.environ.get("GITHUB_SHA")
+
+    # Get list of changed files
     try:
-        with open(file_path, "r") as f:
-            return [line.strip() for line in f.readlines() if line.strip()]
-    except IOError as e:
-        print(f"Error reading changed files: {e}")
+        changed_files = subprocess.check_output(
+            ["git", "diff", "--name-only", base_sha, head_sha]
+        ).decode("utf-8").strip().splitlines()
+        return [file for file in changed_files if file.strip()]
+    except subprocess.CalledProcessError as e:
+        print(f"Error getting changed files: {e}")
         sys.exit(1)
 
 
@@ -60,14 +75,10 @@ def process_changed_files(
     new_matches = []
     for file in changed_files:
         # Check if file matches the main regex or should be included due to match_all
-        if regex_pattern.search(file) or (include_all and regex_pattern.search(file)):
-            # Skip if file matches exclude pattern
-            if exclude_pattern and exclude_pattern.search(file):
-                continue
-
+        if regex_pattern.search(file) and (not exclude_pattern or not exclude_pattern.search(file)):
             # Extract project information
             project_name = file.split("/")[0] if "/" in file else file
-            project_path = os.path.dirname(file)
+            project_path = os.path.dirname(file) or project_name
 
             # Only add if this path isn't already in the matrix
             if project_path not in existing_paths:
@@ -103,7 +114,6 @@ def main():
     match_all_regex = os.environ.get("MATCH_ALL_REGEX")
     exclude_regex = os.environ.get("EXCLUDE_REGEX")
     existing_matrix = os.environ.get("EXISTING_MATRIX", "[]")
-    changed_files_path = os.environ.get("CHANGED_FILES_PATH")
     output_file = os.environ.get("GITHUB_OUTPUT")
 
     # Validate required inputs
@@ -111,16 +121,12 @@ def main():
         print("Error: REGEX environment variable is required")
         sys.exit(1)
 
-    if not changed_files_path:
-        print("Error: CHANGED_FILES_PATH environment variable is required")
-        sys.exit(1)
-
     if not output_file:
         print("Error: GITHUB_OUTPUT environment variable is required")
         sys.exit(1)
 
-    # Read changed files
-    changed_files = read_changed_files(changed_files_path)
+    # Get and process changed files
+    changed_files = get_changed_files()
 
     # Process existing matrix
     matrix = process_matrix(existing_matrix)

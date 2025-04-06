@@ -25,24 +25,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Get changed files
-      id: changed-files
-      shell: bash
-      run: |
-        # Determine the base and head commits for comparison
-        if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-          BASE_SHA=${{ github.event.pull_request.base.sha }}
-          HEAD_SHA=${{ github.event.pull_request.head.sha }}
-        else
-          # For pushes, compare with previous commit
-          BASE_SHA=$(git rev-parse HEAD~1)
-          HEAD_SHA=${{ github.sha }}
-        fi
-
-        # Get list of changed files
-        git diff --name-only $BASE_SHA $HEAD_SHA > ${{ github.action_path }}/changed_files.txt
-
-    - name: Process changed files
+    - name: Find and process changed files
       id: find-changes
       shell: bash
       env:
@@ -50,7 +33,11 @@ runs:
         MATCH_ALL_REGEX: ${{ inputs.match_all_regex }}
         EXCLUDE_REGEX: ${{ inputs.exclude-regex }}
         EXISTING_MATRIX: ${{ inputs.matrix }}
-        CHANGED_FILES_PATH: ${{ github.action_path }}/changed_files.txt
+        GITHUB_EVENT_NAME: ${{ github.event_name }}
+        PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        GITHUB_SHA: ${{ github.sha }}
+        ACTION_PATH: ${{ github.action_path }}
         GITHUB_OUTPUT: ${{ github.output }}
       run: |
         python3 ${{ github.action_path }}/action.py
