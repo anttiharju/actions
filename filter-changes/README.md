@@ -1,6 +1,6 @@
 # Filter changes
 
-This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes. This enables faster CI as it's cheaper to not run jobs if nothing meaningful to them has changed.
+This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
 
 ## Usage example
 
