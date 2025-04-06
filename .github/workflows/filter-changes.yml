@@ -1,0 +1,43 @@
+name: filter-changes
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/filter-changes.yml"
+      - "filter-changes/**/*"
+      - "!filter-changes/README.md"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+  push:
+    branches:
+      - v0
+    paths:
+      - ".github/workflows/filter-changes.yml"
+      - "filter-changes/**/*"
+      - "!filter-changes/README.md"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+
+jobs:
+  example:
+    name: Example
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Find changes
+        id: changed
+        uses: ./find-changes
+
+      - name: Filter changes
+        id: workflows
+        uses: ./filter-changes
+        with:
+          changes: ${{ steps.changed.outputs.files }}
+          file: lefthook.yml
+          yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
+
+      - name: Echo changed files
+        shell: sh
+        run: |
+          echo ${{ steps.workflows.outputs.have_changed }}
