@@ -1,0 +1,21 @@
+name: Simple Python Match
+description: Test matching Python files with basic regex
+env:
+  GITHUB_EVENT_NAME: push
+  REGEX: ".*\\.py$"
+  EXISTING_MATRIX: "[]"
+input_files:
+  - path: src/file1.py
+    content: "print('Hello, World!')"
+  - path: src/file2.txt
+    content: "This is a text file"
+  - path: tests/test1.py
+    content: "def test_something(): pass"
+expected_output:
+  matrix:
+    - name: src
+      path: src
+      file: src/file1.py
+    - name: tests
+      path: tests
+      file: tests/test1.py
