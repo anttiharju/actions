@@ -29,6 +29,7 @@ jobs:
         with:
           regex: "TBD"
           match_all_regex: "TBD" # optional
+          exclude-regex: "TBD" # exclude for example sample apps that are not meant to have CI ran on them
     outputs:
       projects: ${{ steps.find.outputs.changes }}
 
