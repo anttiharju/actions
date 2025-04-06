@@ -2,6 +2,13 @@
 
 Whole point is Lefthook integration (in a generic manner) - monorepos are out of scope, but nice if they can be easily supported
 
+## Usage
+
+```yml
+if: ${{ steps.go-build.outputs.has_changes }} # step output for job output
+if: ${{ needs.planner.outputs.release }} # job output used in depending job
+```
+
 **DISREGARD ALL BELOW**
 
 [![find-changes](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml)
