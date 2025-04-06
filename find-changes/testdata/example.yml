@@ -10,9 +10,7 @@ input_files:
   - path: tests/test1.py
 expected_output:
   matrix:
-    - name: src
+    - name: file1
       path: src
-      file: src/file1.py
-    - name: tests
+    - name: test1
       path: tests
-      file: tests/test1.py
