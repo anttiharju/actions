@@ -4,7 +4,6 @@ on:
     paths:
       - ".github/workflows/filter-changes.yml"
       - "filter-changes/**/*"
-      - "!filter-changes/README.md"
       - "find-changes/**/*"
       - "!find-changes/README.md"
   push:
@@ -13,7 +12,6 @@ on:
     paths:
       - ".github/workflows/filter-changes.yml"
       - "filter-changes/**/*"
-      - "!filter-changes/README.md"
       - "find-changes/**/*"
       - "!find-changes/README.md"
 
@@ -37,7 +35,8 @@ jobs:
           file: lefthook.yml
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
-      - name: Echo boolean
+      - if: steps.workflows.outputs.have_changed
+        name: Echo true
         shell: sh
         run: |
           echo ${{ steps.workflows.outputs.have_changed }}
