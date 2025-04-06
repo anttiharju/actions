@@ -1,0 +1,26 @@
+name: render-template
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/find-changes.yml"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+  push:
+    branches:
+      - v0
+    paths:
+      - ".github/workflows/find-changes.yml"
+      - "find-changes/**/*"
+      - "!find-changes/README.md"
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        working-directory: find-changes
+        run: test.py
