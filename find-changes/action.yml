@@ -42,90 +42,17 @@ runs:
         # Get list of changed files
         git diff --name-only $BASE_SHA $HEAD_SHA > ${{ github.action_path }}/changed_files.txt
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-
     - name: Process changed files
       id: find-changes
-      shell: python
+      shell: bash
       run: |
-        import os
-        import re
-        import json
-        import sys
-
-        # Read inputs
-        regex = "${{ inputs.regex }}"
-        match_all_regex = "${{ inputs.match_all_regex }}"
-        exclude_regex = "${{ inputs.exclude-regex }}"
-        existing_matrix = "${{ inputs.matrix }}"
-
-        # Read changed files
-        changed_files = []
-        with open(os.path.join("${{ github.action_path }}", "changed_files.txt"), "r") as f:
-            changed_files = [line.strip() for line in f.readlines() if line.strip()]
-
-        # Process inputs
-        if existing_matrix and existing_matrix != "[]":
-            try:
-                result_matrix = json.loads(existing_matrix)
-            except json.JSONDecodeError:
-                print("Error: Invalid JSON in existing matrix input")
-                sys.exit(1)
-        else:
-            result_matrix = []
-
-        # Compile regex patterns
-        regex_pattern = re.compile(regex) if regex else None
-        match_all_pattern = re.compile(match_all_regex) if match_all_regex else None
-        exclude_pattern = re.compile(exclude_regex) if exclude_regex else None
-
-        # Check if we should include all matches
-        include_all = False
-        if match_all_pattern:
-            for file in changed_files:
-                if match_all_pattern.search(file):
-                    include_all = True
-                    break
-
-        # Find matches
-        existing_paths = set()
-        if result_matrix:
-            for item in result_matrix:
-                if "path" in item:
-                    existing_paths.add(item["path"])
-
-        new_matches = []
-        for file in changed_files:
-            # Check if file matches the main regex or should be included due to match_all
-            if regex_pattern and (regex_pattern.search(file) or (include_all and regex_pattern.search(file))):
-                # Skip if file matches exclude pattern
-                if exclude_pattern and exclude_pattern.search(file):
-                    continue
-
-                # Extract project information
-                project_name = file.split("/")[0] if "/" in file else file
-                project_path = os.path.dirname(file)
-
-                # Only add if this path isn't already in the matrix
-                if project_path not in existing_paths:
-                    new_matches.append({
-                        "name": project_name,
-                        "path": project_path,
-                        "file": file
-                    })
-                    existing_paths.add(project_path)
-
-        # Add new matches to result matrix
-        result_matrix.extend(new_matches)
-
-        # Output the results
-        with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-            f.write("matrix<<EOF\n")
-            f.write(json.dumps(result_matrix))
-            f.write("\nEOF\n")
+        python3 ${{ github.action_path }}/action.py \
+          --regex "${{ inputs.regex }}" \
+          --match-all-regex "${{ inputs.match_all_regex }}" \
+          --exclude-regex "${{ inputs.exclude-regex }}" \
+          --matrix "${{ inputs.matrix }}" \
+          --changed-files "${{ github.action_path }}/changed_files.txt" \
+          --output-file "$GITHUB_OUTPUT"
 
 branding:
   icon: "git-pull-request"
