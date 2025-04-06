@@ -1,0 +1,122 @@
+name: "Find Changes"
+description: "Find changes in files to enable conditional runs of CI jobs based on what files have changed within a PR or merge"
+author: "anttiharju"
+
+inputs:
+  regex:
+    description: "Regex pattern to match files that have changed"
+    required: true
+  match_all_regex:
+    description: "If files matching this regex have changed, include all files matching the main regex in the output"
+    required: false
+  matrix:
+    description: "Existing JSON matrix to append results to - enables chaining multiple calls to this action to build one matrix"
+    required: false
+    default: "[]"
+
+outputs:
+  changes:
+    description: "JSON array of objects containing information about changed files that match the provided regex patterns"
+    value: ${{ steps.find-changes.outputs.matrix }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get changed files
+      id: changed-files
+      shell: bash
+      run: |
+        # Determine the base and head commits for comparison
+        if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+        else
+          # For pushes, compare with previous commit
+          BASE_SHA=$(git rev-parse HEAD~1)
+          HEAD_SHA=${{ github.sha }}
+        fi
+
+        # Get list of changed files
+        CHANGED_FILES=$(git diff --name-only $BASE_SHA $HEAD_SHA)
+        echo "CHANGED_FILES<<EOF" >> $GITHUB_ENV
+        echo "$CHANGED_FILES" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+    - name: Process changed files
+      id: find-changes
+      shell: bash
+      run: |
+        REGEX="${{ inputs.regex }}"
+        MATCH_ALL_REGEX="${{ inputs.match_all_regex }}"
+        EXISTING_MATRIX='${{ inputs.matrix }}'
+
+        # Initialize the result matrix
+        if [[ "$EXISTING_MATRIX" == "" || "$EXISTING_MATRIX" == "[]" ]]; then
+          RESULT_MATRIX="[]"
+        else
+          RESULT_MATRIX="$EXISTING_MATRIX"
+        fi
+
+        # Check if we should include all matches
+        INCLUDE_ALL=false
+        if [[ -n "$MATCH_ALL_REGEX" ]]; then
+          while IFS= read -r file; do
+            if [[ -n "$file" ]] && [[ "$file" =~ $MATCH_ALL_REGEX ]]; then
+              INCLUDE_ALL=true
+              break
+            fi
+          done <<< "$CHANGED_FILES"
+        fi
+
+        # Process files that match the regex
+        MATCHES=()
+        while IFS= read -r file; do
+          if [[ -n "$file" ]] && ([[ "$file" =~ $REGEX ]] || [[ "$INCLUDE_ALL" == "true" && "$file" =~ $REGEX ]]); then
+            # Extract project name from path (example implementation)
+            # This can be customized based on your project structure
+            PROJECT_NAME=$(echo "$file" | cut -d'/' -f1)
+            PROJECT_PATH=$(dirname "$file")
+
+            # Create JSON object for this match
+            MATCH="{\"name\":\"$PROJECT_NAME\",\"path\":\"$PROJECT_PATH\",\"file\":\"$file\"}"
+
+            # Check if this match is already in the array
+            if ! grep -q "\"path\":\"$PROJECT_PATH\"" <<< "$RESULT_MATRIX"; then
+              MATCHES+=("$MATCH")
+            fi
+          fi
+        done <<< "$CHANGED_FILES"
+
+        # If we have matches, add them to the result matrix
+        if [[ ${#MATCHES[@]} -gt 0 ]]; then
+          # Convert RESULT_MATRIX from JSON string to array
+          if [[ "$RESULT_MATRIX" == "[]" ]]; then
+            RESULT_MATRIX="[${MATCHES[0]}"
+            for ((i=1; i<${#MATCHES[@]}; i++)); do
+              RESULT_MATRIX="$RESULT_MATRIX,${MATCHES[$i]}"
+            done
+            RESULT_MATRIX="$RESULT_MATRIX]"
+          else
+            # Remove trailing bracket
+            RESULT_MATRIX="${RESULT_MATRIX%]}"
+            # Add matches
+            for match in "${MATCHES[@]}"; do
+              RESULT_MATRIX="$RESULT_MATRIX,$match"
+            done
+            RESULT_MATRIX="$RESULT_MATRIX]"
+          fi
+        fi
+
+        # Escape JSON for GitHub Actions
+        RESULT_MATRIX="${RESULT_MATRIX//\\/\\\\}"
+        RESULT_MATRIX="${RESULT_MATRIX//\"/\\\"}"
+        RESULT_MATRIX="${RESULT_MATRIX//$'\n'/\\n}"
+
+        # Output the results
+        echo "matrix<<EOF" >> $GITHUB_OUTPUT
+        echo "$RESULT_MATRIX" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+branding:
+  icon: "git-pull-request"
+  color: "blue"
