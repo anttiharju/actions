@@ -1,5 +1,5 @@
-name: "Find changes"
-description: "Find changes in files to enable conditional runs of CI jobs based on what files have changed within a PR or merge"
+name: "check-glob"
+description: "Match glob to changes in a push, pull_request or merge_group event and output true/false"
 author: "anttiharju"
 
 inputs:
@@ -19,9 +19,9 @@ runs:
         "$GITHUB_ACTION_PATH/action.py"
 
 outputs:
-  changes:
-    description: "JSON array of objects containing information about changed files that match the extracted glob patterns"
-    value: ${{ steps.find-changes.outputs.matrix }}
+  has_changes:
+    description: "Boolean flag indicating whether any changes were found matching the extracted glob pattern (true/false)"
+    value: ${{ steps.find-changes.outputs.has_changes }}
 
 branding:
   icon: "git-pull-request"
