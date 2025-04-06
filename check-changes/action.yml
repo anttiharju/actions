@@ -27,7 +27,7 @@ runs:
         expression_path: ${{ runner.temp }}/expression
         force_true: ${{ inputs.force-true }}
       run: |
-        # action.py
+        # Check whether output should be true
         if [ "$force_true" = "true" ]; then
           echo "force-true input is set to true (default false), forcing changes output to true"
           echo "changes=true"
