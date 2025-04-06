@@ -12,7 +12,6 @@ from action import filter_changes
 class TestFilterChanges(unittest.TestCase):
     def test_simple_glob_matches(self):
         """Test basic glob pattern matches."""
-        # Test *.py pattern
         self.assertTrue(filter_changes("*.py", ["test.py"]))
         self.assertTrue(filter_changes("*.py", ["src/main.py"]))
         self.assertFalse(filter_changes("*.py", ["test.txt"]))
@@ -56,7 +55,6 @@ class TestFilterChanges(unittest.TestCase):
 
     def test_real_glob_patterns(self):
         """Test with common glob patterns."""
-        # Define patterns directly in the test instead of reading from file
         patterns = [
             "{.github/*/*.yml,*/action.yml}",
             ".github/workflows/*.yml",
@@ -64,7 +62,6 @@ class TestFilterChanges(unittest.TestCase):
             "*.py",
         ]
 
-        # Test cases for each pattern
         test_cases = {
             "{.github/*/*.yml,*/action.yml}": {
                 "should_match": [".github/workflows/ci.yml", "foo/action.yml"],
@@ -94,7 +91,6 @@ class TestFilterChanges(unittest.TestCase):
             },
         }
 
-        # Verify each pattern against test cases
         for pattern in patterns:
             if pattern in test_cases:
                 for file_path in test_cases[pattern]["should_match"]:
