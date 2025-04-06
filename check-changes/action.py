@@ -97,10 +97,6 @@ def main():
         # Get inputs from environment variables
         changes_json = os.environ.get("changes")
 
-        # Log the yq expression
-        yq_expression = os.environ.get("yq")
-        print(f"yq_expression={yq_expression}")
-
         # Check if file exists before extraction
         yaml_file = os.environ.get("file")
         if not os.path.isfile(yaml_file):
@@ -109,6 +105,7 @@ def main():
 
         # Extract glob pattern
         glob_pattern = extract_glob_pattern()
+        print(f"glob={glob_pattern}")
 
         # Parse the changes JSON
         try:
