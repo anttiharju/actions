@@ -10,7 +10,7 @@ def main():
     event_name = os.environ.get("GITHUB_EVENT_NAME")
 
     # List of allowed event types
-    allowed_events = ["pull_request", "merge_group", "push"]
+    allowed_events = ["pull_request", "merge_group"]
 
     # Check if the event type is allowed
     if not event_name:
