@@ -15,11 +15,11 @@ jobs:
 
       - name: Find changes
         id: changed
-        uses: anttiharju/actions/find-changes@77d35e5fef2de4fe65bc4479b45a6b42ef3ca8f6
+        uses: anttiharju/actions/find-changes@23d159effd5d8e7913d4bc8fb7ef704a7dc7dfe2
 
       - name: Filter changes
         id: workflows
-        uses: anttiharju/actions/filter-changes@77d35e5fef2de4fe65bc4479b45a6b42ef3ca8f6
+        uses: anttiharju/actions/filter-changes@23d159effd5d8e7913d4bc8fb7ef704a7dc7dfe2
         with:
           changes: ${{ steps.changed.outputs.files }}
           file: lefthook.yml
