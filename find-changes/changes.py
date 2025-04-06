@@ -28,6 +28,7 @@ def ensure_sufficient_git_depth(event_name, event_data):
                     [
                         "git",
                         "fetch",
+                        "--depth=1",
                         "--no-tags",
                         "origin",
                         f"{default_branch}:refs/remotes/origin/{default_branch}",
@@ -42,7 +43,7 @@ def ensure_sufficient_git_depth(event_name, event_data):
         if target_commit:
             # Fetch the specific commit we need
             subprocess.run(
-                ["git", "fetch", "--no-tags", "origin", target_commit],
+                ["git", "fetch", "--depth=1", "--no-tags", "origin", target_commit],
                 check=True,
                 capture_output=True,
                 text=True,
