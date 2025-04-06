@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Ensure operation only in supported events
-      shell: python
+      shell: sh
       run: |
         "$GITHUB_ACTION_PATH/event.py"
 
