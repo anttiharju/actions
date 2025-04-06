@@ -12,7 +12,7 @@ env:
   # ...
 input_files:
   - path: src/file1.py
-    content: "..."
+  - path: tests/test1.py
 expected_output:
   matrix:
     - name: src
@@ -123,8 +123,10 @@ class FindChangesTestCase(unittest.TestCase):
         for file_info in self.test_data.get("input_files", []):
             file_path = os.path.join(temp_dir, file_info["path"])
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # Create an empty file or use provided content
+            content = file_info.get("content", "")
             with open(file_path, "w") as f:
-                f.write(file_info["content"])
+                f.write(content)
 
         # Add and commit changed files
         subprocess.run(
@@ -170,7 +172,7 @@ def discover_tests(testdata_dir, action_path):
     """Discover test cases in the testdata directory."""
     test_cases = []
     for file in os.listdir(testdata_dir):
-        if file.endswith((".yml", ".yaml")):
+        if file.endswith((".yml", ".yaml")) and file != ".gitkeep":
             test_file = os.path.join(testdata_dir, file)
             test_case = FindChangesTestCase(test_file, action_path)
             test_cases.append(test_case)
