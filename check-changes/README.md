@@ -1,4 +1,4 @@
-# Filter changes
+# Check changes
 
 [![check-changes](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml)
 
@@ -19,7 +19,7 @@ jobs:
         id: changed
         uses: anttiharju/actions/find-changes@2ea89c9f5dc95de4353022345f87ea746cbc60a9
 
-      - name: Filter changes
+      - name: Check changes
         id: workflows
         uses: anttiharju/actions/check-changes@2ea89c9f5dc95de4353022345f87ea746cbc60a9
         with:

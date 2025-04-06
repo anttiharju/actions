@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from action import check_changes
 
 
-class TestFilterChanges(unittest.TestCase):
+class TestCheckChanges(unittest.TestCase):
     def test_simple_glob_matches(self):
         """Test basic glob pattern matches."""
         self.assertTrue(check_changes("*.py", ["test.py"]))

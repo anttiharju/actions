@@ -62,7 +62,7 @@ def expand_braces(pattern):
 
 
 def check_changes(glob_pattern, changed_files):
-    """Filter changed files based on glob patterns"""
+    """Check changed files based on glob patterns"""
     changed = False
 
     # First, handle comma-separated patterns outside of braces
