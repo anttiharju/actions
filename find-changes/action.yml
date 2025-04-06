@@ -1,29 +1,20 @@
-name: "check-glob"
-description: "Match glob to changes in a push, pull_request or merge_group event and output true/false"
+name: "Find changes"
+description: "Outputs changed files in JSON format for downstream actions"
 author: "anttiharju"
-
-inputs:
-  glob-from:
-    description: "Path to YAML file and key path (e.g. 'lefthook.yml:pre-commit.jobs.name.glob') to extract glob pattern for matching changed files"
-    required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Output changed files
-      id: changes
+    - name: Find changes
+      id: changed
       shell: sh
       run: |
-        "$GITHUB_ACTION_PATH/changes.py"
-    - name: Use github output (as a test, this step will be replaced later)
-      shell: sh
-      run: |
-        echo ${{ steps.changes.outputs.files }}
+        "$GITHUB_ACTION_PATH/action.py"
 
 outputs:
-  has_changes:
-    description: "Boolean flag indicating whether any changes were found matching the extracted glob pattern (true/false)"
-    value: ${{ steps.find-changes.outputs.has_changes }}
+  files:
+    description: "List of changed files in JSON format"
+    value: ${{ steps.changed.outputs.files }}
 
 branding:
   icon: "git-pull-request"
