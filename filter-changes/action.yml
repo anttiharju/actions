@@ -24,6 +24,6 @@ runs:
       run: |
         "$GITHUB_ACTION_PATH/action.py"
 outputs:
-  have_changed:
+  has_changed:
     description: "Boolean indicating whether any of the changed files match the glob pattern"
-    value: ${{ steps.filter.outputs.have_changed }}
+    value: ${{ steps.filter.outputs.has_changed }}

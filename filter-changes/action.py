@@ -53,7 +53,7 @@ def expand_braces(pattern):
 
 def filter_changes(glob_pattern, changed_files):
     """Filter changed files based on glob patterns"""
-    have_changed = False
+    has_changed = False
 
     # First, handle comma-separated patterns outside of braces
     patterns = []
@@ -73,13 +73,13 @@ def filter_changes(glob_pattern, changed_files):
             # Use fnmatch for glob pattern matching
             if fnmatch.fnmatch(file_path, pattern):
                 print(f"Match found: {file_path} matches pattern {pattern}")
-                have_changed = True
+                has_changed = True
                 break
 
-        if have_changed:
+        if has_changed:
             break
 
-    return have_changed
+    return has_changed
 
 
 def main():
@@ -97,15 +97,15 @@ def main():
         sys.exit(1)
 
     # Filter changes
-    have_changed = filter_changes(glob_pattern, changed_files)
+    has_changed = filter_changes(glob_pattern, changed_files)
 
     # Output the result
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
         with open(github_output, "a") as f:
-            f.write(f"have_changed={str(have_changed).lower()}\n")
+            f.write(f"has_changed={str(has_changed).lower()}\n")
     else:
-        print(f"have_changed={str(have_changed).lower()}")
+        print(f"has_changed={str(has_changed).lower()}")
 
 
 if __name__ == "__main__":

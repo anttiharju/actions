@@ -27,9 +27,9 @@ jobs:
           file: lefthook.yml
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
-      - if: steps.workflows.outputs.have_changed == 'true'
+      - if: steps.workflows.outputs.has_changed == 'true'
         name: Echo true
         shell: sh
         run: |
-          echo ${{ steps.workflows.outputs.have_changed }}
+          echo ${{ steps.workflows.outputs.has_changed }}
 ```
