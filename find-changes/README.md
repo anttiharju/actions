@@ -1,4 +1,4 @@
-# Find changes
+# Find changes (WIP)
 
 Find changes is an action to enable conditional runs of CI jobs based on what files changes have occurred within a PR or a merge.
 
