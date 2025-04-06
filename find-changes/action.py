@@ -8,7 +8,7 @@ import os
 import re
 import sys
 import subprocess
-from typing import List, Dict, Any, Set, Tuple
+from typing import List, Dict, Any, Set
 
 
 def get_github_env_variables() -> Dict[str, str]:
