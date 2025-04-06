@@ -4,6 +4,8 @@ Find changes is an action to enable conditional runs of CI jobs based on what fi
 
 Usage: either with merge queues or 'Require branches to be up to date before merging' branch protection.
 
+Runner type: one with python3.12 or newer (ubuntu-24.04)
+
 ## Why
 
 While GitHub Actions has the default `paths:` filter, I've yet find a way to do some of the following things with it:
