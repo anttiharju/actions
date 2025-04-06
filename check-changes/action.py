@@ -19,14 +19,24 @@ def extract_glob_pattern():
         f.write(yq_expression)
 
     # Run yq to extract the glob pattern
-    result = subprocess.run(
-        ["yq", "--from-file", expression_path, yaml_file],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    try:
+        result = subprocess.run(
+            ["yq", "--from-file", expression_path, yaml_file],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        pattern = result.stdout.strip()
 
-    return result.stdout.strip()
+        # Check if yq found anything (empty or null result)
+        if not pattern or pattern == "null":
+            print(f"Error: yq expression did not match anything in file '{yaml_file}'")
+            sys.exit(1)
+
+        return pattern
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing yq command: {e.stderr}")
+        sys.exit(1)
 
 
 def expand_braces(pattern):
@@ -83,29 +93,40 @@ def check_changes(glob_pattern, changed_files):
 
 
 def main():
-    # Get inputs from environment variables
-    changes_json = os.environ.get("changes")
-
-    # Extract glob pattern
-    glob_pattern = extract_glob_pattern()
-
-    # Parse the changes JSON
     try:
-        changed_files = json.loads(changes_json)
-    except json.JSONDecodeError:
-        print("Error: Failed to parse changes JSON")
+        # Get inputs from environment variables
+        changes_json = os.environ.get("changes")
+
+        # Check if file exists before extraction
+        yaml_file = os.environ.get("file")
+        if not os.path.isfile(yaml_file):
+            print(f"Error: File not found: {yaml_file}")
+            sys.exit(1)
+
+        # Extract glob pattern
+        glob_pattern = extract_glob_pattern()
+
+        # Parse the changes JSON
+        try:
+            changed_files = json.loads(changes_json)
+        except json.JSONDecodeError:
+            print("Error: Failed to parse changes JSON")
+            sys.exit(1)
+
+        # Check changes
+        has_changed = check_changes(glob_pattern, changed_files)
+
+        # Output the result
+        github_output = os.environ.get("GITHUB_OUTPUT")
+        if github_output:
+            with open(github_output, "a") as f:
+                f.write(f"has_changed={str(has_changed).lower()}\n")
+        else:
+            print(f"has_changed={str(has_changed).lower()}")
+
+    except Exception as e:
+        print(f"Error: Unexpected error occurred: {str(e)}")
         sys.exit(1)
-
-    # Check changes
-    has_changed = check_changes(glob_pattern, changed_files)
-
-    # Output the result
-    github_output = os.environ.get("GITHUB_OUTPUT")
-    if github_output:
-        with open(github_output, "a") as f:
-            f.write(f"has_changed={str(has_changed).lower()}\n")
-    else:
-        print(f"has_changed={str(has_changed).lower()}")
 
 
 if __name__ == "__main__":
