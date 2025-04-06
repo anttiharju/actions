@@ -19,7 +19,7 @@ jobs:
 
       - name: Find changes
         id: changed
-        uses: anttiharju/actions/find-changes@d3cf964588f604b270572f63188ded03d96eed99
+        uses: anttiharju/actions/find-changes@23d159effd5d8e7913d4bc8fb7ef704a7dc7dfe2
 
       - name: Echo changed files
         shell: sh
