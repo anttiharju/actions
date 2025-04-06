@@ -14,6 +14,15 @@ runs:
       shell: sh
       run: |
         "$GITHUB_ACTION_PATH/event.py"
+    - name: Output changed files
+      id: changes
+      shell: sh
+      run: |
+        "$GITHUB_ACTION_PATH/changes.py" >> "$GITHUB_OUTPUT"
+    - name: Use github output (as a test, this step will be replaced later)
+      shell: sh
+      run: |
+        echo ${{ steps.changes.outputs.files }}
 
 outputs:
   has_changes:
