@@ -126,12 +126,12 @@ def process_changed_files(
     if existing_matrix is None:
         existing_matrix = []
 
-    # Check if we should include all matches
-    include_all = False
+    # Check if we should include all matches based on match_all_pattern
+    include_all_matches = False
     if match_all_pattern:
         for file in changed_files:
             if match_all_pattern.search(file):
-                include_all = True
+                include_all_matches = True
                 break
 
     # Find matches
@@ -142,10 +142,23 @@ def process_changed_files(
 
     new_matches = []
     for file in changed_files:
-        # Check if file matches the main regex or should be included due to match_all
+        # Check if file should be included based on regex patterns
+        should_include = False
+
+        # Include if file matches main regex pattern (and not excluded)
         if regex_pattern.search(file) and (
             not exclude_pattern or not exclude_pattern.search(file)
         ):
+            should_include = True
+        # Include if we're including all files matching the main regex due to match_all_pattern
+        elif (
+            include_all_matches
+            and regex_pattern.search(file)
+            and (not exclude_pattern or not exclude_pattern.search(file))
+        ):
+            should_include = True
+
+        if should_include:
             # Extract project information
             project_name = file.split("/")[0] if "/" in file else file
             project_path = os.path.dirname(file) or project_name
