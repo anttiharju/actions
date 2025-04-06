@@ -6,6 +6,54 @@ import json
 import sys
 
 
+def ensure_sufficient_git_depth(event_name, event_data):
+    """Ensure the git repository has enough history to perform the diff."""
+    print("Ensuring sufficient git history...")
+
+    try:
+        # Determine what commit we need to fetch
+        target_commit = None
+
+        if event_name == "push" and event_data.get("before"):
+            target_commit = event_data["before"]
+        elif event_name in ("pull_request", "merge_group"):
+            if event_data.get("repository") and event_data["repository"].get(
+                "default_branch"
+            ):
+                # For PR events, we need to ensure we have the default branch
+                default_branch = event_data["repository"]["default_branch"]
+
+                # Fetch the default branch
+                subprocess.run(
+                    [
+                        "git",
+                        "fetch",
+                        "--no-tags",
+                        "origin",
+                        f"{default_branch}:refs/remotes/origin/{default_branch}",
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                )
+                print(f"Fetched default branch: origin/{default_branch}")
+                return
+
+        if target_commit:
+            # Fetch the specific commit we need
+            subprocess.run(
+                ["git", "fetch", "--no-tags", "origin", target_commit],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            print(f"Fetched commit: {target_commit}")
+
+    except subprocess.CalledProcessError as e:
+        print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
+        print("Continuing with available history...")
+
+
 def run_git_diff(comparison_point):
     """Run git diff to get changed files."""
     print("Finding changed files")
@@ -101,6 +149,9 @@ def main():
     """Main function to output changed files in GitHub Actions format."""
     event_name = get_github_event()
     event_data = get_event_data()
+
+    # Ensure we have sufficient git history before proceeding
+    ensure_sufficient_git_depth(event_name, event_data)
 
     # Get the branch point for comparison
     diff_base = get_branch_point(event_name, event_data)
