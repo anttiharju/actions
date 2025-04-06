@@ -2,9 +2,11 @@
 
 Find changes is an action to enable conditional runs of CI jobs based on what files changes have occurred within a PR or a merge.
 
+Usage: either with merge queues or 'Require branches to be up to date before merging' branch protection.
+
 ## Why
 
-While GitHub Actions has the defaults `paths:` filter, I've yet find a way to do some of the following things with it:
+While GitHub Actions has the default `paths:` filter, I've yet find a way to do some of the following things with it:
 
 - Have jobs run conditionally but still wait for all CI to complete before satisfying branch protection rules
 - Enforce a certain order within conditional CI jobs, for example building the latest version of a container if the container definition has changed to have it immediately available for later jobs
