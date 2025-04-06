@@ -1,5 +1,9 @@
 # Find changes (WIP)
 
+Whole point is Lefthook integration (in a generic manner)
+
+**DISREGARD ALL BELOW**
+
 [![find-changes](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml)
 
 Find changes is an action to enable conditional runs of CI jobs based on what files changes have occurred within a PR or a merge.
