@@ -24,3 +24,7 @@ jobs:
         run: |
           echo ${{ steps.changed.outputs.files }}
 ```
+
+```json
+["foo/bar", "baz"]
+```
