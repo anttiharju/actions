@@ -1,6 +1,6 @@
 # Find changes (WIP)
 
-Whole point is Lefthook integration (in a generic manner)
+Whole point is Lefthook integration (in a generic manner) - monorepos are out of scope, but nice if they can be easily supported
 
 **DISREGARD ALL BELOW**
 
