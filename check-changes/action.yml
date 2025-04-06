@@ -20,7 +20,7 @@ runs:
         changes: ${{ inputs.changes }}
         yq: ${{ inputs.yq }}
         file: ${{ inputs.file }}
-        expression: ${{ runner.temp }}/expression
+        expression_path: ${{ runner.temp }}/expression
       run: |
         "$GITHUB_ACTION_PATH/action.py"
 outputs:

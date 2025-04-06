@@ -12,7 +12,7 @@ def extract_glob_pattern():
     """Extract glob pattern from YAML file using yq expression"""
     yq_expression = os.environ.get("yq")
     yaml_file = os.environ.get("file")
-    expression_path = os.environ.get("expression")
+    expression_path = os.environ.get("expression_path")
 
     # Write the expression to a file (for security reasons)
     with open(expression_path, "w") as f:
