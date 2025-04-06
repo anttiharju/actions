@@ -2,16 +2,10 @@ name: Example test
 description: Example test as concept for future ones
 env:
   GITHUB_EVENT_NAME: push
-  REGEX: ".*\\.py$"
-  DEPTH: "2" # limits the depth from which basename is taken for name
-  MATRIX: "[]"
+  glob-file: lefthook.yml:pre-commit.jobs.go-build.glob
 input_files:
-  - path: src/file1.py
-  - path: src/file2.txt
+  - path: main.go
+  - path: README.md
   - path: tests/test1/file3.py
 expected_output:
-  matrix:
-    - name: file1
-      path: src
-    - name: test1
-      path: tests
+  has_changes: true

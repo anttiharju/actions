@@ -3,7 +3,7 @@ description: "Match glob to changes in a push, pull_request or merge_group event
 author: "anttiharju"
 
 inputs:
-  glob:
+  glob-file:
     description: "Path to YAML file and key path (e.g. 'lefthook.yml:pre-commit.jobs.name.glob') to extract glob pattern for matching changed files"
     required: true
 
@@ -14,7 +14,7 @@ runs:
       id: find-changes
       shell: sh
       env:
-        glob: ${{ inputs.glob }}
+        glob-file: ${{ inputs.glob-file }}
       run: |
         "$GITHUB_ACTION_PATH/action.py"
 
