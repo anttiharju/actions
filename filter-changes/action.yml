@@ -27,22 +27,31 @@ runs:
         glob=$(yq --from-file "$expression" "$file")
         echo "glob=$glob" >> "$GITHUB_OUTPUT"
 
-    # quick draft, not necessarily in any way correct:
     - name: Filter changes
       id: filter
       shell: bash
+      env:
+        glob: ${{ steps.extract.outputs.glob }}
+        changes: ${{ inputs.changes }}
       run: |
-        CHANGES='${{ inputs.changes }}'
         HAVE_CHANGED=false
 
         # Convert JSON array to bash array
-        readarray -t CHANGED_FILES < <(echo "$CHANGES" | jq -r '.[]')
+        readarray -t CHANGED_FILES < <(echo "$changes" | jq -r '.[]')
+
+        # Process glob patterns (may be multiple patterns separated by commas)
+        # Remove curly braces and split by commas
+        globs=$(echo "$glob" | sed -E 's/[{}]//g' | tr ',' ' ')
 
         for file in "${CHANGED_FILES[@]}"; do
-          if [[ "$file" == $GLOB ]]; then
-            HAVE_CHANGED=true
-            break
-          fi
+          for pattern in $globs; do
+            # Use bash's extended pattern matching
+            if [[ "$file" == $pattern ]]; then
+              HAVE_CHANGED=true
+              echo "Match found: $file matches pattern $pattern"
+              break 2
+            fi
+          done
         done
 
         echo "have_changed=$HAVE_CHANGED" >> $GITHUB_OUTPUT
