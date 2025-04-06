@@ -24,3 +24,10 @@ pre-commit:
 
     - name: EditorConfig-Checker
       run: editorconfig-checker {staged_files}
+
+    - name: Ruff
+      glob: "*.py"
+      run: |
+        ruff check --fix {staged_files}
+        ruff format {staged_files}
+      stage_fixed: true
