@@ -1,5 +1,7 @@
 # Find changes (WIP)
 
+[![find-changes](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/find-changes.yml)
+
 Find changes is an action to enable conditional runs of CI jobs based on what files changes have occurred within a PR or a merge.
 
 Usage: either with merge queues or 'Require branches to be up to date before merging' branch protection.
