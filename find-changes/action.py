@@ -3,24 +3,11 @@
 Process changed files to find matches based on regex patterns.
 """
 
-import argparse
 import json
 import os
 import re
 import sys
 from typing import List, Dict, Any, Set
-
-
-def parse_arguments() -> argparse.Namespace:
-    """Parse command line arguments."""
-    parser = argparse.ArgumentParser(description="Process changed files based on regex patterns")
-    parser.add_argument("--regex", required=True, help="Regex pattern to match files")
-    parser.add_argument("--match-all-regex", help="If files matching this regex have changed, include all files matching the main regex")
-    parser.add_argument("--exclude-regex", help="Regex pattern to exclude matched files")
-    parser.add_argument("--matrix", default="[]", help="Existing JSON matrix to append results to")
-    parser.add_argument("--changed-files", required=True, help="Path to file containing list of changed files")
-    parser.add_argument("--output-file", required=True, help="Path to GitHub Actions output file")
-    return parser.parse_args()
 
 
 def read_changed_files(file_path: str) -> List[str]:
@@ -111,22 +98,37 @@ def write_output(output_file: str, result_matrix: List[Dict[str, Any]]) -> None:
 
 def main():
     """Main function."""
-    args = parse_arguments()
+    # Get environment variables
+    regex = os.environ.get("REGEX")
+    match_all_regex = os.environ.get("MATCH_ALL_REGEX")
+    exclude_regex = os.environ.get("EXCLUDE_REGEX")
+    existing_matrix = os.environ.get("EXISTING_MATRIX", "[]")
+    changed_files_path = os.environ.get("CHANGED_FILES_PATH")
+    output_file = os.environ.get("GITHUB_OUTPUT")
+
+    # Validate required inputs
+    if not regex:
+        print("Error: REGEX environment variable is required")
+        sys.exit(1)
+
+    if not changed_files_path:
+        print("Error: CHANGED_FILES_PATH environment variable is required")
+        sys.exit(1)
+
+    if not output_file:
+        print("Error: GITHUB_OUTPUT environment variable is required")
+        sys.exit(1)
 
     # Read changed files
-    changed_files = read_changed_files(args.changed_files)
+    changed_files = read_changed_files(changed_files_path)
 
     # Process existing matrix
-    existing_matrix = process_matrix(args.matrix)
+    matrix = process_matrix(existing_matrix)
 
     # Compile regex patterns
-    regex_pattern = re.compile(args.regex) if args.regex else None
-    match_all_pattern = re.compile(args.match_all_regex) if args.match_all_regex else None
-    exclude_pattern = re.compile(args.exclude_regex) if args.exclude_regex else None
-
-    if not regex_pattern:
-        print("Error: Regex pattern is required")
-        sys.exit(1)
+    regex_pattern = re.compile(regex)
+    match_all_pattern = re.compile(match_all_regex) if match_all_regex else None
+    exclude_pattern = re.compile(exclude_regex) if exclude_regex else None
 
     # Process changed files
     result_matrix = process_changed_files(
@@ -134,11 +136,11 @@ def main():
         regex_pattern,
         match_all_pattern,
         exclude_pattern,
-        existing_matrix
+        matrix
     )
 
     # Write output
-    write_output(args.output_file, result_matrix)
+    write_output(output_file, result_matrix)
 
 
 if __name__ == "__main__":
