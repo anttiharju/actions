@@ -22,7 +22,7 @@ runs:
         file: ${{ inputs.file }}
         expression: ${{ runner.temp }}/expression
       run: |
-        "$GITHUB_ACTION_PATH/action.pyT
+        "$GITHUB_ACTION_PATH/action.py"
 outputs:
   have_changed:
     description: "Boolean indicating whether any of the changed files match the glob pattern"
