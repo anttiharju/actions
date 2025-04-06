@@ -9,13 +9,14 @@ description: Description of what the test is verifying
 env:
   GITHUB_EVENT_NAME: pull_request
   REGEX: ".*\\.py$"
+  DEPTH: "1"  # Controls which part of the path to use for grouping
   # ...
 input_files:
   - path: src/file1.py
   - path: tests/test1.py
 expected_output:
   matrix:
-    - name: src
+    - name: file1
       path: src
       file: src/file1.py
 """
@@ -63,6 +64,12 @@ class FindChangesTestCase(unittest.TestCase):
             result = subprocess.run(
                 cmd, env=env, cwd=temp_dir, capture_output=True, text=True
             )
+
+            # Print debug info if test fails
+            output = self._parse_output_file(output_file)
+            print(f"Command output: {result.stdout}")
+            print(f"Command error: {result.stderr}")
+            print(f"Output file content: {output}")
 
             # Check the output
             self.assertEqual(
@@ -163,7 +170,12 @@ class FindChangesTestCase(unittest.TestCase):
 
         if matrix_lines:
             matrix_json = "\n".join(matrix_lines)
-            result["matrix"] = json.loads(matrix_json)
+            try:
+                result["matrix"] = json.loads(matrix_json)
+            except json.JSONDecodeError as e:
+                print(f"Error parsing matrix JSON: {e}")
+                print(f"Matrix JSON: {matrix_json}")
+                result["matrix"] = []
 
         return result
 

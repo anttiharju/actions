@@ -29,10 +29,10 @@ runs:
       id: find-changes
       shell: sh
       env:
-        REGEX: ${{ inputs.regex }}
-        ALL_REGEX: ${{ inputs.all_regex }}
-        EXCLUDE_REGEX: ${{ inputs.exclude-regex }}
-        EXISTING_MATRIX: ${{ inputs.matrix }}
+        regex: ${{ inputs.regex }}
+        all_regex: ${{ inputs.all_regex }}
+        exclude_regex: ${{ inputs.exclude-regex }}
+        matrix: ${{ inputs.matrix }}
       run: |
         "$GITHUB_ACTION_PATH/action.py"
 

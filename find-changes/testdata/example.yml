@@ -1,13 +1,14 @@
-name: Simple Python Match
-description: Test matching Python files with basic regex
+name: Example test
+description: Example test as concept for future ones
 env:
   GITHUB_EVENT_NAME: push
   REGEX: ".*\\.py$"
-  EXISTING_MATRIX: "[]"
+  DEPTH: "2" # limits the depth from which basename is taken for name
+  MATRIX: "[]"
 input_files:
   - path: src/file1.py
   - path: src/file2.txt
-  - path: tests/test1.py
+  - path: tests/test1/file3.py
 expected_output:
   matrix:
     - name: file1
