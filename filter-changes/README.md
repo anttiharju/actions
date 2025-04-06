@@ -1,5 +1,7 @@
 # Filter changes
 
+[![filter-changes](https://github.com/anttiharju/actions/actions/workflows/filter-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/filter-changes.yml)
+
 This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
 
 ## Usage example
