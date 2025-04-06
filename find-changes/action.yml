@@ -3,24 +3,9 @@ description: "Find changes in files to enable conditional runs of CI jobs based 
 author: "anttiharju"
 
 inputs:
-  regex:
-    description: "Regex pattern to match files that have changed"
+  glob:
+    description: "Path to YAML file and key path (e.g. 'lefthook.yml:pre-commit.jobs.name.glob') to extract glob pattern for matching changed files"
     required: true
-  all-regex:
-    description: "If files matching this regex have changed, include all files matching the main regex in the output"
-    required: false
-  exclude_regex:
-    description: "Regex pattern to exclude matched files, useful for excluding sample apps or test files"
-    required: false
-  matrix:
-    description: "Existing JSON matrix to append results to"
-    required: false
-    default: "[]"
-
-outputs:
-  changes:
-    description: "JSON array of objects containing information about changed files that match the provided regex patterns"
-    value: ${{ steps.find-changes.outputs.matrix }}
 
 runs:
   using: "composite"
@@ -29,12 +14,14 @@ runs:
       id: find-changes
       shell: sh
       env:
-        regex: ${{ inputs.regex }}
-        all_regex: ${{ inputs.all_regex }}
-        exclude_regex: ${{ inputs.exclude-regex }}
-        matrix: ${{ inputs.matrix }}
+        glob: ${{ inputs.glob }}
       run: |
         "$GITHUB_ACTION_PATH/action.py"
+
+outputs:
+  changes:
+    description: "JSON array of objects containing information about changed files that match the extracted glob patterns"
+    value: ${{ steps.find-changes.outputs.matrix }}
 
 branding:
   icon: "git-pull-request"
