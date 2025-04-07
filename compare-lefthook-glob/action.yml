@@ -1,5 +1,5 @@
-name: "Check Lefthook glob"
-description: "Check changed files based on glob patterns extracted from a YAML file"
+name: "Compare Lefthook glob"
+description: "Compare changes to a Lefthook glob"
 inputs:
   changes:
     description: "JSON array of changed files"
@@ -14,7 +14,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Check Lefthook glob
+    - name: Compare Lefthook glob
       id: state
       shell: sh
       env:
