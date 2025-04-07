@@ -1,6 +1,6 @@
 # Check Lefthook glob
 
-[![check-lefthook-glob](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml)
+[![compare-lefthook-glob](https://github.com/anttiharju/actions/actions/workflows/compare-lefthook-glob.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/compare-lefthook-glob.yml)
 
 This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
 
@@ -21,7 +21,7 @@ jobs:
 
       - name: Check Lefthook glob
         id: workflows
-        uses: anttiharju/actions/check-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
+        uses: anttiharju/actions/compare-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
         with:
           changes: ${{ steps.changes.outputs.array }}
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'

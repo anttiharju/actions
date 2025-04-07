@@ -1,17 +1,17 @@
-name: check-lefthook-glob
+name: compare-lefthook-glob
 on:
   pull_request:
     paths:
-      - ".github/workflows/check-lefthook-glob.yml"
-      - "check-lefthook-glob/**/*"
+      - ".github/workflows/compare-lefthook-glob.yml"
+      - "compare-lefthook-glob/**/*"
       - "find-changes/**/*"
       - "!find-changes/README.md"
   push:
     branches:
       - v0
     paths:
-      - ".github/workflows/check-lefthook-glob.yml"
-      - "check-lefthook-glob/**/*"
+      - ".github/workflows/compare-lefthook-glob.yml"
+      - "compare-lefthook-glob/**/*"
       - "find-changes/**/*"
       - "!find-changes/README.md"
 
@@ -29,7 +29,7 @@ jobs:
 
       - name: Check Lefthook glob
         id: workflows
-        uses: ./check-lefthook-glob
+        uses: ./compare-lefthook-glob
         with:
           changes: ${{ steps.changes.outputs.array }}
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
