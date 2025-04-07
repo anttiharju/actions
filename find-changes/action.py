@@ -119,7 +119,7 @@ def main():
 
     print(f"Using diff base {diff_base} to find changes")
 
-    # Get the changed files using git diff
+    # Get an array of changed files using git diff
     array = run_git_diff(diff_base)
 
     # Write to GITHUB_OUTPUT file using the new approach
