@@ -118,7 +118,6 @@ def main():
     diff_base = fetch_diff_base(event_name, event_data)
 
     # Get an array of changed files using git diff
-    print(f"Using diff base {diff_base} to find changes")
     array = run_git_diff(diff_base)
 
     # Write to GITHUB_OUTPUT file using the new approach
