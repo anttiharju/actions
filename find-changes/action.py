@@ -172,12 +172,6 @@ def main():
         with open(github_output, "a") as f:
             f.write(f"array={files_output}\n")
 
-    # Also notice your action.yml expects "files" output, not "array"
-    if github_output:
-        files_output = json.dumps(array)
-        with open(github_output, "a") as f:
-            f.write(f"files={files_output}\n")
-
     # Print changed files for logging
     if array:
         for file in array:
