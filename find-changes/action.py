@@ -155,7 +155,7 @@ def main():
     # Get the branch point for comparison
     diff_base = get_branch_point(event_name, event_data)
 
-    print(f"Using branch point {diff_base} to determine changes")
+    print(f"Using branch point {diff_base} to find changes")
 
     # Get the changed files using git diff
     array = run_git_diff(diff_base)
