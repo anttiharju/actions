@@ -160,27 +160,27 @@ def main():
     print(f'Using branch point of "{diff_base}" to determine changes')
 
     # Get the changed files using git diff
-    changed_files = run_git_diff(diff_base)
+    array = run_git_diff(diff_base)
 
     # Output the changed files
-    print(f"Found {len(changed_files)} changed files")
+    print(f"Found {len(array)} changed files")
 
     # Write to GITHUB_OUTPUT file using the new approach
     github_output = os.environ.get("GITHUB_OUTPUT")
-    if github_output and changed_files:
-        files_output = json.dumps(changed_files)
+    if github_output and array:
+        files_output = json.dumps(array)
         with open(github_output, "a") as f:
-            f.write(f"changed_files={files_output}\n")
+            f.write(f"array={files_output}\n")
 
-    # Also notice your action.yml expects "files" output, not "changed_files"
+    # Also notice your action.yml expects "files" output, not "array"
     if github_output:
-        files_output = json.dumps(changed_files)
+        files_output = json.dumps(array)
         with open(github_output, "a") as f:
             f.write(f"files={files_output}\n")
 
     # Print changed files for logging
-    if changed_files:
-        for file in changed_files:
+    if array:
+        for file in array:
             print(f"Changed: {file}")
     else:
         print("No files changed")
