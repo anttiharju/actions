@@ -114,7 +114,7 @@ def main():
             print("Error: Failed to parse changes JSON")
             sys.exit(1)
 
-        # Check changes
+        # Check glob
         changed = check_changes(glob_pattern, changed_files)
 
         # Output the result

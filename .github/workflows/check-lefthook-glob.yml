@@ -27,7 +27,7 @@ jobs:
         id: changed
         uses: ./find-changes
 
-      - name: Check changes
+      - name: Check Lefthook glob
         id: workflows
         uses: ./check-lefthook-glob
         with:

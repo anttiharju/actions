@@ -1,4 +1,4 @@
-# Check changes
+# Check Lefthook glob
 
 [![check-lefthook-glob](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml)
 
@@ -19,7 +19,7 @@ jobs:
         id: changed
         uses: anttiharju/actions/find-changes@c438e97d73d750c3fc202d1342eb1b27aad17dd8
 
-      - name: Check changes
+      - name: Check Lefthook glob
         id: workflows
         uses: anttiharju/actions/check-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
         with:

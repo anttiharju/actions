@@ -1,4 +1,4 @@
-name: "Check Changes"
+name: "Check Lefthook glob"
 description: "Check changed files based on glob patterns extracted from a YAML file"
 inputs:
   changes:
@@ -17,7 +17,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Check changes
+    - name: Check Lefthook glob
       id: state
       shell: sh
       env:
