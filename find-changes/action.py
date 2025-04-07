@@ -29,7 +29,7 @@ def fetch_diff_base(event_name, event_data):
                 "default_branch"
             ):
                 # For PR events, we need to ensure we have the default branch
-                default_branch = f"origin/{event_data['repository']['default_branch']}"
+                default_branch = event_data["repository"]["default_branch"]
 
                 # Fetch the default branch
                 subprocess.run(
@@ -45,8 +45,9 @@ def fetch_diff_base(event_name, event_data):
                     capture_output=True,
                     text=True,
                 )
-                print(f"Fetched diff base: {default_branch}")
-                return default_branch
+                diff_base = f"origin/{default_branch}"
+                print(f"Fetched diff base: {diff_base}")
+                return diff_base
 
         if target_commit:
             # Fetch the specific commit we need
