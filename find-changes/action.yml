@@ -9,7 +9,6 @@ runs:
       id: changes
       shell: sh
       run: |
-        git reset --hard
         "$GITHUB_ACTION_PATH/action.py"
 
 outputs:
