@@ -10,10 +10,6 @@ inputs:
   yq:
     description: "yq expression to extract glob pattern from the YAML file"
     required: true
-  force-true:
-    description: "Whether to force the output to be true"
-    required: false
-    default: "false"
 runs:
   using: "composite"
   steps:
@@ -25,16 +21,8 @@ runs:
         yq: ${{ inputs.yq }}
         file: ${{ inputs.file }}
         expression_path: ${{ runner.temp }}/expression
-        force_true: ${{ inputs.force-true }}
       run: |
-        # Check whether output should be true
-        if [ "$force_true" = "true" ]; then
-          echo "changed=true (forced)"
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-          exit 0
-        else
-          "$GITHUB_ACTION_PATH/action.py"
-        fi
+        "$GITHUB_ACTION_PATH/action.py"
 outputs:
   changed:
     description: "Boolean indicating whether any of the changed files match the glob pattern"
