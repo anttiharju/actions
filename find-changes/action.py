@@ -6,8 +6,17 @@ import json
 import sys
 
 
-def ensure_sufficient_git_depth(event_name, event_data):
+def fetch_diff_base(event_name, event_data):
     """Ensure the git repository has enough history to perform the diff."""
+
+    valid_events = {"pull_request", "merge_group", "push"}
+
+    if event_name not in valid_events:
+        print(
+            "find-changed-packages only works on pull_request, merge_group, and push events",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
     try:
         # Determine what commit we need to fetch
@@ -20,7 +29,7 @@ def ensure_sufficient_git_depth(event_name, event_data):
                 "default_branch"
             ):
                 # For PR events, we need to ensure we have the default branch
-                default_branch = event_data["repository"]["default_branch"]
+                default_branch = f"origin/{event_data['repository']['default_branch']}"
 
                 # Fetch the default branch
                 subprocess.run(
@@ -30,14 +39,14 @@ def ensure_sufficient_git_depth(event_name, event_data):
                         "--depth=1",
                         "--no-tags",
                         "origin",
-                        f"{default_branch}:refs/remotes/origin/{default_branch}",
+                        f"{default_branch}:refs/remotes/{default_branch}",
                     ],
                     check=True,
                     capture_output=True,
                     text=True,
                 )
-                print(f"Fetched default branch: origin/{default_branch}")
-                return
+                print(f"Fetched diff base: {default_branch}")
+                return default_branch
 
         if target_commit:
             # Fetch the specific commit we need
@@ -47,7 +56,8 @@ def ensure_sufficient_git_depth(event_name, event_data):
                 capture_output=True,
                 text=True,
             )
-            print(f"Fetched branch point {target_commit}")
+            print(f"Fetched diff base: {target_commit}")
+            return target_commit
 
     except subprocess.CalledProcessError as e:
         print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
@@ -68,49 +78,6 @@ def run_git_diff(comparison_point):
     except subprocess.CalledProcessError:
         print(f"Error running git diff against {comparison_point}", file=sys.stderr)
         return []
-
-
-def handle_push(event_data):
-    """Handle push events to determine branch point."""
-    if event_data.get("before"):
-        return event_data["before"]
-
-    print("Unable to determine push branch point to compare changes.", file=sys.stderr)
-    sys.exit(1)
-
-
-def handle_pull_request(event_data):
-    """Handle pull_request or merge_group events to determine branch point."""
-    if event_data.get("action") == "closed":
-        print(
-            "Running find-changes on: pull_request: closed is not supported in v2 - please migrate workflow to on: push:",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
-    if event_data.get("repository") and event_data["repository"].get("default_branch"):
-        upstream = f"origin/{event_data['repository']['default_branch']}"
-        return upstream
-
-    print(
-        "Unable to determine pull request branch point to compare changes.",
-        file=sys.stderr,
-    )
-    sys.exit(1)
-
-
-def get_branch_point(event_name, event_data):
-    """Get the branch point for comparison based on event type."""
-    if event_name in ("pull_request", "merge_group"):
-        return handle_pull_request(event_data)
-    elif event_name == "push":
-        return handle_push(event_data)
-    else:
-        print(
-            "find-changed-packages only works on pull_request, merge_group, and push events",
-            file=sys.stderr,
-        )
-        sys.exit(1)
 
 
 def get_event_data():
@@ -147,11 +114,8 @@ def main():
     event_name = get_github_event()
     event_data = get_event_data()
 
-    # Ensure we have sufficient git history before proceeding
-    ensure_sufficient_git_depth(event_name, event_data)
-
-    # Get the branch point for comparison
-    diff_base = get_branch_point(event_name, event_data)
+    # Fetch the diff base using the event data
+    diff_base = fetch_diff_base(event_name, event_data)
 
     print(f"Using branch point {diff_base} to find changes")
 
