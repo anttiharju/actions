@@ -4,7 +4,7 @@ inputs:
   sha:
     required: false
     description: "SHA of the commit from which to install the tool"
-    default: d51979a5d69d10c62d9c4b55497ac91c930fb94a
+    default: 00d570b049a30799afa76e319deaec65542f735b
 
 runs:
   using: "composite"
