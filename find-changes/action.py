@@ -129,10 +129,10 @@ def main():
         with open(github_output, appending_mode) as f:
             f.write(f"array={files_output}\n")
 
-    # Print changed files for logging
+    # Log changed files
     plural = "s" if len(array) != 1 else ""
-    print(f"Found {len(array)} changed file{plural}:")
     if array:
+        print(f"Found {len(array)} changed file{plural}:")
         for file in array:
             print(file)
     else:
