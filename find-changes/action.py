@@ -48,7 +48,6 @@ def ensure_sufficient_git_depth(event_name, event_data):
                 capture_output=True,
                 text=True,
             )
-            print(f"Fetched commit: {target_commit}")
 
     except subprocess.CalledProcessError as e:
         print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
@@ -156,7 +155,7 @@ def main():
     # Get the branch point for comparison
     diff_base = get_branch_point(event_name, event_data)
 
-    print(f'Using branch point of "{diff_base}" to determine changes')
+    print(f"Using branch point {diff_base} to determine changes")
 
     # Get the changed files using git diff
     array = run_git_diff(diff_base)
