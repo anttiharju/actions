@@ -24,7 +24,6 @@ jobs:
         uses: anttiharju/actions/check-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
         with:
           changes: ${{ steps.changed.outputs.files }}
-          file: lefthook.yml
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
       - if: steps.workflows.outputs.changed == 'true'
