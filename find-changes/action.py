@@ -87,7 +87,7 @@ def get_event_data():
 
     if not event_path:
         print(
-            "Could not find event payload file to determine branch point.",
+            "Could not find event payload file.",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -117,7 +117,7 @@ def main():
     # Fetch the diff base using the event data
     diff_base = fetch_diff_base(event_name, event_data)
 
-    print(f"Using branch point {diff_base} to find changes")
+    print(f"Using diff base {diff_base} to find changes")
 
     # Get the changed files using git diff
     array = run_git_diff(diff_base)
