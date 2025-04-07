@@ -4,12 +4,13 @@ inputs:
   changes:
     description: "JSON array of changed files"
     required: true
-  file:
-    description: "YAML file to extract glob pattern from"
-    required: true
   yq:
     description: "yq expression to extract glob pattern from the YAML file"
     required: true
+  file:
+    description: "YAML file to extract glob pattern from"
+    required: false
+    default: "lefthook.yml"
 runs:
   using: "composite"
   steps:
