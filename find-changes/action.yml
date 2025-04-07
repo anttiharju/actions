@@ -15,7 +15,3 @@ outputs:
   array:
     description: "JSON array of changed files"
     value: ${{ steps.changes.outputs.array }}
-
-branding:
-  icon: "git-pull-request"
-  color: "blue"
