@@ -47,6 +47,7 @@ def ensure_sufficient_git_depth(event_name, event_data):
                 capture_output=True,
                 text=True,
             )
+            print(f"Fetched branch point {target_commit}")
 
     except subprocess.CalledProcessError as e:
         print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
@@ -72,7 +73,6 @@ def run_git_diff(comparison_point):
 def handle_push(event_data):
     """Handle push events to determine branch point."""
     if event_data.get("before"):
-        print(f"Found branch point {event_data['before']}")
         return event_data["before"]
 
     print("Unable to determine push branch point to compare changes.", file=sys.stderr)
@@ -90,7 +90,6 @@ def handle_pull_request(event_data):
 
     if event_data.get("repository") and event_data["repository"].get("default_branch"):
         upstream = f"origin/{event_data['repository']['default_branch']}"
-        print(f"Found branch point {upstream}")
         return upstream
 
     print(
