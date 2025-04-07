@@ -132,11 +132,11 @@ def main():
     # Log changed files
     plural = "s" if len(array) != 1 else ""
     if array:
-        print(f"Found {len(array)} changed file{plural}:")
+        print(f"Found {len(array)} change{plural}:")
         for file in array:
             print(file)
     else:
-        print("No changed files found")
+        print("No changes found")
 
 
 if __name__ == "__main__":
