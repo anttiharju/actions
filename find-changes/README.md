@@ -20,13 +20,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Find changes
-        id: changed
+        id: changes
         uses: anttiharju/actions/find-changes@c438e97d73d750c3fc202d1342eb1b27aad17dd8
 
       - name: Echo changed files
         shell: sh
         run: |
-          echo ${{ steps.changed.outputs.files }}
+          echo ${{ steps.changes.outputs.array }}
 ```
 
 ```json

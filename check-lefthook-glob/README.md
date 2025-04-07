@@ -16,14 +16,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Find changes
-        id: changed
+        id: changes
         uses: anttiharju/actions/find-changes@c438e97d73d750c3fc202d1342eb1b27aad17dd8
 
       - name: Check Lefthook glob
         id: workflows
         uses: anttiharju/actions/check-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
         with:
-          changes: ${{ steps.changed.outputs.files }}
+          changes: ${{ steps.changes.outputs.array }}
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
       - if: steps.workflows.outputs.changed == 'true'

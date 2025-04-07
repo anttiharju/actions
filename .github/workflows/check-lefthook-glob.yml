@@ -24,14 +24,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Find changes
-        id: changed
+        id: changes
         uses: ./find-changes
 
       - name: Check Lefthook glob
         id: workflows
         uses: ./check-lefthook-glob
         with:
-          changes: ${{ steps.changed.outputs.files }}
+          changes: ${{ steps.changes.outputs.array }}
           yq: '.pre-commit.jobs[] | select(.name == "actionlint") | .glob'
 
       - if: steps.workflows.outputs.changed == 'true'

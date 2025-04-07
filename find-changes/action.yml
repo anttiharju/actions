@@ -6,16 +6,16 @@ runs:
   using: "composite"
   steps:
     - name: Find changes
-      id: changed
+      id: changes
       shell: sh
       run: |
         git reset --hard
         "$GITHUB_ACTION_PATH/action.py"
 
 outputs:
-  files:
-    description: "List of changed files in JSON format"
-    value: ${{ steps.changed.outputs.files }}
+  array:
+    description: "JSON array of changed files"
+    value: ${{ steps.changes.outputs.files }}
 
 branding:
   icon: "git-pull-request"
