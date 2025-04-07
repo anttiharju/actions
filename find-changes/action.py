@@ -13,7 +13,7 @@ def fetch_diff_base(event_name, event_data):
 
     if event_name not in valid_events:
         print(
-            "find-changed-packages only works on pull_request, merge_group, and push events",
+            f"find-changes only works on {', '.join(valid_events)} events.",
             file=sys.stderr,
         )
         sys.exit(1)
