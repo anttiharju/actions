@@ -61,7 +61,7 @@ def fetch_diff_base(event_name, event_data):
 
     except subprocess.CalledProcessError as e:
         print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
-        print("Continuing with available history...")
+        sys.exit(1)
 
 
 def run_git_diff(comparison_point):
