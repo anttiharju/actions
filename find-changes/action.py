@@ -104,14 +104,14 @@ def get_event_data():
         sys.exit(1)
 
 
-def get_github_event():
+def get_event_name():
     """Get the GitHub event type from environment variables."""
     return os.environ.get("GITHUB_EVENT_NAME")
 
 
 def main():
     """Main function to output changed files in GitHub Actions format."""
-    event_name = get_github_event()
+    event_name = get_event_name()
     event_data = get_event_data()
 
     # Fetch the diff base using the event data
