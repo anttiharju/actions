@@ -162,9 +162,6 @@ def main():
     # Get the changed files using git diff
     array = run_git_diff(diff_base)
 
-    # Output the changed files
-    print(f"Found {len(array)} changed files")
-
     # Write to GITHUB_OUTPUT file using the new approach
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output and array:
@@ -174,11 +171,13 @@ def main():
             f.write(f"array={files_output}\n")
 
     # Print changed files for logging
+    plural = "s" if len(array) != 1 else ""
+    print(f"Found {len(array)} changed file{plural}:")
     if array:
         for file in array:
-            print(f"Changed: {file}")
+            print(file)
     else:
-        print("No files changed")
+        print("No changed files found")
 
 
 if __name__ == "__main__":
