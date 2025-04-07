@@ -169,7 +169,8 @@ def main():
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output and array:
         files_output = json.dumps(array)
-        with open(github_output, "a") as f:
+        appending_mode = "a"
+        with open(github_output, appending_mode) as f:
             f.write(f"array={files_output}\n")
 
     # Print changed files for logging
