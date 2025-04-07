@@ -77,7 +77,7 @@ def run_git_diff(comparison_point):
         return [file for file in result.stdout.splitlines() if file]
     except subprocess.CalledProcessError:
         print(f"Error running git diff against {comparison_point}", file=sys.stderr)
-        return []
+        sys.exit(1)
 
 
 def get_event_data():
