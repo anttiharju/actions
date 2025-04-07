@@ -8,7 +8,6 @@ import sys
 
 def ensure_sufficient_git_depth(event_name, event_data):
     """Ensure the git repository has enough history to perform the diff."""
-    print("Ensuring sufficient git history...")
 
     try:
         # Determine what commit we need to fetch
