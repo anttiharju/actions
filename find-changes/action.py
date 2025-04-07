@@ -57,7 +57,6 @@ def ensure_sufficient_git_depth(event_name, event_data):
 
 def run_git_diff(comparison_point):
     """Run git diff to get changed files."""
-    print("Finding changed files")
     try:
         result = subprocess.run(
             ["git", "diff", "--name-only", comparison_point],
