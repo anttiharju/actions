@@ -1,17 +1,17 @@
-name: check-changes
+name: check-lefthook-glob
 on:
   pull_request:
     paths:
-      - ".github/workflows/check-changes.yml"
-      - "check-changes/**/*"
+      - ".github/workflows/check-lefthook-glob.yml"
+      - "check-lefthook-glob/**/*"
       - "find-changes/**/*"
       - "!find-changes/README.md"
   push:
     branches:
       - v0
     paths:
-      - ".github/workflows/check-changes.yml"
-      - "check-changes/**/*"
+      - ".github/workflows/check-lefthook-glob.yml"
+      - "check-lefthook-glob/**/*"
       - "find-changes/**/*"
       - "!find-changes/README.md"
 
@@ -29,7 +29,7 @@ jobs:
 
       - name: Check changes
         id: workflows
-        uses: ./check-changes
+        uses: ./check-lefthook-glob
         with:
           changes: ${{ steps.changed.outputs.files }}
           file: lefthook.yml

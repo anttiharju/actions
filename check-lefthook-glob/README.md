@@ -1,6 +1,6 @@
 # Check changes
 
-[![check-changes](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-changes.yml)
+[![check-lefthook-glob](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml/badge.svg)](https://github.com/anttiharju/actions/actions/workflows/check-lefthook-glob.yml)
 
 This is a sibling action to [find changes](../find-changes/). With the two actions combined, following CI jobs or steps can run conditionally based on changes.
 
@@ -21,7 +21,7 @@ jobs:
 
       - name: Check changes
         id: workflows
-        uses: anttiharju/actions/check-changes@c438e97d73d750c3fc202d1342eb1b27aad17dd8
+        uses: anttiharju/actions/check-lefthook-glob@c438e97d73d750c3fc202d1342eb1b27aad17dd8
         with:
           changes: ${{ steps.changed.outputs.files }}
           file: lefthook.yml
