@@ -29,8 +29,7 @@ runs:
       run: |
         # Check whether output should be true
         if [ "$force_true" = "true" ]; then
-          echo "force-true input is set to true (default false), forcing changed output to true"
-          echo "changed=true"
+          echo "changed=true (forced)"
           echo "changed=true" >> "$GITHUB_OUTPUT"
           exit 0
         else
