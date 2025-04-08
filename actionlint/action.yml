@@ -1,15 +1,31 @@
 name: actionlint
-description: Run actionlint
+description: Runs actionlint with color output
+inputs:
+  version:
+    description: actionlint version to install
+    required: false
+    default: 1.7.7
 
 runs:
   using: "composite"
   steps:
-    - name: Download actionlint
-      id: get_actionlint
-      shell: bash
+    - name: Cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/actionlint
+        key: actionlint-${{ inputs.version }}
+    - if: steps.cache.outputs.cache-hit != 'true'
+      name: Install
+      shell: sh
+      env:
+        url: https://github.com/rhysd/actionlint/releases/download/v${{ inputs.version }}/actionlint_${{ inputs.version }}_linux_amd64.tar.gz
+        tmp: ${{ runner.temp }}
       run: |
-        bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/2ab3a12c7848f6c15faca9a92612ef4261d0e370/scripts/download-actionlint.bash) 1.7.7 "${{ runner.temp }}"
+        curl -sSL "$url" | tar -xz -C "$tmp" --strip-components=1
+        ls "$tmp"
+        cp "$tmp/actionlint" /usr/local/bin
     - name: Run actionlint
       shell: sh
       run: |
-        ${{ steps.get_actionlint.outputs.executable }} -color
+        actionlint -color
