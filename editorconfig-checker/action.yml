@@ -23,10 +23,9 @@ runs:
         TMP: ${{ runner.temp }}
       run: |
         curl -sSL "$URL" | tar -xz -C "$TMP" --strip-components=1
-        ls "$TMP/ec-linux-386"
-        cp "$TMP/bin/editorconfig-checker" /usr/local/bin/
+        cp "$TMP/ec-linux-386" /usr/local/bin/
     - name: Run Editorconfig-Checker
       shell: bash
       run: |
         mapfile -t FILES < <(git ls-files)
-        editorconfig-checker "${FILES[@]}"
+        ec-linux-386 "${FILES[@]}"
