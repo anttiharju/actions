@@ -23,7 +23,6 @@ runs:
         tmp: ${{ runner.temp }}
       run: |
         curl -sSL "$url" | tar -xz -C "$tmp"
-        ls "$tmp"
         cp "$tmp/actionlint" /usr/local/bin
     - name: Run actionlint
       shell: sh
