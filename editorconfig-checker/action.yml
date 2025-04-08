@@ -23,7 +23,7 @@ runs:
         TMP: ${{ runner.temp }}
       run: |
         curl -sSL "$URL" | tar -xz -C "$TMP" --strip-components=1
-        ls $TMP
+        ls "$TMP/ec-linux-386"
         cp "$TMP/bin/editorconfig-checker" /usr/local/bin/
     - name: Run Editorconfig-Checker
       shell: bash
