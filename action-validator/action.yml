@@ -22,7 +22,7 @@ runs:
         URL: https://github.com/mpalmer/action-validator/releases/download/v${{ inputs.version }}/action-validator_linux_amd64
         TMP: ${{ runner.temp }}
       run: |
-        curl -sSL "$URL" | tar -xJ -C "$TMP" --strip-components=1
+        curl -sSL "$URL" -o "$TMP"
         ls "$TMP"
         cp "$TMP/action-validator" /usr/local/bin
     - name: Run
