@@ -9,11 +9,14 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Cache pip packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: pip-mkdocs-material-${{ inputs.version }}-${{ runner.os }}
     - shell: sh
       env:
         version: ${{ inputs.version }}
       run: |
         pip install "mkdocs-material==$version"
-        ls ~/.cache/pip
-        tree ~/.cache/pip
         mkdocs build --strict
