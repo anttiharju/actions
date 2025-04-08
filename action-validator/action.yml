@@ -19,12 +19,11 @@ runs:
       name: Install
       shell: sh
       env:
-        URL: https://github.com/mpalmer/action-validator/releases/download/v${{ inputs.version }}/action-validator_linux_amd64
-        TMP: ${{ runner.temp }}
+        bin: https://github.com/mpalmer/action-validator/releases/download/v${{ inputs.version }}/action-validator_linux_amd64
+        dest: /usr/local/bin/action-validator
       run: |
-        curl -sSL "$URL" -o "$TMP/action-validator"
-        ls "$TMP"
-        cp "$TMP/action-validator" /usr/local/bin
+        curl -sSL "$bin" -o "$dest"
+        chmod +x "$dest"
     - name: Run
       shell: sh
       run: |
