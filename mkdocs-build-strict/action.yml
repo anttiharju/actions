@@ -1,10 +1,17 @@
 name: MkDocs build strict
 description: Runs mkdocs build with strict mode so any mistakes are caught early.
+inputs:
+  version:
+    description: The version of mkdocs-material to install.
+    required: false
+    default: 9.6.11
 
 runs:
   using: "composite"
   steps:
     - shell: sh
+      env:
+        version: ${{ inputs.version }}
       run: |
-        pip install mkdocs-material
+        pip install "mkdocs-material==$version"
         mkdocs build --strict
