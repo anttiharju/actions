@@ -14,4 +14,6 @@ runs:
         version: ${{ inputs.version }}
       run: |
         pip install "mkdocs-material==$version"
+        ls ~/.cache/pip
+        tree ~/.cache/pip
         mkdocs build --strict
