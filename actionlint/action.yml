@@ -22,7 +22,7 @@ runs:
         url: https://github.com/rhysd/actionlint/releases/download/v${{ inputs.version }}/actionlint_${{ inputs.version }}_linux_amd64.tar.gz
         tmp: ${{ runner.temp }}
       run: |
-        curl -sSL "$url" | tar -xz -C "$tmp" --strip-components=1
+        curl -sSL "$url" | tar -xz -C "$tmp"
         ls "$tmp"
         cp "$tmp/actionlint" /usr/local/bin
     - name: Run actionlint
