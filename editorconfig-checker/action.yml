@@ -22,7 +22,7 @@ runs:
         URL: https://github.com/editorconfig-checker/editorconfig-checker/releases/download/v${{ inputs.version }}/ec-linux-386.tar.gz
         TMP: ${{ runner.temp }}
       run: |
-        curl -sSL "$URL" | tar -xJ -C "$TMP" --strip-components=1
+        curl -sSL "$URL" | tar -xz -C "$TMP" --strip-components=1
         cp "$TMP/ec-linux-386" /usr/local/bin/editorconfig-checker
     - name: Run Editorconfig-Checker
       shell: bash
