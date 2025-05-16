@@ -17,6 +17,6 @@ runs:
       run: |
         echo "golangci-lint=v$(cat $VERSION_FILE)" >> "$GITHUB_OUTPUT"
     - name: Run golangci-lint
-      uses: golangci/golangci-lint-action@v6
+      uses: golangci/golangci-lint-action@v8
       with:
         version: ${{ steps.get-version.outputs.golangci-lint }}
