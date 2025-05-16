@@ -13,11 +13,18 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache pip packages
+    - id: cache
+      name: Cache pip packages
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: pip-mkdocs-material-${{ inputs.version }}-${{ runner.os }}
+    - if: steps.cache.outputs.cache-hit != 'true'
+      shell: sh
+      env:
+        version: ${{ inputs.version }}
+      run: |
+        pip install "mkdocs-material==$version"
     - shell: sh
       env:
         GIT_AUTHOR_NAME: ${{ github.actor }}
@@ -25,5 +32,4 @@ runs:
         GIT_COMMITTER_NAME: "${{ inputs.committer }}"
         GIT_COMMITTER_EMAIL: "${{ inputs.committer }}@users.noreply.github.com"
       run: |
-        pip install "mkdocs-material==$version"
         mkdocs gh-deploy --force --no-history
