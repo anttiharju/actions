@@ -25,29 +25,7 @@ def fetch_diff_base(event_name, event_data):
         if event_name == "push" and event_data.get("before"):
             target_commit = event_data["before"]
         elif event_name in ("pull_request", "merge_group"):
-            if event_data.get("repository") and event_data["repository"].get(
-                "default_branch"
-            ):
-                # For PR events, we need to ensure we have the default branch
-                default_branch = event_data["repository"]["default_branch"]
-
-                # Fetch the default branch
-                subprocess.run(
-                    [
-                        "git",
-                        "fetch",
-                        "--depth=1",
-                        "--no-tags",
-                        "origin",
-                        f"{default_branch}:refs/remotes/{default_branch}",
-                    ],
-                    check=True,
-                    capture_output=True,
-                    text=True,
-                )
-                diff_base = f"origin/{default_branch}"
-                print(f"Fetched diff base: {diff_base}")
-                return diff_base
+            return "HEAD~1"  # depends on actions/checkout with fetch-depth: 2 (handled in action.yml)
 
         if target_commit:
             # Fetch the specific commit we need

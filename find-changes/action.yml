@@ -1,10 +1,19 @@
 name: "Find changes"
 description: "Outputs changed files in JSON format for downstream actions"
-author: "anttiharju"
 
 runs:
   using: "composite"
   steps:
+    - if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+      name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+
+    - if: github.event_name == 'push'
+      name: Checkout
+      uses: actions/checkout@v4
+
     - name: Find changes
       id: changes
       shell: sh
