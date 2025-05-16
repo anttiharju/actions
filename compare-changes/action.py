@@ -84,9 +84,8 @@ def check_for_matches(path_patterns, changed_files):
 
 
 def main():
-    # Get inputs from environment variables - first check INPUT_CHANGES (from with:),
-    # then check for changes environment variable if INPUT_CHANGES is not set
-    changes_json = os.environ.get("INPUT_CHANGES") or os.environ.get("changes", "[]")
+    # Get inputs from environment variables
+    changes_json = os.environ.get("INPUT_CHANGES", "[]")
     wildcard_name = os.environ.get("INPUT_WILDCARD")
     wildcard_file = f".github/workflows/wildcard-{wildcard_name}.yml"
 

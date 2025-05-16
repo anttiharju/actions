@@ -6,8 +6,8 @@ inputs:
     description: "Path to the wildcard configuration file"
     required: true
   changes:
-    description: "JSON array of changed files (from find-changes action). If not provided, will use $changes env var."
-    required: false
+    description: "JSON array of changed files (from find-changes action)"
+    required: true
 
 runs:
   using: "composite"
