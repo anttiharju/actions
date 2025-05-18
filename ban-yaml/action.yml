@@ -1,0 +1,14 @@
+name: Ban .yaml
+description: Enforce file extension consistency by mandating .yml
+
+runs:
+  using: "composite"
+  steps:
+    - name: Fail if .yaml files are found
+      shell: sh
+      run: |
+        if git ls-files '*.yaml' --error-unmatch &>/dev/null; then
+          echo "Found .yaml files. Please use .yml extension instead."
+          exit 1
+        fi
+        echo "No .yaml files found. Good job!"
