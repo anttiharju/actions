@@ -1,10 +1,10 @@
-name: Ban .yaml
+name: No .yaml
 description: Enforce file extension consistency by mandating .yml
 
 runs:
   using: "composite"
   steps:
-    - name: Check for .yaml files
+    - name: Fail if .yaml files are found
       shell: sh
       run: |
         YAML_FILES=$(git ls-files '*.yaml')
