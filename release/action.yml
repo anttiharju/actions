@@ -1,6 +1,5 @@
 name: Release
 description: "Creates a release"
-
 runs:
   using: "composite"
   steps:
@@ -34,3 +33,7 @@ runs:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh release create "$TAG" --title="$TITLE" --generate-notes
+outputs:
+  tag:
+    description: "The tag created"
+    value: ${{ steps.tagger.outputs.tag }}
