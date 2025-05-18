@@ -1,4 +1,4 @@
-name: go build
+name: Go compiles
 description: Build a binary with go
 
 runs:
