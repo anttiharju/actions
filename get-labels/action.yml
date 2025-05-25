@@ -28,7 +28,7 @@ runs:
               }
             }
           }
-        ' -f sha="$COMMIT_SHA"  --jq '[.data.search.edges[0].node.labels.nodes[].name]')
+        ' -f sha="$COMMIT_SHA"  --jq '(.data.search.edges[0].node.labels.nodes // []) | map(.name)')
 
         echo "$NAMES"
         echo "names=$NAMES" >> "$GITHUB_OUTPUT"
