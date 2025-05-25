@@ -46,7 +46,7 @@ runs:
         PATCH_FOUND: ${{ steps.patch.outputs.match }}
         ERROR_MESSAGE: ${{ inputs.error-message }}
       run: |
-        if [[ "$MAJOR_FOUND" == "false" && "$MINOR_FOUND" == "false" && "$PATCH_FOUND" == "false" ]]; then
+        if [ "$MAJOR_FOUND" = "false" ] && [ "$MINOR_FOUND" = "false" ] && [ "$PATCH_FOUND" = "false" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
         fi
