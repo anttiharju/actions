@@ -1,0 +1,38 @@
+name: Require Semver Label
+description: "Ensures PR has exactly one semver label (major, minor, or patch)"
+inputs:
+  error-message:
+    description: "Message to echo upon failure"
+    required: false
+    default: "PR must have exactly one of the following labels: major, minor, patch"
+runs:
+  using: "composite"
+  steps:
+    - name: Get labels
+      id: label
+      uses: anttiharju/actions/get-labels@v0
+
+    - name: Check for major label
+      id: major
+      uses: anttiharju/actions/require-label@v0
+      with:
+        labels: ${{ steps.label.outputs.names }}
+        name: "major"
+        error-message: ${{ inputs.error-message }}
+
+    - name: Check for minor label
+      id: minor
+      uses: anttiharju/actions/require-label@v0
+      with:
+        labels: ${{ steps.label.outputs.names }}
+        name: "minor"
+        error-message: ${{ inputs.error-message }}
+        fail-on-match: ${{ steps.major.outputs.already-found }}
+
+    - name: Check for patch label
+      uses: anttiharju/actions/require-label@v0
+      with:
+        labels: ${{ steps.label.outputs.names }}
+        name: "patch"
+        error-message: ${{ inputs.error-message }}
+        fail-on-match: ${{ steps.minor.outputs.already-found }}
