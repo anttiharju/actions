@@ -47,7 +47,7 @@ runs:
         echo "Error: $ERROR_MESSAGE"
         exit 1
 
-    # This is not baked into output value to avoid falsely setting one if one of the earlier steps failed.
+    # This is not baked into output value to avoid falsely setting release type if a step fails
     - name: Set output
       id: release
       shell: sh
