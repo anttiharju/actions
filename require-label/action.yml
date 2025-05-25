@@ -11,7 +11,7 @@ inputs:
     description: "Message to echo upon failure"
     required: true
   fail-on-match:
-    description: "If true, fail when the label IS found (instead of when it's NOT found)"
+    description: "Fail if name is included in labels"
     required: false
     default: "false"
 runs:
