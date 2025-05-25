@@ -36,7 +36,7 @@ runs:
         labels: ${{ steps.label.outputs.names }}
         name: "patch"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.minor.outputs.match || steps.major.outputs.match }}
+        fail-on-match: ${{ steps.minor.outputs.match == true || steps.major.outputs.match == true }}
 
     - if: ${{ steps.major.outputs.match == 'false' && steps.minor.outputs.match == 'false' && steps.patch.outputs.match == 'false' }}
       name: Fail if no semver label matched
