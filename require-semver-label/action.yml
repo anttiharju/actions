@@ -49,4 +49,4 @@ runs:
 outputs:
   bump:
     description: "The type of semver bump to be applied"
-    value: ${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'no-release' }}
+    value: ${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'none' }}
