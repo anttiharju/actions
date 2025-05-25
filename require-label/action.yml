@@ -35,6 +35,6 @@ runs:
           exit 1
         fi
 outputs:
-  already-found:
+  is-set:
     description: "Whether labels included name (true/false)"
     value: ${{ steps.label.outputs.match }}

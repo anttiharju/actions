@@ -27,12 +27,26 @@ runs:
         labels: ${{ steps.label.outputs.names }}
         name: "minor"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.major.outputs.already-found }}
+        fail-on-match: ${{ steps.major.outputs.is-set }}
 
     - name: Check for patch label
+      id: patch
       uses: anttiharju/actions/require-label@v0
       with:
         labels: ${{ steps.label.outputs.names }}
         name: "patch"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.minor.outputs.already-found }}
+        fail-on-match: ${{ steps.minor.outputs.is-set }}
+
+    - name: Verify that at least one semver label is set
+      shell: sh
+      env:
+        MAJOR_FOUND: ${{ steps.major.outputs.is-set }}
+        MINOR_FOUND: ${{ steps.minor.outputs.is-set }}
+        PATCH_FOUND: ${{ steps.patch.outputs.is-set }}
+        ERROR_MESSAGE: ${{ inputs.error-message }}
+      run: |
+        if [[ "$MAJOR_FOUND" == "false" && "$MINOR_FOUND" == "false" && "$PATCH_FOUND" == "false" ]]; then
+          echo "Error: $ERROR_MESSAGE"
+          exit 1
+        fi
