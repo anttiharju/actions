@@ -36,7 +36,7 @@ runs:
         labels: ${{ steps.label.outputs.names }}
         name: "patch"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.minor.outputs.match == "true" || steps.major.outputs.match == "true" }}
+        fail-on-match: ${{ steps.minor.outputs.match || steps.major.outputs.match }}
 
     - name: Verify that at least one semver label is set
       shell: sh
