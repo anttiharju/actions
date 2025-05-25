@@ -46,7 +46,14 @@ runs:
       run: |
         echo "Error: $ERROR_MESSAGE"
         exit 1
+
+    # This is not baked into output value to avoid falsely setting one if one of the earlier steps failed.
+    - name: Set output
+      id: release
+      shell: sh
+      run: |
+        echo "type=${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'none' }}" >> "$GITHUB_OUTPUT"
 outputs:
   bump:
     description: "The type of semver bump to be applied"
-    value: ${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'none' }}
+    value: ${{ steps.release.outputs.type }}
