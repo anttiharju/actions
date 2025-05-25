@@ -38,15 +38,11 @@ runs:
         error-message: ${{ inputs.error-message }}
         fail-on-match: ${{ steps.minor.outputs.match || steps.major.outputs.match }}
 
-    - name: Verify that at least one semver label is set
+    - if: ${{ steps.major.outputs.match == 'false' && steps.minor.outputs.match == 'false' && steps.patch.outputs.match == 'false' }}
+      name: Fail if no semver label matched
       shell: sh
       env:
-        MAJOR_FOUND: ${{ steps.major.outputs.match }}
-        MINOR_FOUND: ${{ steps.minor.outputs.match }}
-        PATCH_FOUND: ${{ steps.patch.outputs.match }}
         ERROR_MESSAGE: ${{ inputs.error-message }}
       run: |
-        if [ "$MAJOR_FOUND" = "false" ] && [ "$MINOR_FOUND" = "false" ] && [ "$PATCH_FOUND" = "false" ]; then
-          echo "Error: $ERROR_MESSAGE"
-          exit 1
-        fi
+        echo "Error: $ERROR_MESSAGE"
+        exit 1
