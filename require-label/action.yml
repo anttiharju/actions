@@ -30,7 +30,7 @@ runs:
         echo "match=$MATCH"
         echo "match=$MATCH" >> "$GITHUB_OUTPUT"
 
-        if [[ "$MATCH" == "true" && "$FAIL_ON_MATCH" != "false" ]]; then
+        if [ "$MATCH" = "true" ] && [ "$FAIL_ON_MATCH" != "false" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
         fi
