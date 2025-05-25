@@ -1,0 +1,37 @@
+name: Get labels
+description: "Returns the labels of the PR associated with github.sha"
+runs:
+  using: "composite"
+  steps:
+    - name: Output labels
+      id: get_labels
+      shell: sh
+      env:
+        GH_TOKEN: ${{ github.token }}
+        COMMIT_SHA: ${{ github.sha }}
+      run: |
+        LABELS=$(gh api graphql -f query='
+          query($sha: String!) {
+            search(query: $sha, type: ISSUE, first: 1) {
+              edges {
+                node {
+                  ... on PullRequest {
+                    number
+                    title
+                    labels(first: 10) {
+                      nodes {
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ' -f sha="$COMMIT_SHA"  --jq '[.data.search.edges[0].node.labels.nodes[].name]')
+
+        echo "labels=$LABELS" >> "$GITHUB_OUTPUT"
+outputs:
+  labels:
+    description: "Labels of the PR associated with github.sha"
+    value: ${{ steps.get_labels.outputs.labels }}
