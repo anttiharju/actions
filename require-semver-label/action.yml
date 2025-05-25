@@ -47,6 +47,6 @@ runs:
         echo "Error: $ERROR_MESSAGE"
         exit 1
 outputs:
-  release-type:
-    description: "The type of release based on the labels"
+  bump:
+    description: "The type of semver bump to be applied"
     value: ${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'no-release' }}
