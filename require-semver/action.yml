@@ -27,7 +27,7 @@ runs:
         labels: ${{ steps.label.outputs.names }}
         name: "minor"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.major.outputs.is-set }}
+        fail-on-match: ${{ steps.major.outputs.match }}
 
     - name: Check for patch label
       id: patch
@@ -36,14 +36,14 @@ runs:
         labels: ${{ steps.label.outputs.names }}
         name: "patch"
         error-message: ${{ inputs.error-message }}
-        fail-on-match: ${{ steps.minor.outputs.is-set }}
+        fail-on-match: ${{ steps.minor.outputs.match }}
 
     - name: Verify that at least one semver label is set
       shell: sh
       env:
-        MAJOR_FOUND: ${{ steps.major.outputs.is-set }}
-        MINOR_FOUND: ${{ steps.minor.outputs.is-set }}
-        PATCH_FOUND: ${{ steps.patch.outputs.is-set }}
+        MAJOR_FOUND: ${{ steps.major.outputs.match }}
+        MINOR_FOUND: ${{ steps.minor.outputs.match }}
+        PATCH_FOUND: ${{ steps.patch.outputs.match }}
         ERROR_MESSAGE: ${{ inputs.error-message }}
       run: |
         if [[ "$MAJOR_FOUND" == "false" && "$MINOR_FOUND" == "false" && "$PATCH_FOUND" == "false" ]]; then

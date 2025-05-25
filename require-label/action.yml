@@ -35,6 +35,6 @@ runs:
           exit 1
         fi
 outputs:
-  is-set:
-    description: "Whether labels included name (true/false)"
+  match:
+    description: "Whether name matched one of the labels (true/false)"
     value: ${{ steps.label.outputs.match }}
