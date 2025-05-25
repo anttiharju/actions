@@ -7,40 +7,53 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Echo release type
-      shell: sh
-      env:
-        type: ${{ inputs.type }}
-      run: |
-        echo "$type"
-    - name: Calculate title (build number)
-      id: titler
+    - name: Get latest release title
+      id: latest
       shell: sh
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        latest_release_title=$(gh release view --json name -q '.name' || echo 'Build 0')
-        latest_release_number=${latest_release_title#"Build "}
-        this_release_number=$((latest_release_number + 1))
-        this_release_title="Build $this_release_number"
-        echo "title=$this_release_title" >> "$GITHUB_OUTPUT"
-        echo "number=$this_release_number" >> "$GITHUB_OUTPUT"
+        version=$(gh release view --json name -q '.name' || echo '0.0.0')
+        {
+          major="$(echo "$version" | cut -d. -f1)"
+          minor="$(echo "$version" | cut -d. -f2)"
+          patch="$(echo "$version" | cut -d. -f3)"
+        } >> "$GITHUB_OUTPUT"
+    - if: ${{ inputs.type == 'major' }}
+      name: Bump major version
+      id: this
+      shell: bash
+      env:
+        type: ${{ inputs.type }}
+        major: ${{ steps.latest.outputs.major }}
+        minor: ${{ steps.latest.outputs.minor }}
+        patch: ${{ steps.latest.outputs.patch }}
+      run: |
+        if [ "$type" = "major" ]; then
+          echo "version=$((major + 1)).0.0" >> "$GITHUB_OUTPUT"
+        fi
+        if [ "$type" = "minor" ]; then
+          echo "version=$major.$((minor + 1)).0" >> "$GITHUB_OUTPUT"
+        fi
+        if [ "$type" = "patch" ]; then
+          echo "version=$major.$minor.$((patch + 1))" >> "$GITHUB_OUTPUT"
+        fi
     - name: Tag current commit
       id: tagger
       shell: sh
       env:
-        NUMBER: ${{ steps.titler.outputs.number }}
+        semver: ${{ steps.this.outputs.version }}
       run: |
-        TAG="build$NUMBER"
-        git tag "$TAG"
-        git push origin "$TAG"
-        echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+        tag="v$semver"
+        git tag "$tag"
+        git push origin "$tag"
+        echo "tag=$tag" >> "$GITHUB_OUTPUT"
     - name: Create a release
       shell: sh
       env:
-        TITLE: ${{ steps.titler.outputs.title }}
-        TAG: ${{ steps.tagger.outputs.tag }}
         GH_TOKEN: ${{ github.token }}
+        TAG: ${{ steps.tagger.outputs.tag }}
+        TITLE: ${{ steps.this.outputs.version }}
       run: |
         gh release create "$TAG" --title="$TITLE" --generate-notes
 outputs:
