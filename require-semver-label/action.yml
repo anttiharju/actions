@@ -49,7 +49,7 @@ runs:
         ERROR_MESSAGE: ${{ inputs.error-message }}
         ENFORCE: ${{ inputs.enforce }}
       run: |
-        if [ "$ENFORCE" == "true" ]; then
+        if [ "$ENFORCE" = "true" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
         fi
