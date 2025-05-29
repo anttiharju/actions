@@ -52,7 +52,7 @@ runs:
       id: release
       shell: sh
       run: |
-        echo "type=${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' || 'none' }}" >> "$GITHUB_OUTPUT"
+        echo "type=${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' }}" >> "$GITHUB_OUTPUT"
 outputs:
   bump:
     description: "The type of semver bump to be applied"
