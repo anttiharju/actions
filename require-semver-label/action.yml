@@ -52,8 +52,9 @@ runs:
         if [ "$ENFORCE" = "true" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
+        else
+          echo "skipped=true" >> "$GITHUB_OUTPUT"
         fi
-        echo "skipped=true" >> "$GITHUB_OUTPUT"
 
     # This is not baked into output value to avoid falsely setting release type if a step fails
     - if: steps.fail.outputs.skipped != 'true'
