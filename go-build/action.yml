@@ -1,5 +1,10 @@
 name: Go build
 description: Build a binary with go
+inputs:
+  CGO_ENABLED:
+    description: Enable CGO
+    required: false
+    default: "0" # disabled
 
 runs:
   using: "composite"
@@ -19,4 +24,6 @@ runs:
         go-version-file: "go.mod"
         cache: ${{ steps.cache.outputs.enabled }}
     - shell: sh
+      env:
+        CGO_ENABLED: ${{ inputs.CGO_ENABLED }}
       run: go build
