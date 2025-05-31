@@ -3,7 +3,8 @@ description: "Ensures PR has exactly one semver label (major, minor, or patch)"
 inputs:
   enforce:
     description: "Whether to fail upon missing semver label"
-    required: true
+    default: "true"
+    required: false
   error-message:
     description: "Message to echo upon failure"
     required: false
