@@ -1,5 +1,5 @@
 name: action-validator
-description: Runs action-validator on files tracked by Git.
+description: Runs action-validator with verbose output on files tracked by Git.
 inputs:
   version:
     description: action-validator version to install
