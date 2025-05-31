@@ -6,7 +6,7 @@ This action outputs list of changed files as JSON. It works in `pull_request`, `
 
 If you use this, you should have either [merge queues](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue) (GitHub Enterprise feature) or `Require branches to be up to date before merging` branch protection rule enabled.
 
-Combine the use of this action with its sibling [compare-changes](../compare-changes) to run the CI jobs that follow conditionally.
+Combine this action with its sibling [compare-changes](../compare-changes) to run the CI steps or jobs that follow it conditionally.
 
 ## Usage example
 
@@ -21,7 +21,7 @@ jobs:
 
       - name: Find changes
         id: changes
-        uses: anttiharju/actions/find-changes@c438e97d73d750c3fc202d1342eb1b27aad17dd8
+        uses: anttiharju/actions/find-changes@v0
 
       - name: Echo changed files
         shell: sh
