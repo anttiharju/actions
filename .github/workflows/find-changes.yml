@@ -23,9 +23,10 @@ jobs:
 
       - name: Find changes
         id: changes
-        uses: ./find-changes
+        uses: anttiharju/actions/find-changes@v0
 
       - name: Echo changed files
         shell: sh
         run: |
           echo ${{ steps.changes.outputs.array }}
+        # format: ["foo/bar", "baz"]

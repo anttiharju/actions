@@ -13,4 +13,6 @@ Templates a file using `envsubst` using three inputs:
 
 Additionally `working-directory` can be specified to avoid unnecessary repetition.
 
-Usage example can be found [here](../.github/workflows/render-template.yml)
+## Example
+
+See [here](../.github/workflows/render-template.yml).

@@ -10,25 +10,4 @@ Combine this action with its sibling [compare-changes](../compare-changes) to ru
 
 ## Usage example
 
-```yml
-jobs:
-  example:
-    name: Example
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Find changes
-        id: changes
-        uses: anttiharju/actions/find-changes@v0
-
-      - name: Echo changed files
-        shell: sh
-        run: |
-          echo ${{ steps.changes.outputs.array }}
-```
-
-```json
-["foo/bar", "baz"]
-```
+See [here](../.github/workflows/find-changes.yml).
