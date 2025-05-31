@@ -35,13 +35,13 @@ runs:
   steps:
     - name: Find changes
       id: changes
-      uses: anttiharju/actions/find-changes@v1
+      uses: anttiharju/actions/find-changes@v0
     - id: actionlint
-      uses: anttiharju/actions/compare-changes@v1
+      uses: anttiharju/actions/compare-changes@v0
       with:
         wildcard: actionlint
         changes: ${{ steps.changes.outputs.array }}
     - if: steps.changed.outputs.actionlint == 'true' || github.event_name != 'pull_request'
       name: actionlint
-      uses: anttiharju/actions/actionlint@v1
+      uses: anttiharju/actions/actionlint@v0
 ```

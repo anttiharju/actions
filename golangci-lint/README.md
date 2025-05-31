@@ -18,5 +18,5 @@ jobs:
         uses: actions/checkout@v4
 
       - name: golangci-lint
-        uses: anttiharju/actions/golangci-lint@v1
+        uses: anttiharju/actions/golangci-lint@v0
 ```

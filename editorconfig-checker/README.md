@@ -18,5 +18,5 @@ jobs:
         uses: actions/checkout
 
         name: EditorConfig-Checker
-        uses: anttiharju/actions/editorconfig-checker@v1
+        uses: anttiharju/actions/editorconfig-checker@v0
 ```

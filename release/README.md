@@ -29,7 +29,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Create GitHub release
         id: release
-        uses: anttiharju/actions/release@v1
+        uses: anttiharju/actions/release@v0
         with:
           type: ${{ inputs.type }} # patch, minor, or major
     outputs:

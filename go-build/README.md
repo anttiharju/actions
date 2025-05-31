@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: go build
-        uses: anttiharju/actions/go-build@v1
+        uses: anttiharju/actions/go-build@v0
 
       - name: go test
         shell: sh

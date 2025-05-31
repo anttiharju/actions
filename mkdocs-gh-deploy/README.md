@@ -36,5 +36,5 @@ jobs:
         with:
           token: ${{ steps.deploy.outputs.token }}
       - name: Deploy to GitHub Pages
-        uses: anttiharju/actions/mkdocs-gh-deploy@v1
+        uses: anttiharju/actions/mkdocs-gh-deploy@v0
 ```
