@@ -1,5 +1,5 @@
-name: No .yaml
-description: Enforce file extension consistency by mandating .yml
+name: Keep .yml
+description: Fail if .yaml files are found in the repository.
 
 runs:
   using: "composite"
