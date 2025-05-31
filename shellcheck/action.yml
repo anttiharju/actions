@@ -1,5 +1,5 @@
 name: ShellCheck
-description: Runs ShellCheck with colorful output
+description: Runs ShellCheck with colorful output with support for sourcing from script's directory.
 inputs:
   version:
     description: ShellCheck version to install
