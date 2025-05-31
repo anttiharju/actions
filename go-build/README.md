@@ -14,6 +14,9 @@ jobs:
     name: Validate
     runs-on: ubuntu-24.04
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: go build
         uses: anttiharju/actions/go-build@v1
 
