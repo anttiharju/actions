@@ -6,22 +6,35 @@ The action can optionally be provided a committer. By default it uses `github-ac
 
 Recommended trigger event is push to the default branch. In that case, you may wish to run [mkdocs-build-strict](../mkdocs-build-strict/) on pull request events to catch mistakes early.
 
-## Usage example
+## Example
 
 ```yml
-publish:
-  runs-on: ubuntu-24.04
-  steps:
-    - name: Generate docs token
-      uses: actions/create-github-app-token@v1
-      id: generate-token
-      with:
-        app-id: ${{ secrets.YOUR_GITHUB_APP_ID }}
-        private-key: ${{ secrets.YOUR_GITHUB_APP_PRIVATE_KEY }}
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        token: ${{ steps.generate-token.outputs.token }}
-    - name: Publish docs
-      uses: ./.github/actions/publish-docs
+name: Documentation
+on:
+  workflow_call:
+    secrets:
+      ANTTIHARJU_BOT_ID:
+        required: true
+      ANTTIHARJU_BOT_PRIVATE_KEY:
+        required: true
+
+jobs:
+  website:
+    name: Website
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Generate deploy token
+        id: deploy
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.ANTTIHARJU_BOT_ID }}
+          private-key: ${{ secrets.ANTTIHARJU_BOT_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.deploy.outputs.token }}
+      - name: Deploy to GitHub Pages
+        uses: anttiharju/actions/mkdocs-gh-deploy@v1
 ```
