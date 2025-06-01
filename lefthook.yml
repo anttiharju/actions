@@ -14,7 +14,7 @@ pre-commit:
 
     # https://github.com/anttiharju/relcheck
     - name: relcheck
-      run: relcheck run
+      run: relcheck all
 
     - name: Prettier
       glob: "*{.md,.yml}"

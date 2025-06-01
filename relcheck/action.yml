@@ -1,17 +1,30 @@
 name: relcheck
 description: Runs relcheck on default settings
 inputs:
-  sha:
+  version:
+    description: relcheck version to install
     required: false
-    description: "SHA of the commit from which to install the tool"
-    default: f79dc07684109baed16d10dd8ff2ade9bb94ce22
+    default: 1.0.0
 
 runs:
   using: "composite"
   steps:
-    - name: Check relative markdown links
+    - name: Cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/relcheck
+        key: relcheck-${{ inputs.version }}-linux
+    - if: steps.cache.outputs.cache-hit != 'true'
+      name: Install
+      working-directory: /usr/local/bin
       shell: sh
       env:
-        sha: ${{ inputs.sha }}
+        url: https://github.com/anttiharju/relcheck/releases/download/v${{ inputs.version }}/relcheck-linux-amd64.tar.gz
+        tmp: ${{ runner.temp }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/relcheck/$sha/relcheck.bash" | bash -s -- run --verbose --color=always
+        curl -sSL "$url" | tar -xz -C "$tmp" --strip-components=0 relcheck
+    - name: Run relcheck
+      shell: sh
+      run: |
+        relcheck all --verbose --color=always
