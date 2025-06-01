@@ -4,7 +4,7 @@ inputs:
   version:
     description: relcheck version to install
     required: false
-    default: 1.0.0
+    default: 1.0.2
 
 runs:
   using: "composite"
