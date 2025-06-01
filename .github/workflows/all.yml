@@ -20,8 +20,8 @@ jobs:
         uses: ./actionlint
 
       - if: always()
-        name: check-relative-markdown-links
-        uses: ./check-relative-markdown-links
+        name: relcheck
+        uses: ./relcheck
 
       - if: always()
         name: Prettier

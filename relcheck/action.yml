@@ -1,5 +1,5 @@
-name: check-relative-markdown-links
-description: Runs check-relative-markdown-links on default settings
+name: relcheck
+description: Runs relcheck on default settings
 inputs:
   sha:
     required: false
@@ -14,4 +14,4 @@ runs:
       env:
         sha: ${{ inputs.sha }}
       run: |
-        curl -sSfL "https://raw.githubusercontent.com/anttiharju/check-relative-markdown-links/$sha/check-relative-markdown-links.bash" | bash -s -- run --verbose --color=always
+        curl -sSfL "https://raw.githubusercontent.com/anttiharju/relcheck/$sha/relcheck.bash" | bash -s -- run --verbose --color=always
