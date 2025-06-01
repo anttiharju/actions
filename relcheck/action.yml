@@ -22,7 +22,7 @@ runs:
       env:
         url: https://github.com/anttiharju/relcheck/releases/download/v${{ inputs.version }}/relcheck-linux-amd64.tar.gz
       run: |
-        curl -sSL "$url" | tar -xz --strip-components=0 relcheck
+        curl -LsSf "$url" | tar -xz --strip-components=0 relcheck
     - name: Run relcheck
       shell: sh
       run: |
