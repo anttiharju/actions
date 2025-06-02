@@ -43,7 +43,7 @@ runs:
         fail-on-match: ${{ steps.minor.outputs.match == 'true' || steps.major.outputs.match == 'true' }}
 
     - if: ${{ steps.major.outputs.match == 'false' && steps.minor.outputs.match == 'false' && steps.patch.outputs.match == 'false' }}
-      id: failure
+      id: fail
       name: Fail if no semver label matched
       shell: sh
       env:
