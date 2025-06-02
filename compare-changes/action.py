@@ -100,7 +100,6 @@ def main():
         changed_files = json.loads(changes_json)
     except json.JSONDecodeError:
         changed_files = []
-        raise Exception(f"Error: JSON Decode failed for changes: {changes_json}")
 
     try:
         # Load and parse wildcard config
