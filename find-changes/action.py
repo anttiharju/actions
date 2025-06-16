@@ -39,12 +39,22 @@ def fetch_diff_base(event_name, event_data):
             return target_commit
 
     except subprocess.CalledProcessError as e:
+        if (
+            event_name == "push"
+            and event_data.get("before") == "0000000000000000000000000000000000000000"
+        ):
+            print("Detected initial commit - returning empty change set")
+            return None
+
         print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
         sys.exit(1)
 
 
 def run_git_diff(comparison_point):
     """Run git diff to get changed files."""
+    if comparison_point is None:
+        return []
+
     try:
         result = subprocess.run(
             ["git", "diff", "--name-only", comparison_point],
@@ -101,7 +111,7 @@ def main():
 
     # Write to GITHUB_OUTPUT file using the new approach
     github_output = os.environ.get("GITHUB_OUTPUT")
-    if github_output and array:
+    if github_output:
         files_output = json.dumps(array)
         appending_mode = "a"
         with open(github_output, appending_mode) as f:
