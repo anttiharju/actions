@@ -39,43 +39,23 @@ def fetch_diff_base(event_name, event_data):
             return target_commit
 
     except subprocess.CalledProcessError as e:
-        error_msg = e.stderr
-        print(
-            f"Warning: Error while fetching git history: {error_msg}", file=sys.stderr
-        )
-
-        if "not our ref 0000000000000000000000000000000000000000" in error_msg:
-            print(
-                "Detected initial commit scenario - will use fallback", file=sys.stderr
-            )
-            return None
-
+        print(f"Warning: Error while fetching git history: {e.stderr}", file=sys.stderr)
         sys.exit(1)
 
 
 def run_git_diff(comparison_point):
     """Run git diff to get changed files."""
     try:
-        if comparison_point is None:
-            # Initial commit scenario
-            print("Using fallback: considering all files as changed")
-            result = subprocess.run(
-                ["git", "ls-files"],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-        else:
-            result = subprocess.run(
-                ["git", "diff", "--name-only", comparison_point],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
+        result = subprocess.run(
+            ["git", "diff", "--name-only", comparison_point],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
         # Filter out empty lines and return array of changed files
         return [file for file in result.stdout.splitlines() if file]
-    except subprocess.CalledProcessError as e:
-        print(f"Error running git command: {e.stderr}", file=sys.stderr)
+    except subprocess.CalledProcessError:
+        print(f"Error running git diff against {comparison_point}", file=sys.stderr)
         sys.exit(1)
 
 
