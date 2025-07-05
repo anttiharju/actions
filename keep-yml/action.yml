@@ -7,10 +7,10 @@ runs:
     - name: Fail if .yaml files are found
       shell: sh
       run: |
-        YAML_FILES=$(git ls-files '*.yaml')
+        YAML_FILES=$(git ls-files -z '*.yaml')
         if [ -n "$YAML_FILES" ]; then
           echo "Found the following .yaml files. Please use .yml extension instead."
-          echo "$YAML_FILES"
+          echo "$YAML_FILES" | tr '\0' '\n'
           exit 1
         fi
         echo "No .yaml files found. Good job!"
