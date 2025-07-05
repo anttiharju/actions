@@ -27,5 +27,4 @@ runs:
     - name: Run Editorconfig-Checker
       shell: bash
       run: |
-        mapfile -t FILES < <(git ls-files)
-        editorconfig-checker "${FILES[@]}"
+        git ls-files -z | xargs -0 editorconfig-checker
