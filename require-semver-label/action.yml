@@ -49,9 +49,8 @@ runs:
       env:
         ERROR_MESSAGE: ${{ inputs.error-message }}
         ENFORCE: ${{ inputs.enforce }}
-        INITIAL_COMMIT: ${{ github.event.before == '0000000000000000000000000000000000000000' }}
       run: |
-        if [ "$ENFORCE" = "true" ] && [ "$INITIAL_COMMIT" = "false" ]; then
+        if [ "$ENFORCE" = "true" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
         else
