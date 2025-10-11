@@ -23,7 +23,7 @@ jobs:
 
       - name: Find changes
         id: changes
-        uses: anttiharju/actions/find-changes@v0
+        uses: anttiharju/actions/find-changes@v1
 
       - name: Echo changed files
         shell: sh
