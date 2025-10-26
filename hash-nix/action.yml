@@ -18,9 +18,16 @@ runs:
         repository: ${{ github.event.repository.name }}
         rev: ${{ inputs.rev }}
       run: |
-        echo "hash=$(nix hash convert --hash-algo sha256 --to sri "$(nix-prefetch-url --quiet --unpack "https://github.com/$owner/$repository/archive/$rev.tar.gz")")" >> "$GITHUB_OUTPUT"
+        sha256="$(nix-prefetch-url --quiet --unpack "https://github.com/$owner/$repository/archive/$rev.tar.gz")"
+        echo "sha256=$sha256" >> "$GITHUB_OUTPUT"
+        echo "$sha256"
+        hash="$(nix hash convert --hash-algo sha256 --to sri "$sha256")"
+        echo "hash=$hash" >> "$GITHUB_OUTPUT"
         echo "$hash"
 outputs:
+  sha256:
+    description: The SHA256 hash for the current commit
+    value: ${{ steps.nix.outputs.sha256 }}
   hash:
     description: The calculated hash for the current commit
     value: ${{ steps.nix.outputs.hash }}
