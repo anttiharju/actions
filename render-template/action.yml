@@ -2,10 +2,6 @@ name: "Render Template"
 description: "Renders a template file using environment variables"
 
 inputs:
-  working-directory:
-    description: "Directory where the template and values files are located"
-    required: false
-    default: ${{ github.workspace }}
   template:
     description: "Path to the template file"
     required: true
@@ -20,7 +16,6 @@ runs:
   using: "composite"
   steps:
     - name: Source values and render template
-      working-directory: ${{ inputs.working-directory }}
       shell: bash
       env:
         template: ${{ inputs.template }}
@@ -29,5 +24,4 @@ runs:
         GH_TOKEN: ${{ github.token }} # values script may use gh cli that needs this
       run: |
         source "$values"
-        env
         envsubst < "$template" > "$output"
