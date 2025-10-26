@@ -8,6 +8,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - uses: cachix/install-nix-action@v31
+      with:
+        nix_path: nixpkgs=channel:nixos-25.05
     - name: Cache pip packages
       uses: actions/cache@v4
       with:
