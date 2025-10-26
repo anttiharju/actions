@@ -20,10 +20,10 @@ runs:
       run: |
         sha256="$(nix-prefetch-url --quiet --unpack "https://github.com/$owner/$repository/archive/$rev.tar.gz")"
         echo "sha256=$sha256" >> "$GITHUB_OUTPUT"
-        echo "$sha256"
+        echo "sha256=$sha256"
         hash="$(nix hash convert --hash-algo sha256 --to sri "$sha256")"
         echo "hash=$hash" >> "$GITHUB_OUTPUT"
-        echo "$hash"
+        echo "hash=$hash"
 outputs:
   sha256:
     description: The SHA256 hash for the current commit
