@@ -11,13 +11,7 @@ runs:
     - uses: cachix/install-nix-action@fd24c48048070c1be9acd18c9d369a83f0fe94d7 # v31
       with:
         nix_path: nixpkgs=channel:nixos-25.05
-    - name: Cache pip packages
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: nix-prefetch-github-${{ inputs.version }}-${{ runner.os }}
     - name: Hash Nix
-      id: nix
       shell: sh
       env:
         version: ${{ inputs.version }}
@@ -25,8 +19,8 @@ runs:
         repository: ${{ github.event.repository.name }}
         rev: ${{ github.sha }}
       run: |
-        pip install "nix-prefetch-github==$version"
-        echo "hash=$(nix-prefetch-github "$owner" "$repository" --rev "$rev" | jq -r '.hash')" >> "$GITHUB_OUTPUT"
+        echo "hash=$(nix hash convert --hash-algo sha256 --to sri "$(nix-prefetch-url --quiet --unpack "https://github.com/$owner/$repository/archive/$rev.tar.gz")")" >> "$GITHUB_OUTPUT"
+        echo "$hash"
 outputs:
   hash:
     description: The calculated hash for the current commit
