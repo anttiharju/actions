@@ -1,10 +1,5 @@
 name: Hash Nix
 description: Calculates a hash required for packaging software via Nix flakes
-inputs:
-  version:
-    description: The version of nix-prefetch-github to install.
-    required: false
-    default: "7.1.0"
 runs:
   using: "composite"
   steps:
@@ -14,7 +9,6 @@ runs:
     - name: Hash Nix
       shell: sh
       env:
-        version: ${{ inputs.version }}
         owner: ${{ github.repository_owner }}
         repository: ${{ github.event.repository.name }}
         rev: ${{ github.sha }}
