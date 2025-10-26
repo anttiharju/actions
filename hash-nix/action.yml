@@ -1,5 +1,10 @@
 name: Hash Nix
 description: Calculates a hash required for packaging software via Nix flakes
+inputs:
+  rev:
+    description: The git revision (commit SHA) to hash
+    required: false
+    default: ${{ github.sha }}
 runs:
   using: "composite"
   steps:
@@ -11,7 +16,7 @@ runs:
       env:
         owner: ${{ github.repository_owner }}
         repository: ${{ github.event.repository.name }}
-        rev: ${{ github.sha }}
+        rev: ${{ inputs.rev }}
       run: |
         echo "hash=$(nix hash convert --hash-algo sha256 --to sri "$(nix-prefetch-url --quiet --unpack "https://github.com/$owner/$repository/archive/$rev.tar.gz")")" >> "$GITHUB_OUTPUT"
         echo "$hash"
