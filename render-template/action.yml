@@ -28,8 +28,6 @@ runs:
         output: ${{ inputs.output }}
         GH_TOKEN: ${{ github.token }} # values script may use gh cli that needs this
       run: |
-        set -a
         source "$values"
-        set +a
-        envsubst < "$template" > "$output"
         env
+        envsubst < "$template" > "$output"
