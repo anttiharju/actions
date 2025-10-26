@@ -1,0 +1,30 @@
+name: Hash Nix
+description: Calculates a hash required for packaging software via Nix flakes
+inputs:
+  version:
+    description: The version of nix-prefetch-github to install.
+    required: false
+    default: "7.1.0"
+runs:
+  using: "composite"
+  steps:
+    - name: Cache pip packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: nix-prefetch-github-${{ inputs.version }}-${{ runner.os }}
+    - name: Hash Nix
+      id: nix
+      shell: sh
+      env:
+        version: ${{ inputs.version }}
+        owner: ${{ github.repository_owner }}
+        repository: ${{ github.event.repository.name }}
+        rev: ${{ github.sha }}
+      run: |
+        pip install "nix-prefetch-github==$version"
+        echo "hash=$(nix-prefetch-github "$owner" "$repository" --rev "$rev" | jq -r '.hash')" >> "$GITHUB_OUTPUT"
+outputs:
+  hash:
+    description: The calculated hash for the current commit
+    value: ${{ steps.nix.outputs.hash }}
