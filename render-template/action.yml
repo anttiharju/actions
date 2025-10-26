@@ -15,6 +15,10 @@ inputs:
     description: "Version of envsubst to use"
     required: false
     default: "1.4.3"
+  working-directory:
+    description: "Working directory for rendering"
+    required: false
+    default: "${{ github.workspace }}"
 
 runs:
   using: "composite"
@@ -35,6 +39,7 @@ runs:
         curl -sSL "$bin" -o "$dest"
         chmod +x "$dest"
     - name: Source values and render template
+      working-directory: ${{ inputs.working-directory }}
       shell: bash
       env:
         template: ${{ inputs.template }}

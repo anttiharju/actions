@@ -28,9 +28,10 @@ jobs:
       - name: Render template
         uses: ./render-template
         with:
-          template: render-template/testdata/template
-          values: render-template/testdata/values
-          output: render-template/got
+          template: template
+          values: values
+          output: got
+          working-directory: render-template/testdata
 
       - name: Test
         working-directory: render-template/testdata
