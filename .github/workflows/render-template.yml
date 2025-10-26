@@ -30,7 +30,7 @@ jobs:
         with:
           template: render-template/testdata/template
           values: render-template/testdata/values
-          output: got
+          output: render-template/got
 
       - name: Test
         working-directory: render-template/testdata
