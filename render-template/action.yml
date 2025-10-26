@@ -23,21 +23,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Cache
-      id: cache
-      uses: actions/cache@v4
+    - name: Install envsbust
+      uses: anttiharju/actions/install-envsubst@v0
       with:
-        path: /usr/local/bin/envsubst
-        key: envsubst-${{ inputs.version }}-${{ runner.os }}-${{ runner.arch }}
-    - if: steps.cache.outputs.cache-hit != 'true'
-      name: Install
-      shell: sh
-      env:
-        bin: https://github.com/a8m/envsubst/releases/download/v${{ inputs.version }}/envsubst-Linux-x86_64
-        dest: /usr/local/bin/envsubst
-      run: |
-        curl -sSL "$bin" -o "$dest"
-        chmod +x "$dest"
+        version: ${{ inputs.version }}
     - name: Source values and render template
       working-directory: ${{ inputs.working-directory }}
       shell: bash
