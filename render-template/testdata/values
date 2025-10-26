@@ -1,2 +1,2 @@
-receiver="sweet potato"
-sender="potato"
+export receiver="sweet potato"
+export sender="potato"
