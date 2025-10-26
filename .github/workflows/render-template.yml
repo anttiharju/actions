@@ -34,7 +34,9 @@ jobs:
 
       - name: Test
         working-directory: render-template/testdata
-        run: diff got want
+        run: |
+          ls
+          diff got want
 
       - name: Print output
         working-directory: render-template/testdata
