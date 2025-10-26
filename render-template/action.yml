@@ -11,10 +11,29 @@ inputs:
   output:
     description: "Path where rendered template should be saved"
     required: true
+  version:
+    description: "Version of envsubst to use"
+    required: false
+    default: "1.4.3"
 
 runs:
   using: "composite"
   steps:
+    - name: Cache
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/envsubst
+        key: envsubst-${{ inputs.version }}-${{ runner.os }}-${{ runner.arch }}
+    - if: steps.cache.outputs.cache-hit != 'true'
+      name: Install
+      shell: sh
+      env:
+        bin: https://github.com/a8m/envsubst/releases/download/v${{ inputs.version }}/envsubst-Linux-x86_64
+        dest: /usr/local/bin/envsubst
+      run: |
+        curl -sSL "$bin" -o "$dest"
+        chmod +x "$dest"
     - name: Source values and render template
       shell: bash
       env:
@@ -24,4 +43,4 @@ runs:
         GH_TOKEN: ${{ github.token }} # values script may use gh cli that needs this
       run: |
         source "$values"
-        envsubst < "$template" > "$output"
+        envsubst -i "$template" > "$output"
