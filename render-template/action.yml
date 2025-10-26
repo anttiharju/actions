@@ -48,5 +48,6 @@ runs:
         GH_TOKEN: ${{ github.token }} # values script may use gh cli that needs this
       run: |
         source "$values"
-        ls -la "$template"
+        ls -lha
+        ls -lha "$template"
         envsubst -i "$template" > "$output"
