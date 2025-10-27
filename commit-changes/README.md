@@ -36,7 +36,7 @@ jobs:
       TAG: ${{ inputs.tag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Generate commit token
         id: generate-token
         uses: actions/create-github-app-token@v1
@@ -45,7 +45,7 @@ jobs:
           private-key: ${{ secrets.ANTTIHARJU_BOT_PRIVATE_KEY }}
           repositories: homebrew-tap
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: anttiharju/homebrew-tap
           token: ${{ steps.generate-token.outputs.token }}
