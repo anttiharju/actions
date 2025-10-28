@@ -60,7 +60,47 @@ runs:
       shell: sh
       run: |
         echo "type=${{ steps.major.outputs.match == 'true' && 'major' || steps.minor.outputs.match == 'true' && 'minor' || steps.patch.outputs.match == 'true' && 'patch' }}" >> "$GITHUB_OUTPUT"
+
+    - name: Parse latest release
+      id: latest
+      shell: sh
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        version=$(gh release view --json name -q '.name' 2>/dev/null || echo '0.0.0')
+        echo "latest=$version"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+        major="$(echo "$version" | cut -d. -f1)"
+        minor="$(echo "$version" | cut -d. -f2)"
+        patch="$(echo "$version" | cut -d. -f3)"
+        {
+          echo "major=$major"
+          echo "minor=$minor"
+          echo "patch=$patch"
+        } >> "$GITHUB_OUTPUT"
+        echo "parsed=$major.$minor.$patch"
+
+    - name: Bump version
+      id: bump
+      shell: bash
+      env:
+        type: ${{ steps.release.outputs.type }}
+        major: ${{ steps.latest.outputs.major }}
+        minor: ${{ steps.latest.outputs.minor }}
+        patch: ${{ steps.latest.outputs.patch }}
+      run: |
+        if [[ "$type" == "major" ]]; then
+          echo "version=$((major + 1)).0.0" >> "$GITHUB_OUTPUT"
+        elif [[ "$type" == "minor" ]]; then
+          echo "version=$major.$((minor + 1)).0" >> "$GITHUB_OUTPUT"
+        elif [[ "$type" == "patch" ]]; then
+          echo "version=$major.$minor.$((patch + 1))" >> "$GITHUB_OUTPUT"
+        else
+          echo "Invalid type: $type" >&2
+          exit 1
+        fi
 outputs:
-  bump:
-    description: "The type of semver bump to be applied"
-    value: ${{ steps.release.outputs.type }}
+  version:
+    description: "Next semantic version"
+    value: "${{ steps.bump.outputs.version }}"
