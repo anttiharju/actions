@@ -4,4 +4,4 @@ Takes in a list of labels from [get-labels](../get-labels/) and compares it agai
 
 ## Example
 
-See [require-semver-label/action.yml](../require-semver-label/action.yml).
+See [semver-label/action.yml](../semver-label/action.yml).
