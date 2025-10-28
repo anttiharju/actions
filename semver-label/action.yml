@@ -1,7 +1,7 @@
-name: Require Semver Label
-description: "Ensures PR has exactly one semver label (major, minor, or patch)"
+name: semver-label
+description: "Determines semantic version bump from PR labels"
 inputs:
-  enforce:
+  require:
     description: "Whether to fail upon missing semver label"
     default: "true"
     required: false
@@ -47,11 +47,11 @@ runs:
       name: Fail if no semver label matched
       shell: sh
       env:
-        ERROR_MESSAGE: ${{ inputs.error-message }}
-        ENFORCE: ${{ inputs.enforce }}
+        require: ${{ inputs.require }}
+        msg: ${{ inputs.error-message }}
       run: |
-        if [ "$ENFORCE" = "true" ]; then
-          echo "Error: $ERROR_MESSAGE"
+        if [ "$require" = "true" ]; then
+          echo "Error: $msg"
           exit 1
         else
           echo "skipped=true" >> "$GITHUB_OUTPUT"
