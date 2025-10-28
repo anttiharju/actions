@@ -1,6 +1,10 @@
 name: Require Semver Label
 description: "Ensures PR has exactly one semver label (major, minor, or patch)"
 inputs:
+  enforce:
+    description: "Whether to fail upon missing semver label"
+    default: "true"
+    required: false
   error-message:
     description: "Message to echo upon failure"
     required: false
@@ -44,9 +48,9 @@ runs:
       shell: sh
       env:
         ERROR_MESSAGE: ${{ inputs.error-message }}
-        PR: ${{ github.event_name == 'pull_request' }}
+        ENFORCE: ${{ inputs.enforce }}
       run: |
-        if [ "$PR" = "true" ]; then
+        if [ "$ENFORCE" = "true" ]; then
           echo "Error: $ERROR_MESSAGE"
           exit 1
         else
