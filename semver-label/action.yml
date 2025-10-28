@@ -54,6 +54,7 @@ runs:
           echo "Error: $msg"
           exit 1
         else
+          echo "skipped=true"
           echo "skipped=true" >> "$GITHUB_OUTPUT"
         fi
 
