@@ -72,7 +72,6 @@ runs:
         GH_TOKEN: ${{ github.token }}
       run: |
         version=$(gh release view --json name -q '.name' 2>/dev/null || echo '0.0.0')
-        echo "latest=$version"
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
         major="$(echo "$version" | cut -d. -f1)"
@@ -83,7 +82,7 @@ runs:
           echo "minor=$minor"
           echo "patch=$patch"
         } >> "$GITHUB_OUTPUT"
-        echo "parsed=$major.$minor.$patch"
+        echo "current=$version(as-is)=$major.$minor.$patch(parsed)"
 
     - name: Bump version
       id: bump
@@ -104,6 +103,12 @@ runs:
           echo "Invalid type: $type" >&2
           exit 1
         fi
+    - name: Log next version
+      shell: sh
+      env:
+        version: ${{ steps.bump.outputs.version }}
+      run: |
+        echo "next=$version"
 outputs:
   version:
     description: "Next semantic version"
