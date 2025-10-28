@@ -85,7 +85,8 @@ runs:
         } >> "$GITHUB_OUTPUT"
         echo "current=$version(as-is)=$major.$minor.$patch(parsed)"
 
-    - name: Bump version
+    - if: steps.fail.outputs.skipped != 'true'
+      name: Bump version
       id: bump
       shell: bash
       env:
@@ -104,7 +105,9 @@ runs:
           echo "Invalid type: $type" >&2
           exit 1
         fi
-    - name: Log next version
+
+    - if: steps.fail.outputs.skipped != 'true'
+      name: Log next version
       shell: sh
       env:
         version: ${{ steps.bump.outputs.version }}
