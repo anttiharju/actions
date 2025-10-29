@@ -19,7 +19,7 @@ runs:
           echo "enabled=false" >> "$GITHUB_OUTPUT"
         fi
     - name: Setup Go
-      uses: actions/setup-go@v5
+      uses: actions/setup-go@v6
       with:
         go-version-file: "go.mod"
         cache: ${{ steps.cache.outputs.enabled }}
