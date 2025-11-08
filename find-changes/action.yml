@@ -4,21 +4,9 @@ description: "Outputs changed files in JSON format for downstream actions"
 runs:
   using: "composite"
   steps:
-    - if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
-      name: Checkout
-      uses: actions/checkout@v5
-      with:
-        fetch-depth: 2
-
-    - if: github.event_name == 'push'
-      name: Checkout
-      uses: actions/checkout@v5
-
     - name: Find changes
       id: changes
-      shell: sh
-      run: |
-        "$GITHUB_ACTION_PATH/action.py"
+      uses: anttiharju/find-changes-action@v1
 
 outputs:
   array:
