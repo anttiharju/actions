@@ -42,17 +42,20 @@ runs:
         key: relcheck-v${{ inputs.version }}-${{ steps.os.outputs.os }}-${{ steps.arch.outputs.arch }}
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
+      working-directory: ${{ runner.temp }}
       shell: sh
       env:
         GH_TOKEN: ${{ github.token }}
         version: ${{ inputs.version }}
-        os: ${{ steps.os.outputs.os }}
-        arch: ${{ steps.arch.outputs.arch }}
+        pattern: "relcheck-${{ steps.os.outputs.os }}-${{ steps.arch.outputs.arch }}.tar.gz"
         output: ${{ inputs.install-path }}/relcheck
       run: |
-        echo "gh release download \"v$version\" --repo anttiharju/relcheck --pattern \"relcheck-${os}-$arch\.tar.gz" --output \"$output\""
-        gh release download "v$version" --repo anttiharju/relcheck --pattern "relcheck-${os}-$arch.tar.gz" --output "$output"
-        chmod +x "$output"
+        echo "gh release download \"v$version\" --repo anttiharju/relcheck --pattern \"$pattern\""
+        gh release download "v$version" --repo anttiharju/relcheck --pattern "$pattern"
+        echo "tar -xzf \"$pattern\" --strip-components=1 relcheck"
+        tar -xzf "$pattern" --strip-components=1 relcheck
+        echo "mv relcheck \"$output\""
+        mv relcheck "$output"
     - shell: sh
       run: |
         relcheck all --verbose --color=always
