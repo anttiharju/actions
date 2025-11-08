@@ -52,8 +52,8 @@ runs:
       run: |
         echo "gh release download \"v$version\" --repo anttiharju/relcheck --pattern \"$pattern\""
         gh release download "v$version" --repo anttiharju/relcheck --pattern "$pattern"
-        echo "tar -xzf \"$pattern\" --strip-components=1 relcheck"
-        tar -xzf "$pattern" --strip-components=1 relcheck
+        echo "tar -xzf \"$pattern\""
+        tar -xzf "$pattern"
         echo "mv relcheck \"$output\""
         mv relcheck "$output"
     - shell: sh
