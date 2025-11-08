@@ -50,8 +50,8 @@ runs:
         arch: ${{ steps.arch.outputs.arch }}
         output: ${{ inputs.install-path }}/relcheck
       run: |
-        echo "gh release download \"v$version\" --repo anttiharju/relcheck --pattern \"relcheck-${os}-$arch\" --output \"$output\""
-        gh release download "v$version" --repo anttiharju/relcheck --pattern "relcheck-${os}-$arch" --output "$output"
+        echo "gh release download \"v$version\" --repo anttiharju/relcheck --pattern \"relcheck-${os}-$arch\.tar.gz" --output \"$output\""
+        gh release download "v$version" --repo anttiharju/relcheck --pattern "relcheck-${os}-$arch.tar.gz" --output "$output"
         chmod +x "$output"
     - shell: sh
       run: |
