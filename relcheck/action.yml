@@ -13,7 +13,7 @@ runs:
   using: "composite"
   steps:
     - name: relcheck
-      uses: anttiharju/relcheck@v1.8.8
+      uses: anttiharju/relcheck@v1
       with:
         version: ${{ inputs.version }}
         install-path: ${{ inputs.install-path }}
