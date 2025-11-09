@@ -37,7 +37,7 @@ while IFS= read -r line; do
       if [ ! -d "$PKGS_DIR/$pkg" ]; then
         continue
       fi
-      echo "  $pkg = pkgs.callPackage ./pkgs/$pkg { };" >> "$temp_file"
+      echo "  $pkg = pkgs.callPackage ./pkgs/$pkg { inherit lib; };" >> "$temp_file"
     done
   fi
 
