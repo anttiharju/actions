@@ -12,10 +12,6 @@ inputs:
     description: "Working directory"
     required: false
     default: "${{ github.workspace }}"
-  token:
-    description: "GitHub token with bypass permissions"
-    required: false
-    default: "${{ github.token }}"
 runs:
   using: "composite"
   steps:
@@ -25,7 +21,6 @@ runs:
       shell: sh
       env:
         message: ${{ inputs.message }}
-        token: ${{ inputs.token }}
         GIT_AUTHOR_NAME: ${{ github.actor }}
         GIT_AUTHOR_EMAIL: "${{ github.actor }}@users.noreply.github.com"
         GIT_COMMITTER_NAME: ${{ inputs.committer }}
@@ -38,8 +33,7 @@ runs:
           git config push.autoSetupRemote true
           git add --all
           git commit -m "$message"
-          git push "https://x-access-token:${token}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref_name }}
-
+          git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
         fi
 outputs:
