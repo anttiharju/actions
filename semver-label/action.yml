@@ -117,3 +117,6 @@ outputs:
   version:
     description: "Next semantic version"
     value: "${{ steps.bump.outputs.version }}"
+  type:
+    description: "Type of semantic version bump"
+    value: ${{ steps.release.outputs.type }}
