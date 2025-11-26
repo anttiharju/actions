@@ -72,7 +72,11 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        version=$(gh release view --json name -q '.name' 2>/dev/null || echo '0.0.0')
+        if [ -f Cargo.toml ]; then
+          version=$(yq '.package.version' Cargo.toml)
+        else
+          version=$(gh release view --json name -q '.name' 2>/dev/null || echo '0.0.0')
+        fi
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
         major="$(echo "$version" | cut -d. -f1)"
