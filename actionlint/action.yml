@@ -11,28 +11,6 @@ branding:
 runs:
   using: "composite"
   steps:
-    - name: Convert architecture
-      id: arch
-      shell: sh
-      env:
-        runner_arch: ${{ runner.arch }} # Possible values are X86, X64, ARM, or ARM64.
-      run: |
-        case "$runner_arch" in
-          X64) echo "arch=amd64" >> "$GITHUB_OUTPUT" ;;
-          ARM64) echo "arch=arm64" >> "$GITHUB_OUTPUT" ;;
-          *) echo "Unsupported architecture: $runner_arch" >&2; exit 1 ;;
-        esac
-    - name: Convert OS
-      id: os
-      shell: sh
-      env:
-        runner_os: ${{ runner.os }} # Possible values are Linux, Windows, or macOS.
-      run: |
-        case "$runner_os" in
-          Linux) echo "os=linux" >> "$GITHUB_OUTPUT" ;;
-          macOS) echo "os=darwin" >> "$GITHUB_OUTPUT" ;;
-          *) echo "Unsupported OS: $runner_os" >&2; exit 1 ;;
-        esac
     - name: Resolve version
       id: resolve
       shell: bash
@@ -45,12 +23,30 @@ runs:
           version="${tag#v}"
         fi
         echo "version=$version" >> "$GITHUB_OUTPUT"
+    - name: Convert target
+      id: convert
+      shell: sh
+      env:
+        os: ${{ runner.os }} # Possible values are Linux, Windows, or macOS.
+        arch: ${{ runner.arch }} # Possible values are X86, X64, ARM, or ARM64.
+        version: ${{ steps.resolve.outputs.version }}
+      run: |
+        target="$os-$arch"
+        case "$target" in
+          macOS-ARM64) echo "target=$version_darwin_arm64" >> "$GITHUB_OUTPUT" ;;
+          macOS-X64) echo "target=$version_darwin_amd64" >> "$GITHUB_OUTPUT" ;;
+          Linux-ARM64) echo "target=$version_linux_arm64" >> "$GITHUB_OUTPUT" ;;
+          Linux-X64) echo "target=$version_linux_amd64" >> "$GITHUB_OUTPUT" ;;
+          Windows-X86) echo "target=$version_windows_386" >> "$GITHUB_OUTPUT" ;;
+          Windows-X64) echo "target=$version_windows_386" >> "$GITHUB_OUTPUT" ;;
+          *) echo "Unsupported os-arch target: $target" >&2; exit 1 ;;
+        esac
     - name: Cache
       id: cache
       uses: actions/cache@v4
       with:
         path: /usr/local/bin/actionlint
-        key: actionlint_v${{ steps.resolve.outputs.version }}_${{ steps.os.outputs.os }}_${{ steps.arch.outputs.arch }}
+        key: actionlint_v${{ steps.convert.outputs.target }}
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
       working-directory: ${{ runner.temp }}
@@ -58,12 +54,11 @@ runs:
       env:
         GH_TOKEN: ${{ github.token }}
         version: ${{ steps.resolve.outputs.version }}
-        os: ${{ steps.os.outputs.os }}
-        arch: ${{ steps.arch.outputs.arch }}
+        target: ${{ steps.convert.outputs.target }}
       run: |
-        printf 'gh release download "v%s" --repo rhysd/actionlint --pattern "actionlint_%s_%s_%s.tar.gz"\n' "$version" "$version" "$os" "$arch"
-        gh release download "v$version" --repo rhysd/actionlint --pattern "actionlint_${version}_${os}_$arch.tar.gz"
-        tar -xzf "actionlint_${version}_${os}_$arch.tar.gz" actionlint
+        printf 'gh release download "v%s" --repo rhysd/actionlint --pattern "actionlint_%s.tar.gz"\n' "$version" "$target"
+        gh release download "v$version" --repo rhysd/actionlint --pattern "actionlint_$target.tar.gz"
+        tar -xzf "actionlint_$target.tar.gz" actionlint
         mv actionlint /usr/local/bin
     - name: Run
       shell: sh
