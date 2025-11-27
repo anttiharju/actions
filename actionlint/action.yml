@@ -11,12 +11,6 @@ branding:
 runs:
   using: "composite"
   steps:
-    - name: Debug
-      shell: bash
-      run: |
-        echo "Runner OS: ${{ runner.os }}"
-        echo "Runner Arch: ${{ runner.arch }}"
-        echo "PATH: $PATH"
     - name: Resolve version
       id: resolve
       shell: bash
