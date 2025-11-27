@@ -79,7 +79,7 @@ runs:
       id: cache
       uses: actions/cache@v4
       with:
-        path: /usr/local/bin/actionlint
+        path: /usr/bin/actionlint
         key: actionlint_v${{ steps.convert.outputs.target }}
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
@@ -96,11 +96,11 @@ runs:
         case "$ext" in
           zip)
             unzip -j "actionlint_$target.$ext" actionlint.exe
-            mv actionlint.exe /usr/local/bin/actionlint
+            mv actionlint.exe /usr/bin/actionlint
             ;;
           tar.gz)
             tar -xzf "actionlint_$target.$ext" actionlint
-            mv actionlint /usr/local/bin
+            mv actionlint /usr/bin
             ;;
           *)
             echo "Unknown archive format: $ext" >&2
