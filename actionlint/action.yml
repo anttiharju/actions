@@ -42,42 +42,34 @@ runs:
           macOS-ARM64)
             echo "target=${version}_darwin_arm64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint" >> "$GITHUB_OUTPUT"
             ;;
           macOS-X64)
             echo "target=${version}_darwin_amd64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint" >> "$GITHUB_OUTPUT"
             ;;
           Linux-ARM64)
             echo "target=${version}_linux_arm64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint" >> "$GITHUB_OUTPUT"
             ;;
           Linux-X64)
             echo "target=${version}_linux_amd64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint" >> "$GITHUB_OUTPUT"
             ;;
           Windows-X86)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
             echo "ext=zip" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint.exe" >> "$GITHUB_OUTPUT"
             ;;
           Windows-X64)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
             echo "ext=zip" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint.exe" >> "$GITHUB_OUTPUT"
             ;;
           -X86)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
             echo "ext=zip" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint.exe" >> "$GITHUB_OUTPUT"
             ;;
           -X64)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
             echo "ext=zip" >> "$GITHUB_OUTPUT"
-            echo "bin=actionlint.exe" >> "$GITHUB_OUTPUT"
             ;;
           *)
             echo "Unsupported os-arch target: $target" >&2; exit 1
@@ -87,7 +79,7 @@ runs:
       id: cache
       uses: actions/cache@v4
       with:
-        path: /usr/bin/${{ steps.convert.outputs.bin }}
+        path: /usr/bin/actionlint
         key: actionlint_v${{ steps.convert.outputs.target }}
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
