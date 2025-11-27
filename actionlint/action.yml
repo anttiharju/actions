@@ -53,17 +53,18 @@ runs:
         key: actionlint_v${{ steps.resolve.outputs.version }}_${{ steps.os.outputs.os }}_${{ steps.arch.outputs.arch }}
     - if: steps.cache.outputs.cache-hit != 'true'
       name: Install
+      working-directory: ${{ runner.temp }}
       shell: sh
       env:
         GH_TOKEN: ${{ github.token }}
         version: ${{ steps.resolve.outputs.version }}
         os: ${{ steps.os.outputs.os }}
         arch: ${{ steps.arch.outputs.arch }}
-        output: /usr/local/bin/actionlint
       run: |
-        printf 'gh release download "v%s" --repo rhysd/actionlint --pattern "actionlint_%s_%s_%s.tar.gz" --output "%s"\n' "$version" "$version" "$os" "$arch" "$output"
-        gh release download "v$version" --repo rhysd/actionlint --pattern "actionlint_${version}_${os}_$arch.tar.gz" --output "$output"
-        chmod +x "$output"
+        printf 'gh release download "v%s" --repo rhysd/actionlint --pattern "actionlint_%s_%s_%s.tar.gz"\n' "$version" "$version" "$os" "$arch"
+        gh release download "v$version" --repo rhysd/actionlint --pattern "actionlint_${version}_${os}_$arch.tar.gz"
+        tar -xzf "actionlint_${version}_${os}_$arch.tar.gz" actionlint
+        mv actionlint /usr/local/bin
     - name: Run
       shell: sh
       run: |
