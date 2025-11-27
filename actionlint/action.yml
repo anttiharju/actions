@@ -69,6 +69,7 @@ runs:
             echo "ext=zip" >> "$GITHUB_OUTPUT"
             echo "install_path=C:/Program Files/Git/usr/bin" >> "$GITHUB_OUTPUT"
             ;;
+          # Windows runners appear to report an empty runner.os :(
           -X86)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
             echo "ext=zip" >> "$GITHUB_OUTPUT"
