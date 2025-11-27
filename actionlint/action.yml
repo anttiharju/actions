@@ -98,17 +98,18 @@ runs:
         version: ${{ steps.resolve.outputs.version }}
         target: ${{ steps.convert.outputs.target }}
         ext: ${{ steps.convert.outputs.ext }}
+        install_path: ${{ steps.convert.outputs.install_path }}
       run: |
         printf 'gh release download "v%s" --repo rhysd/actionlint --pattern "actionlint_%s.%s"\n' "$version" "$target" "$ext"
         gh release download "v$version" --repo rhysd/actionlint --pattern "actionlint_$target.$ext"
         case "$ext" in
           zip)
             unzip -j "actionlint_$target.$ext" actionlint.exe
-            mv actionlint.exe /usr/bin/actionlint
+            mv actionlint.exe "$install_path/actionlint"
             ;;
           tar.gz)
             tar -xzf "actionlint_$target.$ext" actionlint
-            mv actionlint /usr/bin
+            mv actionlint "$install_path"
             ;;
           *)
             echo "Unknown archive format: $ext" >&2
