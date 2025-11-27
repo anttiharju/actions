@@ -42,22 +42,22 @@ runs:
           macOS-ARM64)
             echo "target=${version}_darwin_arm64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "install_path=/usr/bin" >> "$GITHUB_OUTPUT"
+            echo "install_path=/usr/local/bin" >> "$GITHUB_OUTPUT"
             ;;
           macOS-X64)
             echo "target=${version}_darwin_amd64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "install_path=/usr/bin" >> "$GITHUB_OUTPUT"
+            echo "install_path=/usr/local/bin" >> "$GITHUB_OUTPUT"
             ;;
           Linux-ARM64)
             echo "target=${version}_linux_arm64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "install_path=/usr/bin" >> "$GITHUB_OUTPUT"
+            echo "install_path=/usr/local/bin" >> "$GITHUB_OUTPUT"
             ;;
           Linux-X64)
             echo "target=${version}_linux_amd64" >> "$GITHUB_OUTPUT"
             echo "ext=tar.gz" >> "$GITHUB_OUTPUT"
-            echo "install_path=/usr/bin" >> "$GITHUB_OUTPUT"
+            echo "install_path=/usr/local/bin" >> "$GITHUB_OUTPUT"
             ;;
           Windows-X86)
             echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT"
