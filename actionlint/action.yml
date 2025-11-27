@@ -39,6 +39,8 @@ runs:
           Linux-X64) echo "target=${version}_linux_amd64" >> "$GITHUB_OUTPUT" ;;
           Windows-X86) echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT" ;;
           Windows-X64) echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT" ;;
+          -X86) echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT" ;;
+          -X64) echo "target=${version}_windows_386" >> "$GITHUB_OUTPUT" ;;
           *) echo "Unsupported os-arch target: $target" >&2; exit 1 ;;
         esac
     - name: Cache
