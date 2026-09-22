@@ -1,0 +1,17 @@
+name: relcheck
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - uses: ./action-validator
