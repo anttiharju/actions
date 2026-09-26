@@ -1,0 +1,29 @@
+name: runner-paths
+permissions: {}
+
+on:
+  push:
+
+jobs:
+  paths:
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner:
+          - ubuntu-slim
+          - ubuntu-22.04
+          - ubuntu-24.04
+          - ubuntu-26.04
+          - ubuntu-24.04-arm
+          - ubuntu-22.04-arm
+          - ubuntu-26.04-arm
+          - macos-14
+          - macos-15
+          - macos-26
+    steps:
+      - name: Echo PATH
+        run: echo "$PATH"
+
+      - name: Echo GITHUB_PATH
+        run: echo "$GITHUB_PATH"
