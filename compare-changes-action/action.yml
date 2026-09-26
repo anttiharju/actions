@@ -1,0 +1,83 @@
+name: "Compare changes"
+description: "Conditionally run jobs and steps based on find-changes-action output."
+branding:
+  icon: minimize-2
+  color: orange
+inputs:
+  paths:
+    description: "Newline-separated inline path patterns. Mutually exclusive with 'workflow'; exactly one of the two must be set."
+    required: false
+    default: ""
+  workflow:
+    description: "Workflow file under .github/workflows/. Uses the on.push.paths as input. Mutually exclusive with 'paths'; exactly one of the two must be set."
+    required: false
+    default: ""
+  changes:
+    description: "JSON array of changed files (from anttiharju/find-changes-action)"
+    required: true
+  debug:
+    description: "Enable compare-changes --debug output (true/false)"
+    required: false
+    default: "false"
+  validate:
+    description: "Run 'compare-changes --validate' before comparing (true/false)"
+    required: false
+    default: "false"
+runs:
+  using: "composite"
+  steps:
+    - name: Check if compare-changes binary is available
+      id: binary
+      shell: sh
+      env:
+        VERSION: "0.12.18"
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/available.sh"
+    - if: steps.binary.outputs.available != 'true'
+      name: Convert target
+      id: convert
+      shell: sh
+      env:
+        OS: ${{ runner.os }} # Possible values are Linux, Windows, or macOS.
+        ARCH: ${{ runner.arch }} # Possible values are X86, X64, ARM, or ARM64.
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/convert.sh"
+    - if: steps.binary.outputs.available != 'true'
+      name: Cache
+      id: cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.binary.outputs.directory }}/compare-changes
+        key: compare-changes_0.12.18_${{ steps.convert.outputs.target }}
+    - if: steps.binary.outputs.available != 'true' && steps.cache.outputs.cache-hit != 'true'
+      name: Install
+      working-directory: ${{ steps.binary.outputs.directory }}
+      shell: sh
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: "0.12.18"
+        TARGET: ${{ steps.convert.outputs.target }}
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/install.sh"
+    - if: inputs.validate == 'true'
+      name: Validate
+      shell: sh
+      env:
+        BINARY: "${{ steps.binary.outputs.directory }}/compare-changes"
+      run: |
+        "$BINARY" --validate
+    - name: Run
+      id: run
+      shell: bash
+      env:
+        BINARY: "${{ steps.binary.outputs.directory }}/compare-changes"
+        WORKFLOW: "${{ inputs.workflow }}"
+        PATHS: "${{ inputs.paths }}"
+        CHANGES: "${{ inputs.changes }}"
+        DEBUG: "${{ inputs.debug }}"
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/run.sh"
+outputs:
+  changed:
+    description: "Boolean indicating if any changed files match the configured paths (from 'paths' input or the workflow's on.push.paths)."
+    value: ${{ steps.run.outputs.changed }}

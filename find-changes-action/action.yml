@@ -1,0 +1,63 @@
+name: "Find changes"
+description: "Outputs a JSON array of changed files for downstream actions."
+branding:
+  icon: check-circle
+  color: blue
+runs:
+  using: "composite"
+  steps:
+    - name: Check if compare-changes binary is available
+      id: binary
+      shell: sh
+      env:
+        VERSION: "0.12.18"
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/available.sh"
+    - if: steps.binary.outputs.available != 'true'
+      name: Convert target
+      id: convert
+      shell: sh
+      env:
+        OS: ${{ runner.os }} # Possible values are Linux, Windows, or macOS.
+        ARCH: ${{ runner.arch }} # Possible values are X86, X64, ARM, or ARM64.
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/convert.sh"
+    - if: steps.binary.outputs.available != 'true'
+      name: Cache
+      id: cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.binary.outputs.directory }}/compare-changes
+        key: compare-changes_0.12.18_${{ steps.convert.outputs.target }}
+    - if: steps.binary.outputs.available != 'true' && steps.cache.outputs.cache-hit != 'true'
+      name: Install
+      working-directory: ${{ steps.binary.outputs.directory }}
+      shell: sh
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: "0.12.18"
+        TARGET: ${{ steps.convert.outputs.target }}
+      run: |
+        "$GITHUB_ACTION_PATH/scripts/install.sh"
+    - if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+      name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        fetch-depth: 2
+        persist-credentials: true
+    - if: github.event_name == 'push'
+      name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: true
+    - name: Run
+      id: run
+      shell: sh
+      env:
+        BINARY: ${{ steps.binary.outputs.directory }}/compare-changes
+      run: |
+        "$BINARY" --find
+outputs:
+  array:
+    description: "JSON array of changed files."
+    value: ${{ steps.run.outputs.array }}

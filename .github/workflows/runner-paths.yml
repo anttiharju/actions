@@ -22,8 +22,20 @@ jobs:
           - macos-15
           - macos-26
     steps:
-      - name: Echo PATH
-        run: echo "$PATH"
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            compare-changes-action
+            find-changes-action
 
-      - name: Echo GITHUB_PATH
-        run: echo "$GITHUB_PATH"
+      - name: Find changes
+        id: changes
+        uses: ./find-changes-action
+
+      - name: Compare changes
+        uses: ./compare-changes-action
+        with:
+          changes: ${{ steps.changes.outputs.array }}
+          paths: |
+            .github/workflows/**
