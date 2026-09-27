@@ -24,8 +24,19 @@ jobs:
           - macos-15
           - macos-26
     steps:
-      - run: |
-          sha256sum -h
-      - if: always()
-        run: |
-          shasum -h
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            find-changes-action
+
+      - name: Find changes
+        id: changes
+        uses: ./find-changes-action
+
+      - name: Compare changes
+        uses: anttiharju/compare-changes-action@v0
+        with:
+          changes: ${{ steps.changes.outputs.array }}
+          paths: |
+            .github/workflows/**
