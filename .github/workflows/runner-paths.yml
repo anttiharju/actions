@@ -22,9 +22,15 @@ jobs:
           - macos-15
           - macos-26
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: |
+            find-changes-action
+
       - name: Find changes
         id: changes
-        uses: anttiharju/find-changes-action@v0
+        uses: ./find-changes-action
 
       - name: Compare changes
         uses: anttiharju/compare-changes-action@v0
