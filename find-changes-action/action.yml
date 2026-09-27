@@ -53,6 +53,7 @@ runs:
       run: |
         mkdir .tmp-anttiharju-compare-changes # no -p on purpose: why would you have directory with this name in your repository?
         printf '*\n' > .tmp-anttiharju-compare-changes/.gitignore
+
     - if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
       name: Checkout (pull_request / merge_group)
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -60,14 +61,25 @@ runs:
         path: .tmp-anttiharju-compare-changes/${{ github.repository }}
         fetch-depth: 2
         persist-credentials: false
+    - if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
+      name: Find changes (pull_request / merge_group)
+      id: run
+      working-directory: .tmp-anttiharju-compare-changes/${{ github.repository }}
+      shell: sh
+      env:
+        BINARY: ${{ steps.check.outputs.directory }}/compare-changes
+      run: |
+        "$BINARY" --find
+
     - if: github.event_name == 'push'
       name: Checkout (push)
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: .tmp-anttiharju-compare-changes/${{ github.repository }}
         persist-credentials: false
-    - name: Find changes
-      id: run
+    - if: github.event_name == 'push'
+      name: Find changes (push)
+      id: run_push
       working-directory: .tmp-anttiharju-compare-changes/${{ github.repository }}
       shell: sh
       env:
@@ -79,6 +91,7 @@ runs:
         authorization="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 | tr -d '\n')"
         printf '::add-mask::%s\n' "$authorization"
         GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $authorization" "$BINARY" --find
+
     - if: always()
       name: Remove checkout
       shell: sh
@@ -87,4 +100,4 @@ runs:
 outputs:
   array:
     description: "JSON array of changed files."
-    value: ${{ steps.run.outputs.array }}
+    value: ${{ steps.run.outputs.array || steps.run_push.outputs.array }}
